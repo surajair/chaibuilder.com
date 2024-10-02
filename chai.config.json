@@ -1,0 +1,15 @@
+{
+  "assetsDir": "public",
+  "pagesDir": "chai",
+  "theme": {
+    "bodyBgDarkColor": "rgb(0, 0, 0)",
+    "bodyBgLightColor": "rgb(255, 255, 255)",
+    "bodyFont": "Arial, Helvetica, sans-serif",
+    "bodyTextDarkColor": "rgb(255, 255, 255)",
+    "bodyTextLightColor": "rgb(0, 0, 0)",
+    "headingFont": "Arial, Helvetica, sans-serif",
+    "primaryColor": "rgb(236,46,46)",
+    "roundedCorners": "0.25rem",
+    "secondaryColor": "rgb(149,49,49)"
+  }
+}
