@@ -41,7 +41,7 @@ pnpm run dev
 
 Chai Builder supports both previewing and live mode.
 1. Previewing: You can preview your changes by clicking the "Preview" button in the top right corner of the builder.
-2. Live mode: You can enable live mode by visiting the page url in browser. eg: http://localhost:3000/about
+2. Live mode: You can see live mode by visiting the page url in browser. eg: http://localhost:3000/about
 
 
 ---
@@ -49,7 +49,7 @@ Chai Builder supports both previewing and live mode.
 
 Global blocks are blocks that are shared across all pages.
 
-1. Create a new file in the `blocks` directory with the `.global.chai` extension. eg: header.global.chai
+1. Create a new file in the `chai` directory with the `.global.chai` extension. eg: header.global.chai
 2. Builder will automatically detect the global blocks and show them in the builder.
 3. To add a global block to page
    - Add a GlobalBlock block from add block dialog
