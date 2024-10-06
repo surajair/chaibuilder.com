@@ -24,7 +24,8 @@ pnpm install
 pnpm run dev
 ```
 
-4. Open [http://localhost:3000/chai](http://localhost:3000/chai) in your browser.
+4. Open Chai Builder locally in your browser. 
+> ### http://localhost:3000/chai
 
 5. You can now start building your pages with Chai Builder.
 
