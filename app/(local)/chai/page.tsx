@@ -1,6 +1,7 @@
-'use client';
+"use client";
 
 import dynamic from "next/dynamic";
+import "@/blocks/Card";
 
 // @ts-ignore
 const ChaiBuilderLocal = dynamic(() => import("@chaibuilder/local"), {

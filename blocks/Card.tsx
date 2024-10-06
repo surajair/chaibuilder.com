@@ -34,8 +34,9 @@ const Card = ({ blockProps, title }: any) => {
 registerChaiBlock(Card, {
   type: "Card",
   label: "Card",
-  group: "Cards",
+  group: "custom",
+  category: "core",
   props: {
-    title: SingleLineText({ title: "Card title", defaultValue: "Card title" }),
+    title: SingleLineText({ title: "Card title", default: "Card title" }),
   },
 });

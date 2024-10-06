@@ -1008,17 +1008,21 @@
     "_parent": null
   },
   {
+    "_type": "Card",
+    "_id": "wDDeqj"
+  },
+  {
     "_type": "@chai/theme",
     "_value": {
-      "bodyFont": "Arial, Helvetica, sans-serif",
-      "headingFont": "Arial, Helvetica, sans-serif",
-      "roundedCorners": "0.25rem",
-      "primaryColor": "rgb(236,46,46)",
-      "secondaryColor": "rgb(149,49,49)",
-      "bodyBgDarkColor": "rgb(0, 0, 0)",
-      "bodyBgLightColor": "rgb(255, 255, 255)",
-      "bodyTextDarkColor": "rgb(255, 255, 255)",
-      "bodyTextLightColor": "rgb(0, 0, 0)"
+      "bodyFont": "Poppins",
+      "headingFont": "Poppins",
+      "roundedCorners": 15,
+      "primaryColor": "#570df8",
+      "secondaryColor": "#f002b8",
+      "bodyBgDarkColor": "#031022",
+      "bodyBgLightColor": "#fcfcfc",
+      "bodyTextDarkColor": "#ffffff",
+      "bodyTextLightColor": "#000000"
     }
   },
   {

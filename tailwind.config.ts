@@ -20,7 +20,7 @@ const config: Config = {
     },
   },
   safelist: ["absolute", "inset-0", "w-full", "h-full"],
-  theme: { extend: getChaiBuilderTheme(chaiConfig.theme) },
+  theme: { extend: getChaiBuilderTheme(chaiConfig.theme as any) },
   plugins: [],
 };
 export default config;
