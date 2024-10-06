@@ -9,7 +9,7 @@ To get started, follow these steps:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/chai-builder/chaibuilder-nextjs.git
+git clone https://github.com/chaibuilder/chaibuilder-nextjs.git
 ```
 
 2. Install the dependencies:
