@@ -15,13 +15,13 @@ git clone https://github.com/chai-builder/chaibuilder-nextjs.git
 2. Install the dependencies:
 
 ```bash
-npm install
+pnpm install
 ```
 
 3. Run the development server:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 4. Open [http://localhost:3000/chai](http://localhost:3000/chai) in your browser.
