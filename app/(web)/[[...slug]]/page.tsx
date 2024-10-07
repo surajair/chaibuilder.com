@@ -9,7 +9,7 @@ loadWebBlocks();
 
 const readChaiBySlug = (
   slug: string,
-  defaultBlocks: ChaiBlock[] = [],
+  defaultBlocks: ChaiBlock[] = []
 ): ChaiBlock[] => {
   const filePath = path.resolve(process.cwd(), "chai", `${slug}.chai`);
   try {
@@ -25,14 +25,14 @@ const readChaiFile = (slug: string): ChaiBlock[] => {
   try {
     const blocks = readChaiBySlug(slug);
     const globalBlocks = blocks.filter(
-      (block) => block._type === "GlobalBlock",
+      (block) => block._type === "GlobalBlock"
     );
     for (let i = 0; i < globalBlocks.length; i++) {
       const block = globalBlocks[i];
       if (block.globalBlock === "") continue;
       const globalBlockBlocks = readChaiBySlug(
         block.globalBlock + ".global",
-        [],
+        []
       );
       const index = blocks.indexOf(globalBlocks[i]);
       blocks.splice(index, 1, ...globalBlockBlocks);
