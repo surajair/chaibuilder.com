@@ -43,14 +43,13 @@ I recomment using `pnpm` for development.
 pnpm install
 pnpm run dev
 ```
+Navigate to `/chai` route to view the builder and publish.
+
+
 
 ## Deployment
-
 I recomment using `Vercel` for deployment for better ISR support.
 
-```bash
-vercel
-```
 
 ## License
 
