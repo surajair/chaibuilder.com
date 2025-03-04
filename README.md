@@ -1,85 +1,57 @@
-# Chai Builder Next.js Starter
+## Chai builder + NextJS Starter
 
-This is a template for building a [Chai Builder](https://chaibuilder.com) app with [Next.js](https://nextjs.org/).
+This is a starter project for Chai builder + NextJS.
 
-## Getting Started
+## Requirements
 
-To get started, follow these steps:
+- `CHAIBUILDER_API_KEY` - Your Chai builder `API key`. Send us an email at [support@chaibuilder.com](mailto:support@chaibuilder.com) to get your API key.
 
-1. Clone the repository:
+## Features
 
-```bash
-git clone https://github.com/chaibuilder/chaibuilder-nextjs.git
-```
+- Website builder with drag and drop
+  - Extensible builder with extension points
+  - <i>Canvas DND is WIP</i>
+- One click publish
+- Page lock (prevent multiple users from editing the same page)
+- Multi-language support
+- SEO ( Basic, Open Graph, JSON-LD )
+- SSR and SSG support
+  - Built in Vercel ISR support
+- Themeable with Tailwind CSS(Shadcn themes)
+- Global blocks for reusable content
+- Draft preview mode (preview changes before publishing)
+- Data binding with external data (e.g. from a CMS)
+- Custom page blocks (e.g. a team page with a list of team members)
+- Custom page types (e.g. a blog page template for all blogs)
+- AI content generation ( with multilingual support )
+- AI style editing
+- Dark mode support
+- Custom authentication ( Implement your own auth provider )
 
-2. Install the dependencies:
+## Stack
+
+- NextJS15 + React 19
+- Tailwind CSS 3.4+
+- Shadcn UI
+- TypeScript
+
+## Development
+
+I recomment using `pnpm` for development.
 
 ```bash
 pnpm install
-```
-
-3. Run the development server:
-
-```bash
 pnpm run dev
 ```
 
-4. Open Chai Builder locally in your browser.
+## Deployment
 
-   > ### http://localhost:3000/chai
+I recomment using `Vercel` for deployment for better ISR support.
 
-   Page might take few seconds to load as it compiles in dev environment
+```bash
+vercel
+```
 
-5. You can now start building your pages with Chai Builder.
+## License
 
----
-
-### Adding a new page
-
-1. Create a new file in the `chai` directory with the `.chai` extension.
-2. Enter the slug of the page as the file name. eg: about.chai, contact-us.chai etc
-3. Go back to builder and refresh the pages list to view the new page.
-
----
-
-### Previewing and live mode
-
-Chai Builder supports both previewing and live mode.
-
-1. Previewing: You can preview your changes by clicking the "Preview" button in the top right corner of the builder.
-2. Live mode: You can see live mode by visiting the page url in browser. eg: http://localhost:3000/about
-
----
-
-### Global Blocks
-
-Global blocks are blocks that are shared across all pages.
-
-1. Create a new file in the `chai` directory with the `.global.chai` extension. eg: header.global.chai
-2. Builder will automatically detect the global blocks and show them in the builder.
-3. To add a global block to page
-   - Add a GlobalBlock block from add block dialog
-   - From the side panel, select the global block.
-
----
-
-### Registering your custom blocks
-
-You can add your custom blocks by registering them as chai blocks.
-Example reference: [Card.tsx](blocks/Card.tsx)
-
-Once you register the block, you can view your registered block under <br />
-`Add block => Blocks tab => Custom`
-
----
-
-### Publishing site.
-
-Please refer to standard Next.js documentation for publishing your site.
-https://nextjs.org/docs/app/building-your-application/deploying
-
----
-
-Contact us at [support@chaibuilder.com](mailto:support@chaibuilder.com) for any queries.
-
-or join our [Discord](https://discord.gg/czkgwX2rnD) community.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
