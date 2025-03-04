@@ -4,6 +4,9 @@
  * @returns {Object} An object containing the user, logout, isLoggedIn, loading, and error properties.
  */
 export const useAuth = () => {
+  // Check if window is defined (client-side) before accessing localStorage
+  const isClient = typeof window !== "undefined";
+
   return {
     user: {
       authToken: "mock-auth-token",
@@ -13,15 +16,21 @@ export const useAuth = () => {
       photoURL: "https://placehold.co/40x40",
     },
     logout: () => {
-      localStorage.removeItem("isLoggedIn");
-      window.location.reload();
+      if (isClient) {
+        localStorage.removeItem("isLoggedIn");
+        window.location.reload();
+      }
     },
-    isLoggedIn: localStorage.getItem("isLoggedIn") === "true",
+    isLoggedIn: isClient
+      ? localStorage.getItem("isLoggedIn") === "true"
+      : false,
     loading: false,
     error: null,
     login: () => {
-      localStorage.setItem("isLoggedIn", "true");
-      window.location.reload();
+      if (isClient) {
+        localStorage.setItem("isLoggedIn", "true");
+        window.location.reload();
+      }
     },
   };
 };
