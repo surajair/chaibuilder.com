@@ -2,8 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 // Read .env.sample and .env files
-const sampleEnvPath = path.join(process.cwd(), ".env.sample");
-const envPath = path.join(process.cwd(), ".env");
+const sampleEnvPath = path.resolve(process.cwd(), ".env.sample");
+const envPath = path.resolve(process.cwd(), ".env");
 
 const delimiter = "\n" + "-".repeat(48) + "\n";
 
@@ -90,17 +90,17 @@ try {
     );
   }
 
-  if (extraVars.length > 0) {
-    console.log(
-      "\n\x1b[33m%s\x1b[0m",
-      "ℹ️  Additional variables found in .env:"
-    );
-    extraVars.forEach((key) => console.log(`  - ${key}`));
-    console.log(
-      "\x1b[33m%s\x1b[0m",
-      "\nADD THEM TO .env.sample SO COLLEAGUES ARE WARNED THEY ARE MISSING FROM THEIR .env FILE."
-    );
-  }
+  // if (extraVars.length > 0) {
+  //   console.log(
+  //     "\n\x1b[33m%s\x1b[0m",
+  //     "ℹ️  Additional variables found in .env:"
+  //   );
+  //   extraVars.forEach((key) => console.log(`  - ${key}`));
+  //   console.log(
+  //     "\x1b[33m%s\x1b[0m",
+  //     "\nADD THEM TO .env.sample SO COLLEAGUES ARE WARNED THEY ARE MISSING FROM THEIR .env FILE."
+  //   );
+  // }
 
   console.log(delimiter);
 
