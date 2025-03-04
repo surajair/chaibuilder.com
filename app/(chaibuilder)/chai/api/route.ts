@@ -3,6 +3,7 @@ import {
   isUserActive,
   verifyIdToken,
 } from "@/app/(chaibuilder)/chai/api/auth";
+import "@/data";
 import { chaiBuilderPages } from "@/lib/chaibuilder";
 import "@/page-types";
 import { FirebaseAuthError } from "firebase-admin/auth";
