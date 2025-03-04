@@ -1,0 +1,27 @@
+@config "../../tailwind.config.ts";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  [x-cloak] {
+    display: none !important;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .w-\[inherit\] {
+    width: inherit;
+  }
+
+  .h-\[inherit\] {
+    height: inherit;
+  }
+
+  lite-youtube {
+    max-width: none !important;
+    border-radius: var(--radius) !important;
+  }
+}

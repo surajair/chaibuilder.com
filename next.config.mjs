@@ -1,11 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.chai$/,
-      use: "raw-loader",
-    });
-    return config;
+  images: {
+    remotePatterns: [
+      { hostname: "picsum.photos" },
+      { hostname: "ucarecdn.com" },
+      { hostname: "img.shields.io" },
+      { hostname: "cdn.rareblocks.xyz" },
+      { hostname: "placehold.co" },
+    ],
   },
 };
 
