@@ -29,7 +29,7 @@ export default async function RootLayout({
   const theme = get(siteSettings, "theme", {});
   const themeCssVariables = getChaiThemeCssVariables(theme);
   return (
-    <html lang="en" className={`smooth-scroll`}>
+    <html lang="en" className={`smooth-scroll`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

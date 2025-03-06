@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useState } from "react";
 import FullScreenLoader from "../components/loader";
 import Logout from "../components/logout";
 import { useAuth } from "../hooks/useAuth";
@@ -46,7 +47,18 @@ const Logo = () => (
 
 export default function Page() {
   const { isLoggedIn, user } = useAuth();
-
+  const [uiLibraries] = useState([
+    {
+      uuid: "meraki-ui",
+      name: "Meraki UI",
+      url: "https://chai-ui-blocks.vercel.app",
+    },
+    {
+      uuid: "chaiblocks",
+      name: "UI Blocks",
+      url: "https://chaibuilder.com/chaiblocks",
+    },
+  ]);
   if (!isLoggedIn) return <Login logo={Logo} />;
 
   return (
@@ -57,6 +69,7 @@ export default function Page() {
           { green: greenPreset },
           { blue: bluePreset },
         ]}
+        uiLibraries={uiLibraries}
         getPreviewUrl={(slug: string) => `/chai/preview?slug=${slug}`}
         autoSaveSupport={false}
         mediaManagerComponent={MediaManager}
