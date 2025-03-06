@@ -48,7 +48,7 @@ export default async function RootLayout({
           content="telephone=no, date=no, email=no, address=no"
         />
       </head>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-body antialiased">{children}</body>
     </html>
   );
 }
