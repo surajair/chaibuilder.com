@@ -24,7 +24,7 @@ registerServerBlocks();
 export const dynamic = "force-static"; // Remove this if you want to use ssr mode
 
 export const generateMetadata = async (props: NextPageProps) => {
-  return await getChaiPageSeoMetadata(props);
+  return await getChaiPageSeoMetadata({ params: await props.params });
 };
 
 export default async function Page({
@@ -46,7 +46,9 @@ export default async function Page({
   const pageStyles = await getChaiPageStyles(chaiPage.blocks as ChaiBlock[]);
   const fallbackLang = chaiBuilderPages.getFallbackLang();
 
-  const pageData = await getChaiPageData(chaiPage.pageType, { params });
+  const pageData = await getChaiPageData(chaiPage.pageType, {
+    params: nextParams,
+  });
 
   return (
     <>
@@ -61,7 +63,7 @@ export default async function Page({
         fallbackLang={fallbackLang}
         {...(!isEmpty(chaiPage.lang) && { lang: chaiPage.lang })}
         metadata={{
-          params: await params,
+          params: nextParams,
           pageType: chaiPage.pageType,
           fallbackLang,
         }}

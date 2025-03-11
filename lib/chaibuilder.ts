@@ -43,17 +43,15 @@ export const getChaiSiteSettings = cache(async () => {
 });
 
 export const getChaiPageData = cache(
-  async (pageType: string, props: { params: Promise<{ slug: string[] }> }) => {
-    const promiseProps = { params: await props.params };
-    const pageData = await chaiBuilderPages.getPageData(pageType, promiseProps);
+  async (pageType: string, props: { params: { slug: string[] } }) => {
+    const pageData = await chaiBuilderPages.getPageData(pageType, props);
     return pageData;
   }
 );
 
 export const getChaiPageSeoMetadata = cache(
-  async ({ params }: NextPageProps) => {
-    const nextParams = await params;
-    const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
+  async ({ params }: { params: { slug: string[] } }) => {
+    const slug = params.slug ? `/${params.slug.join("/")}` : "/";
     const pageData = await getChaiBuilderPage(slug);
     let seoData = pageData?.seo ?? {};
     // check if the seo json has any dynamic values. stringify and check if it has any dynamic values.
