@@ -52,3 +52,16 @@ export async function filterDuplicateStyles(
     return newStyles;
   }
 }
+
+export const getChaiCommonStyles = async () => {
+  const tailwindCssPath = await findTailwindCssFile();
+  const tailwindCss = await fs.readFile(tailwindCssPath, "utf-8");
+  return tailwindCss;
+};
+
+export const getFontHref = (bodyFont: string, headingFont: string) => {
+  if (bodyFont === headingFont) {
+    return `https://fonts.googleapis.com/css2?family=${bodyFont.replace(" ", "+")}&display=swap`;
+  }
+  return `https://fonts.googleapis.com/css2?family=${bodyFont.replace(" ", "+")}&family=${headingFont.replace(" ", "+")}&display=swap`;
+};
