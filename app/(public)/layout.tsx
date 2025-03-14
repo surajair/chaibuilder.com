@@ -1,6 +1,6 @@
 import "@/data";
 import { chaiBuilderPages, getChaiSiteSettings } from "@/lib/chaibuilder";
-import { getFontHref } from "@/utils/styles-helper";
+import { getChaiCommonStyles, getFontHref } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { get } from "lodash";
 import { draftMode } from "next/headers";
@@ -26,6 +26,7 @@ export default async function RootLayout({
   // Add empty theme object as fallback
   const theme = get(siteSettings, "theme", {});
   const themeCssVariables = getChaiThemeCssVariables(theme);
+  const commonStyles = await getChaiCommonStyles();
   const bodyFont = get(theme, "fontFamily.body", "Inter");
   const headingFont = get(theme, "fontFamily.heading", "Inter");
   const fontUrl = getFontHref(bodyFont, headingFont);
@@ -44,6 +45,10 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: themeCssVariables }}
         />
         <link rel="stylesheet" href={fontUrl} />
+        <style
+          id="common-styles"
+          dangerouslySetInnerHTML={{ __html: commonStyles }}
+        />
         <meta
           name="format-detection"
           content="telephone=no, date=no, email=no, address=no"
