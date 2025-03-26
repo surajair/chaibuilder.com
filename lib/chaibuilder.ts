@@ -1,7 +1,10 @@
 //TODO: Create a separate @chaibuilder/nextjs package for this file
 import { filterDuplicateStyles } from "@/utils/styles-helper";
 import { getStylesForBlocks } from "@chaibuilder/pages/render";
-import { ChaiBuilderPages } from "@chaibuilder/pages/server";
+import {
+  ChaiBuilderPages,
+  ChaiBuilderPagesBackend,
+} from "@chaibuilder/pages/server";
 import { ChaiBlock } from "@chaibuilder/sdk";
 import { each, isEmpty } from "lodash";
 import { unstable_cache } from "next/cache";
@@ -14,7 +17,9 @@ export type NextPageProps = {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
-const chaiBuilderPages = new ChaiBuilderPages(APP_API_KEY!);
+const chaiBuilderPages = new ChaiBuilderPages(
+  new ChaiBuilderPagesBackend(APP_API_KEY!)
+);
 
 export const getChaiBuilderPage = cache(async (slug: string) => {
   const response = await chaiBuilderPages.getPageBySlug(slug);
