@@ -7,7 +7,6 @@ import { useBuilderAuth } from "@/hooks/use-builder-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useState } from "react";
 
 const ChaiBuilderPages = dynamic(
   () => import("@/components/builder/ChaiBuilderPages"),
@@ -53,18 +52,6 @@ const Logo = () => (
 
 export default function Page() {
   const { isLoggedIn, user } = useBuilderAuth();
-  const [uiLibraries] = useState([
-    {
-      id: "meraki-ui",
-      name: "Meraki UI",
-      url: "https://chai-ui-blocks.vercel.app",
-    },
-    {
-      id: "chaiblocks",
-      name: "UI Blocks",
-      url: "https://chaibuilder.com/chaiblocks",
-    },
-  ]);
   if (!isLoggedIn) return <Login logo={Logo} />;
 
   return (
@@ -75,7 +62,6 @@ export default function Page() {
           { green: greenPreset },
           { blue: bluePreset },
         ]}
-        uiLibraries={uiLibraries}
         getPreviewUrl={(slug: string) => `/chai/api/preview?slug=${slug}`}
         autoSaveSupport={false}
         mediaManagerComponent={MediaManager}
@@ -89,7 +75,7 @@ export default function Page() {
           role: "admin",
           permissions: [],
         }}
-        onSessionExpired={() => console.log("session expired")}
+        onSessionExpired={() => window.location.reload()}
       />
     </QueryClientProvider>
   );
