@@ -1,5 +1,6 @@
 "use client";
 
+import { bluePreset, greenPreset, orangePreset } from "@/chai/theme-presets";
 import FullScreenLoader from "@/components/builder/Loader";
 import Logout from "@/components/builder/Logout";
 import { useBuilderAuth } from "@/hooks/use-builder-auth";
@@ -7,7 +8,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
-import { bluePreset, greenPreset, orangePreset } from "./theme-presets";
 
 const ChaiBuilderPages = dynamic(
   () => import("@/components/builder/ChaiBuilderPages"),
