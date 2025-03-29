@@ -4,14 +4,14 @@ This is a starter project for Chai builder + NextJS.
 
 ## Requirements
 
-- `CHAIBUILDER_API_KEY` - Your Chai builder `API key`. Send us an email at [support@chaibuilder.com](mailto:support@chaibuilder.com) to get your API key.
+- `CHAIBUILDER_API_KEY` - Your Chai builder `API key`.
+  Please send us an email at [support@chaibuilder.com](mailto:support@chaibuilder.com) to get your API key.
 
 ## Features
 
 - Website builder with drag and drop
-  - Extensible builder with extension points
-  - <i>Canvas DND is WIP</i>
 - One click publish
+- Revisions and restore
 - Page lock (prevent multiple users from editing the same page)
 - Multi-language support
 - SEO ( Basic, Open Graph, JSON-LD )
@@ -27,6 +27,7 @@ This is a starter project for Chai builder + NextJS.
 - AI style editing
 - Dark mode support
 - Custom authentication ( Implement your own auth provider )
+- Custom DAM ( Implement your own or use A DAM solution )
 
 ## Stack
 
@@ -37,19 +38,18 @@ This is a starter project for Chai builder + NextJS.
 
 ## Development
 
-I recomment using `pnpm` for development.
+We recomment using `pnpm` for development.
 
 ```bash
 pnpm install
 pnpm run dev
 ```
+
 Navigate to `/chai` route to view the builder and publish.
 
-
-
 ## Deployment
-I recomment using `Vercel` for deployment for better ISR support.
 
+We recomment using `Vercel` for deployment for better ISR support.
 
 ## License
 
