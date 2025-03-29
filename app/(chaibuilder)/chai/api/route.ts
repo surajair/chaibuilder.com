@@ -19,7 +19,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // initialize firebase auth - Autoroot
     const auth = new ChaiBuilderPagesUserManagement();
 
     // Check and extract, valid token string `authorization`
