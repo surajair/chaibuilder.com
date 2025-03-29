@@ -1,5 +1,5 @@
 import { registerBlocks } from "@/blocks";
-import { registerServerBlocks } from "@/blocks/rsc";
+import { registerServerBlocks } from "@/blocks/index.server";
 import {
   chaiBuilderPages,
   getChaiBuilderPage,

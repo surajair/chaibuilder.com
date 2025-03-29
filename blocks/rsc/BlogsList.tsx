@@ -1,5 +1,5 @@
 import { ChaiBlock } from "@chaibuilder/sdk";
-import { BlogsList } from "../BlogsList";
+import { BlogsList } from "../blogs-grid/BlogsGrid";
 
 const BlogsListConfig = {
   type: "BlogsList",

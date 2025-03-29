@@ -1,12 +1,7 @@
-import {
-  getChaiUser,
-  isUserActive,
-  verifyIdToken,
-} from "@/app/(chaibuilder)/chai/api/auth";
+import { verifyIdToken } from "@/app/(chaibuilder)/chai/api/auth";
 import "@/data";
 import { chaiBuilderPages } from "@/lib/chaibuilder";
 import "@/page-types";
-import { FirebaseAuthError } from "firebase-admin/auth";
 import { get } from "lodash";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
@@ -42,18 +37,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (requestBody.action === "CHECK_USER_STATUS") {
-      const userActive = await isUserActive(decodedUser.id);
-      return userActive
-        ? NextResponse.json({ success: true })
-        : NextResponse.json({ success: false }, { status: 401 });
-    }
-
-    if (requestBody.action === "GET_CHAI_USER") {
-      const chaiUser = await getChaiUser(decodedUser.id);
-      return NextResponse.json(chaiUser, { status: 200 });
-    }
-
     const response = await chaiBuilderPages.handle(requestBody, decodedUser.id);
     const tags = get(response, "tags", []);
 
@@ -68,7 +51,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(response);
   } catch (error) {
     // * On error, throw if firebase auth error, else 500
-    if (error instanceof FirebaseAuthError) {
+    if (error instanceof Error) {
       return NextResponse.json(
         { error: "Invalid or expired token" },
         { status: 401 }
