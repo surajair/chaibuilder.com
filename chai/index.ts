@@ -7,7 +7,7 @@ import {
 } from "@chaibuilder/pages/server";
 import { ChaiBlock } from "@chaibuilder/sdk";
 import { each, isEmpty } from "lodash";
-import { unstable_cache } from "next/cache";
+import { unstable_cache as nextCache } from "next/cache";
 import { cache } from "react";
 
 const APP_API_KEY = process.env.CHAIBUILDER_API_KEY;
@@ -29,7 +29,7 @@ export const getChaiBuilderPage = cache(async (slug: string) => {
   }
 
   const tagPageId = response.id;
-  return unstable_cache(
+  return nextCache(
     async () => {
       const responseData = await chaiBuilderPages.getFullPage(response.id);
       return responseData;
@@ -40,7 +40,7 @@ export const getChaiBuilderPage = cache(async (slug: string) => {
 });
 
 export const getChaiSiteSettings = cache(async () => {
-  return unstable_cache(
+  return nextCache(
     async () => await chaiBuilderPages.getSiteSettings(),
     ["site-settings"],
     { tags: ["site-settings"] }

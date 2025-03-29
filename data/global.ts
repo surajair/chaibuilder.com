@@ -1,27 +1,24 @@
-import { registerChaiGlobalDataProvider } from '@chaibuilder/pages/server'
-import { unstable_cache } from 'next/cache'
-import { cache } from 'react'
+import { registerChaiGlobalDataProvider } from "@chaibuilder/pages/server";
+import { unstable_cache as nextCache } from "next/cache";
+import { cache } from "react";
 
-const globalDataProvider = cache(async (lang: string) => {
-  return await unstable_cache(
+const globalDataProvider = cache(async (_lang: string) => {
+  return await nextCache(
     async () => {
       return {
-        lang,
-        name: 'John Doe',
-        brand: 'Toyota',
-        address: '123 Main St, Anytown, USA',
-        phone: '123-456-7890',
-        email: 'john.doe@example.com',
+        name: "Chai Builder",
+        address: "Pune, Maharashtra, India",
+        email: "support@chaibuilder.com",
         social: {
-          facebook: 'https://www.facebook.com/example',
-          instagram: 'https://www.instagram.com/example',
-          twitter: 'https://www.twitter.com/example',
+          facebook: "https://www.facebook.com/chaibuilder",
+          instagram: "https://www.instagram.com/chaibuilder",
+          x: "https://x.com/chaibuilder",
         },
-      }
+      };
     },
-    ['global-site-data'],
-    { tags: ['global-site-data'] }
-  )()
-})
+    ["global-site-data"],
+    { tags: ["global-site-data"] }
+  )();
+});
 
-registerChaiGlobalDataProvider(globalDataProvider)
+registerChaiGlobalDataProvider(globalDataProvider);

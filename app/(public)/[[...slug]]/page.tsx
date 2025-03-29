@@ -7,7 +7,7 @@ import {
   getChaiPageSeoMetadata,
   getChaiPageStyles,
   NextPageProps,
-} from "@/lib/chaibuilder";
+} from "@/chai";
 import "@/page-types";
 import { ChaiBlock } from "@chaibuilder/pages/builder";
 import { RenderChaiBlocks } from "@chaibuilder/pages/render";

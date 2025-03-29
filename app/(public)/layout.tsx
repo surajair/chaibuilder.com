@@ -1,5 +1,5 @@
+import { chaiBuilderPages, getChaiSiteSettings } from "@/chai";
 import "@/data";
-import { chaiBuilderPages, getChaiSiteSettings } from "@/lib/chaibuilder";
 import { getChaiCommonStyles, getFontHref } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { get } from "lodash";

@@ -1,6 +1,6 @@
 import { verifyIdToken } from "@/app/(chaibuilder)/chai/api/auth";
+import { chaiBuilderPages } from "@/chai";
 import "@/data";
-import { chaiBuilderPages } from "@/lib/chaibuilder";
 import "@/page-types";
 import { get } from "lodash";
 import { revalidateTag } from "next/cache";
