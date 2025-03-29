@@ -11,19 +11,14 @@ import { bluePreset, greenPreset, orangePreset } from "./theme-presets";
 
 const ChaiBuilderPages = dynamic(
   () => import("@/components/builder/ChaiBuilderPages"),
-  {
-    ssr: false,
-    loading: () => <FullScreenLoader />,
-  }
+  { ssr: false, loading: () => <FullScreenLoader /> }
 );
 
 const MediaManager = dynamic(
   () => import("@/components/builder/MediaManager"),
-  {
-    ssr: false,
-  }
+  { ssr: false }
 );
-const Login = dynamic(() => import("../../../components/builder/Login"), {
+const Login = dynamic(() => import("@/components/builder/Login"), {
   ssr: false,
 });
 
@@ -60,12 +55,12 @@ export default function Page() {
   const { isLoggedIn, user } = useAuth();
   const [uiLibraries] = useState([
     {
-      uuid: "meraki-ui",
+      id: "meraki-ui",
       name: "Meraki UI",
       url: "https://chai-ui-blocks.vercel.app",
     },
     {
-      uuid: "chaiblocks",
+      id: "chaiblocks",
       name: "UI Blocks",
       url: "https://chaibuilder.com/chaiblocks",
     },
@@ -94,7 +89,7 @@ export default function Page() {
           role: "admin",
           permissions: [],
         }}
-        onSessionExpired={() => window.location.reload()}
+        onSessionExpired={() => console.log("session expired")}
       />
     </QueryClientProvider>
   );

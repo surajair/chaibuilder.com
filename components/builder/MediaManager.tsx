@@ -5,29 +5,19 @@ import {
   AlertTitle,
   ScrollArea,
 } from "@chaibuilder/sdk/ui";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
-
-interface UploadcareFile {
-  original_file_url: string;
-  uuid: string;
-}
-
-interface UploadcareResponse {
-  results: UploadcareFile[];
-}
 
 export default function MediaManager({
   onSelect,
 }: {
   onSelect: (url: string) => void;
 }) {
-  const queryClient = useQueryClient();
-  const { data: fetchedImages } = useQuery<UploadcareResponse>({
-    queryKey: ["uploadcare-images"],
+  const { data: fetchedImages } = useQuery({
+    queryKey: ["site-media"],
     queryFn: async () => {
-      const response = await fetch("/chai/api/uploadcare");
+      const response = await fetch("/chai/api/media");
       return response.json();
     },
   });
@@ -42,7 +32,7 @@ export default function MediaManager({
           You can Implement your own media manager by using the custom API or
           DAM solutions.
           <br />
-          Edit: app/(chaibuilder)/chai/MediaManager.tsx
+          Edit: @/components/builder/MediaManager.tsx
         </AlertDescription>
       </Alert>
       <div className="flex flex-col gap-2 h-full overflow-hidden grow z-40">

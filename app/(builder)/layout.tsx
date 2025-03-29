@@ -1,4 +1,4 @@
-import "@/app/(chaibuilder)/styles.css";
+import "@/app/(builder)/styles.css";
 import "@chaibuilder/sdk/styles";
 
 export const metadata = {
