@@ -9,10 +9,10 @@ export const useAuth = () => {
 
   return {
     user: {
-      authToken: "mock-auth-token",
-      id: "mock-user-uid",
-      name: "John Doe",
-      email: "john.doe@example.com",
+      authToken: "mock-chai-user-token",
+      id: "mock-chai-user",
+      name: "Chai User",
+      email: "mock-chai-user@chaibuilder.com",
       photoURL: "https://placehold.co/40x40",
     },
     logout: () => {

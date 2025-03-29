@@ -81,7 +81,7 @@ export default function Page() {
           { blue: bluePreset },
         ]}
         uiLibraries={uiLibraries}
-        getPreviewUrl={(slug: string) => `/chai/preview?slug=${slug}`}
+        getPreviewUrl={(slug: string) => `/chai/api/preview?slug=${slug}`}
         autoSaveSupport={false}
         mediaManagerComponent={MediaManager}
         logo={Logo}
