@@ -3,7 +3,7 @@ import "@chaibuilder/sdk/styles";
 
 export const metadata = {
   title: "Chai Builder - Admin",
-  description: "Chai Builder",
+  description: "Start building your website with Chai Builder",
 };
 
 export default function RootLayout({

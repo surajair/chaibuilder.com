@@ -1,10 +1,10 @@
+import "@/app/(public)/public.css";
 import { chaiBuilderPages, getChaiSiteSettings } from "@/chai";
 import "@/data";
 import { getChaiCommonStyles, getFontHref } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { get } from "lodash";
 import { draftMode } from "next/headers";
-import "./globals.css";
 
 export default async function RootLayout({
   children,

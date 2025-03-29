@@ -8,6 +8,7 @@ import {
   getChaiPageStyles,
   NextPageProps,
 } from "@/chai";
+import PreviewBanner from "@/components/PreviewBanner";
 import "@/page-types";
 import { ChaiBlock } from "@chaibuilder/pages/builder";
 import { RenderChaiBlocks } from "@chaibuilder/pages/render";
@@ -15,7 +16,6 @@ import { loadWebBlocks } from "@chaibuilder/pages/web-blocks";
 import isEmpty from "lodash/isEmpty";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
-import PreviewBanner from "../PreviewBanner";
 
 loadWebBlocks();
 registerBlocks();

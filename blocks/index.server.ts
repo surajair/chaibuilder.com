@@ -8,6 +8,9 @@ import { ImageBlock, ImageConfig } from "./image/Image";
 import { LinkBlock, LinkConfig } from "./link/Link";
 
 export const registerServerBlocks = () => {
+  if (typeof window !== "undefined") {
+    throw new Error("Index.server.ts is a server-only file");
+  }
   registerChaiServerBlock(ImageBlock, ImageConfig);
   registerChaiServerBlock(LinkBlock, LinkConfig);
 

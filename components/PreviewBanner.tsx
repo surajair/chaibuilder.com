@@ -1,8 +1,6 @@
 export default function PreviewBanner({ slug }: { slug: string }) {
   return (
-    <div
-      id="chai-preview-banner"
-      className="hs-removing:-translate-y-full bg-orange-600 top-0 z-50">
+    <div id="chai-preview-banner" className="sticky top-0 z-50 bg-orange-600">
       <div className="max-w-[85rem] px-4 py-1 sm:px-6 lg:px-8 mx-auto">
         <div className="flex items-center">
           <p className="text-white text-sm">
