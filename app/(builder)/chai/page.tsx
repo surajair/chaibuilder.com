@@ -2,7 +2,7 @@
 
 import FullScreenLoader from "@/components/builder/Loader";
 import Logout from "@/components/builder/Logout";
-import { useAuth } from "@/hooks/useAuth";
+import { useBuilderAuth } from "@/hooks/use-builder-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -52,7 +52,7 @@ const Logo = () => (
 );
 
 export default function Page() {
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn, user } = useBuilderAuth();
   const [uiLibraries] = useState([
     {
       id: "meraki-ui",

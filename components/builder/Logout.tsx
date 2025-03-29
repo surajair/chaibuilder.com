@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuth } from "@/hooks/useAuth";
+import { useBuilderAuth } from "@/hooks/use-builder-auth";
 import {
   Button,
   Dialog,
@@ -18,7 +18,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function UserAvatarMenu() {
-  const { user, logout } = useAuth();
+  const { user, logout } = useBuilderAuth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [img, setImg] = useState<string | null>(null);
 

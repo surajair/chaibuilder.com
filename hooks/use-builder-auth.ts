@@ -3,7 +3,7 @@
  * It is used to simulate the authentication process.
  * @returns {Object} An object containing the user, logout, isLoggedIn, loading, and error properties.
  */
-export const useAuth = () => {
+export const useBuilderAuth = () => {
   // Check if window is defined (client-side) before accessing localStorage
   const isClient = typeof window !== "undefined";
 
