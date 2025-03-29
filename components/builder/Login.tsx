@@ -1,9 +1,9 @@
 "use client";
 
-import { useAuth } from "@/app/(chaibuilder)/hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import Image from "next/image";
 import React from "react";
-import FullScreenLoader from "./loader";
+import FullScreenLoader from "./Loader";
 
 /**
  * @description

@@ -6,11 +6,8 @@ import {
   ScrollArea,
 } from "@chaibuilder/sdk/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import "@uploadcare/react-uploader/core.css";
-import { FileUploaderInline } from "@uploadcare/react-uploader/next";
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
-import { Suspense } from "react";
 
 interface UploadcareFile {
   original_file_url: string;
@@ -43,30 +40,11 @@ export default function MediaManager({
         <AlertTitle>Note:</AlertTitle>
         <AlertDescription>
           You can Implement your own media manager by using the custom API or
-          DAM solutions
+          DAM solutions.
+          <br />
+          Edit: app/(chaibuilder)/chai/MediaManager.tsx
         </AlertDescription>
       </Alert>
-      <Suspense
-        fallback={
-          <div className="w-full h-[180px] rounded-xl animate-pulse bg-gray-100" />
-        }>
-        <FileUploaderInline
-          multiple={false}
-          onDoneClick={(data) => {
-            if (data?.successEntries?.length === 1) {
-              const newImageUrl = data.successEntries[0].cdnUrl;
-              onSelect(newImageUrl);
-
-              queryClient.invalidateQueries({
-                queryKey: ["uploadcare-images"],
-              });
-            }
-          }}
-          sourceList="local, url, dropbox"
-          classNameUploader="uc-light"
-          pubkey={process.env.NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY || ""}
-        />
-      </Suspense>
       <div className="flex flex-col gap-2 h-full overflow-hidden grow z-40">
         {fetchedImages?.results?.length &&
         fetchedImages?.results?.length > 0 ? (

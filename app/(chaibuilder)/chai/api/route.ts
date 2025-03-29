@@ -1,8 +1,8 @@
-import { verifyIdToken } from "@/app/(chaibuilder)/chai/api/auth";
 import { chaiBuilderPages } from "@/chai";
 import "@/data";
 import "@/page-types";
-import { get } from "lodash";
+import { ChaiBuilderPagesUserManagement } from "@chaibuilder/pages/server";
+import { get, isEmpty } from "lodash";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,25 +19,22 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check and extract, valid token string `authorization`
-    const token = authorization ? authorization.split(" ")[1] : null;
-    if (!token) {
-      return NextResponse.json(
-        { error: "Invalid Authorization header format" },
-        { status: 401 }
-      );
-    }
+    // initialize firebase auth - Autoroot
+    const auth = new ChaiBuilderPagesUserManagement();
 
-    // * Validate user access token using firebase admin auth
-    const decodedUser = await verifyIdToken(token);
-    if (!decodedUser) {
+    // Check and extract, valid token string `authorization`
+    const token = authorization ? authorization.split(" ")[1] : undefined;
+    const user = await auth.verifyTokenAndGetUser(token as string);
+
+    if (isEmpty(user.id)) {
       return NextResponse.json(
         { error: "Invalid or expired token" },
         { status: 401 }
       );
     }
 
-    const response = await chaiBuilderPages.handle(requestBody, decodedUser.id);
+    chaiBuilderPages.setUserManagement(auth);
+    const response = await chaiBuilderPages.handle(requestBody, user.id);
     const tags = get(response, "tags", []);
 
     for (const tag of tags) {

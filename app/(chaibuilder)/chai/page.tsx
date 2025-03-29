@@ -1,20 +1,31 @@
 "use client";
 
+import FullScreenLoader from "@/components/builder/Loader";
+import Logout from "@/components/builder/Logout";
+import { useAuth } from "@/hooks/useAuth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useState } from "react";
-import FullScreenLoader from "../components/loader";
-import Logout from "../components/logout";
-import { useAuth } from "../hooks/useAuth";
 import { bluePreset, greenPreset, orangePreset } from "./theme-presets";
-const ChaiBuilderPages = dynamic(() => import("./ChaiBuilderPages"), {
-  ssr: false,
-  loading: () => <FullScreenLoader />,
-});
 
-const MediaManager = dynamic(() => import("./MediaManager"), { ssr: false });
-const Login = dynamic(() => import("../components/login"), { ssr: false });
+const ChaiBuilderPages = dynamic(
+  () => import("@/components/builder/ChaiBuilderPages"),
+  {
+    ssr: false,
+    loading: () => <FullScreenLoader />,
+  }
+);
+
+const MediaManager = dynamic(
+  () => import("@/components/builder/MediaManager"),
+  {
+    ssr: false,
+  }
+);
+const Login = dynamic(() => import("../../../components/builder/Login"), {
+  ssr: false,
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {

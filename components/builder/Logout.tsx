@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/hooks/useAuth";
 import {
   Button,
   Dialog,
@@ -15,7 +16,6 @@ import {
 import { LogOut, User } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useAuth } from "../hooks/useAuth";
 
 export default function UserAvatarMenu() {
   const { user, logout } = useAuth();
