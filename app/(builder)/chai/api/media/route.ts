@@ -6,7 +6,6 @@ import { isEmpty } from "lodash";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-
   try {
     // Check for `authorization` header
     const authorization = req.headers.get("authorization");
@@ -31,8 +30,8 @@ export async function GET(req: Request) {
     }
 
     chaiBuilderPages.setUserManagement(auth);
-    
-    const response: unknown = []
+
+    const response: unknown = [];
     return NextResponse.json(response);
   } catch (error) {
     // * On error, throw if firebase auth error, else 500
@@ -47,4 +46,5 @@ export async function GET(req: Request) {
         { status: 500 }
       );
     }
+  }
 }

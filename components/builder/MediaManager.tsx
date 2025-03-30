@@ -40,20 +40,22 @@ export default function MediaManager({
         fetchedImages?.results?.length > 0 ? (
           <ScrollArea className="h-[200px]">
             <div className="grid grid-cols-3 gap-2 bg-white">
-              {fetchedImages?.results?.map((image, index) => (
-                <div
-                  key={image.uuid}
-                  className="relative group overflow-hidden"
-                  onClick={() => onSelect(image.original_file_url)}>
-                  <Image
-                    src={image.original_file_url}
-                    alt={`Uploaded image ${index + 1}`}
-                    width={200}
-                    height={200}
-                    className="w-full h-fit object-cover rounded-lg cursor-pointer hover:scale-105 transition-all ease-linear"
-                  />
-                </div>
-              ))}
+              {fetchedImages?.results?.map(
+                (image: { id: string; url: string }, index: number) => (
+                  <div
+                    key={image.id}
+                    className="relative group overflow-hidden"
+                    onClick={() => onSelect(image.url)}>
+                    <Image
+                      src={image.url}
+                      alt={`Uploaded image ${index + 1}`}
+                      width={200}
+                      height={200}
+                      className="w-full h-fit object-cover rounded-lg cursor-pointer hover:scale-105 transition-all ease-linear"
+                    />
+                  </div>
+                )
+              )}
             </div>
           </ScrollArea>
         ) : (
