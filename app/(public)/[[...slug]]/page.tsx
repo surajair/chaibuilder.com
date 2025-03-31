@@ -8,7 +8,7 @@ import {
   getChaiPageStyles,
   NextPageProps,
 } from "@/chai";
-import PreviewBanner from "@/components/PreviewBanner";
+import PreviewBanner from "@/components/preview-banner";
 import "@/page-types";
 import { ChaiBlock } from "@chaibuilder/pages/builder";
 import { RenderChaiBlocks } from "@chaibuilder/pages/render";

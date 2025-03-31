@@ -1,23 +1,23 @@
 "use client";
 
 import { bluePreset, greenPreset, orangePreset } from "@/chai/theme-presets";
-import FullScreenLoader from "@/components/builder/Loader";
-import Logout from "@/components/builder/Logout";
+import FullScreenLoader from "@/components/builder/loader";
+import Logout from "@/components/builder/logout";
 import { useBuilderAuth } from "@/hooks/use-builder-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 
 const ChaiBuilderPages = dynamic(
-  () => import("@/components/builder/ChaiBuilderPages"),
+  () => import("@/components/builder/chaibuilder-pages"),
   { ssr: false, loading: () => <FullScreenLoader /> }
 );
 
 const MediaManager = dynamic(
-  () => import("@/components/builder/MediaManager"),
+  () => import("@/components/builder/media-manager"),
   { ssr: false }
 );
-const Login = dynamic(() => import("@/components/builder/Login"), {
+const Login = dynamic(() => import("@/components/builder/login"), {
   ssr: false,
 });
 
