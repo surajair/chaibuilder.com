@@ -9,6 +9,11 @@ import {
   BlogsListConfig,
   BlogsListProps,
 } from "./blogs-grid/BlogsGrid";
+import {
+  DocsSidebar,
+  DocsSidebarConfig,
+  DocsSidebarProps,
+} from "./docs-sidebar/docs-sidebar";
 import { Dropdown, DropdownConfig, DropdownProps } from "./dropdown/Dropdown";
 import {
   Component as Modal,
@@ -21,4 +26,5 @@ export const registerBlocks = () => {
   registerChaiBlock<ModalProps>(Modal, ModalConfig);
   registerChaiBlock<DropdownProps>(Dropdown, DropdownConfig);
   registerChaiBlock<AccordionProps>(Accordion, AccordionConfig);
+  registerChaiBlock<DocsSidebarProps>(DocsSidebar, DocsSidebarConfig);
 };
