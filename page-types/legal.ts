@@ -13,7 +13,7 @@ registerChaiPageType("legal", {
       "Legal"
     );
     return {
-      legal: {
+      page: {
         lastUpdated: document?.publishedDate,
         title: document?.title,
         content: document?.content,

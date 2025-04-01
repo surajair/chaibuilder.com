@@ -13,7 +13,7 @@ registerChaiPageType("docs", {
       "Documentation"
     );
     return {
-      docs: {
+      page: {
         title: document?.title,
         content: document?.content,
       },
