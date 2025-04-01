@@ -35,7 +35,7 @@ type NotionPage = {
         id: string;
       }>;
     };
-    "Publication Date"?: {
+    "Published Date"?: {
       date: {
         start: string;
       } | null;
@@ -60,19 +60,13 @@ async function fetchNotionPages(): Promise<NotionPage[]> {
     // Query the database
     const response = await notion.databases.query({
       database_id: databaseId,
+      filter: {
+        and: [
+          { property: "Page Type", select: { equals: "Documentation" } },
+          { property: "Status", select: { equals: "Published" } },
+        ],
+      },
     });
-
-    if (process.env.NODE_ENV === "development") {
-      // In development, log the first result to help with debugging
-      if (response.results.length > 0) {
-        const firstPage = response.results[0];
-        console.log("Notion API Response - First Page:", firstPage);
-      } else {
-        console.log(
-          "Notion API returned no results. Check your database content and filter."
-        );
-      }
-    }
 
     return response.results as unknown as NotionPage[];
   } catch (error) {
@@ -137,7 +131,7 @@ function transformNotionToDocLinks(pages: NotionPage[]): DocLink[] {
       if (parent) {
         // Update the child's href to include parent slug if both exist
         if (parent.slug && pageWithLink.slug) {
-          pageWithLink.docLink.href = `/docs/${parent.slug}/${pageWithLink.slug}`;
+          pageWithLink.docLink.href = `/docs/${pageWithLink.slug}`;
         }
 
         // Add relatedDocs info as an attribute if present
@@ -178,13 +172,6 @@ export const getDocSidebarLinks = async (): Promise<DocLink[]> => {
 
     if (notionPages.length > 0) {
       const docLinks = transformNotionToDocLinks(notionPages);
-
-      if (process.env.NODE_ENV === "development") {
-        console.log(
-          `Successfully transformed ${notionPages.length} Notion pages into ${docLinks.length} doc sections`
-        );
-      }
-
       return docLinks;
     }
 

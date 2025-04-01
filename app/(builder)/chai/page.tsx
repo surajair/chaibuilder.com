@@ -1,7 +1,7 @@
 "use client";
 
 import { bluePreset, greenPreset, orangePreset } from "@/chai/theme-presets";
-import FullScreenLoader from "@/components/builder/lader";
+import FullScreenLoader from "@/components/builder/chaibuilder-loader";
 import Logout from "@/components/builder/sign-out";
 import { useBuilderAuth } from "@/hooks/use-builder-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

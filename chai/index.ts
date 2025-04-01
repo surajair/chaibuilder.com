@@ -47,12 +47,13 @@ export const getChaiSiteSettings = cache(async () => {
   )();
 });
 
-export const getChaiPageData = cache(
-  async (pageType: string, props: { params: { slug: string[] } }) => {
-    const pageData = await chaiBuilderPages.getPageData(pageType, props);
-    return pageData;
-  }
-);
+export const getChaiPageData = async (
+  pageType: string,
+  props: { slug: string }
+) => {
+  const pageData = await chaiBuilderPages.getPageData(pageType, props);
+  return pageData;
+};
 
 export const getChaiPageSeoMetadata = cache(
   async ({ params }: { params: { slug: string[] } }) => {
@@ -64,7 +65,7 @@ export const getChaiPageSeoMetadata = cache(
     const hasDynamicValues = seoJson.match(/\{\{.*?\}\}/g);
     if (hasDynamicValues) {
       const pageSeoFields = await getChaiPageData(pageData.pageType, {
-        params,
+        slug,
       });
 
       if (!isEmpty(pageSeoFields)) {

@@ -47,7 +47,7 @@ export default async function Page({
   const fallbackLang = chaiBuilderPages.getFallbackLang();
 
   const pageData = await getChaiPageData(chaiPage.pageType, {
-    params: nextParams,
+    slug: slug,
   });
 
   return (
@@ -63,9 +63,8 @@ export default async function Page({
         fallbackLang={fallbackLang}
         {...(!isEmpty(chaiPage.lang) && { lang: chaiPage.lang })}
         metadata={{
-          params: nextParams,
+          slug,
           pageType: chaiPage.pageType,
-          fallbackLang,
         }}
       />
     </>
