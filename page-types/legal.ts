@@ -9,12 +9,18 @@ registerChaiPageType("legal", {
   dataProvider: async (props, _lang, _isDraft, inBuilder) => {
     const slug = props.slug;
     const document = await getDocContent(
-      inBuilder ? "privacy-policy" : slug,
+      inBuilder ? "privacy-policy" : slug.substring(1),
       "Legal"
     );
     return {
       page: {
-        lastUpdated: document?.publishedDate,
+        lastUpdated: document?.publishedDate
+          ? new Date(document.publishedDate).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })
+          : null,
         title: document?.title,
         content: document?.content,
       },

@@ -28,6 +28,7 @@ export const getDocContent = async (
       filter: {
         and: [
           { property: "Page Type", select: { equals: pageType } },
+          { property: "Slug", rich_text: { equals: slug } },
           { property: "Status", select: { equals: "Published" } },
         ],
       },
