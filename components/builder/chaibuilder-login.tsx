@@ -3,7 +3,7 @@
 import { useBuilderAuth } from "@/hooks/use-builder-auth";
 import Image from "next/image";
 import React from "react";
-import FullScreenLoader from "./loader";
+import FullScreenLoader from "./chaibuilder-loader";
 
 /**
  * @description

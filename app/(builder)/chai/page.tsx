@@ -1,8 +1,8 @@
 "use client";
 
 import { bluePreset, greenPreset, orangePreset } from "@/chai/theme-presets";
-import FullScreenLoader from "@/components/builder/loader";
-import Logout from "@/components/builder/logout";
+import FullScreenLoader from "@/components/builder/lader";
+import Logout from "@/components/builder/sign-out";
 import { useBuilderAuth } from "@/hooks/use-builder-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
@@ -17,7 +17,7 @@ const MediaManager = dynamic(
   () => import("@/components/builder/media-manager"),
   { ssr: false }
 );
-const Login = dynamic(() => import("@/components/builder/login"), {
+const Login = dynamic(() => import("@/components/builder/chaibuilder-login"), {
   ssr: false,
 });
 
