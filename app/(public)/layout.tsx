@@ -1,10 +1,17 @@
-import "@/app/(public)/public.css";
 import { chaiBuilderPages, getChaiSiteSettings } from "@/chai";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 import "@/data";
-import { getChaiCommonStyles, getFontHref } from "@/utils/styles-helper";
+import { registerFonts } from "@/fonts";
+import {
+  getChaiCommonStyles,
+  getFontHref,
+  getThemeCustomFontFace,
+} from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { get } from "lodash";
 import { draftMode } from "next/headers";
+
+registerFonts();
 
 export default async function RootLayout({
   children,
@@ -29,22 +36,40 @@ export default async function RootLayout({
   const commonStyles = await getChaiCommonStyles();
   const bodyFont = get(theme, "fontFamily.body", "Inter");
   const headingFont = get(theme, "fontFamily.heading", "Inter");
-  const fontUrl = getFontHref(bodyFont, headingFont);
+  const fontUrls = getFontHref([bodyFont, headingFont]);
+  const customFontFace = getThemeCustomFontFace([bodyFont, headingFont]);
+
   return (
     <html lang="en" className={`smooth-scroll`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preload" href={fontUrl} as="style" crossOrigin="anonymous" />
+        {fontUrls.map((fontUrl: string) => (
+          <link
+            key={fontUrl}
+            rel="preload"
+            href={fontUrl}
+            as="style"
+            crossOrigin=""
+          />
+        ))}
+
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
           crossOrigin=""
         />
+
         <style
-          id="theme-fonts"
+          id="theme-colors"
           dangerouslySetInnerHTML={{ __html: themeCssVariables }}
         />
-        <link rel="stylesheet" href={fontUrl} />
+        {fontUrls.map((fontUrl: string) => (
+          <link key={fontUrl} rel="stylesheet" href={fontUrl} />
+        ))}
+        <style
+          id="custom-font-face"
+          dangerouslySetInnerHTML={{ __html: customFontFace }}
+        />
         <style
           id="common-styles"
           dangerouslySetInnerHTML={{ __html: commonStyles }}
@@ -54,7 +79,15 @@ export default async function RootLayout({
           content="telephone=no, date=no, email=no, address=no"
         />
       </head>
-      <body className="font-body antialiased">{children}</body>
+      <body className={`font-body antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+          disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

@@ -9,7 +9,7 @@ export default function PreviewBanner({ slug }: { slug: string }) {
 
           <div className="ps-3 ms-auto">
             <a
-              href={`/chai/preview?disable=true&slug=${slug}`}
+              href={`/chai/api/preview?disable=true&slug=${slug}`}
               type="button"
               className="flex text-xs items-center rounded-lg p-1 text-white bg-white/30 px-2 focus:outline-none focus:bg-white/10"
               data-hs-remove-element="#chai-preview-banner">
