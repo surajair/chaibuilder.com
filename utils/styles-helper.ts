@@ -1,4 +1,10 @@
+import {
+  ChaiFont,
+  ChaiFontViaSrc,
+  getRegisteredFont,
+} from "@chaibuilder/sdk/runtime";
 import fs from "fs/promises";
+import { compact, filter, has, map, uniqBy } from "lodash";
 import path from "path";
 import postcss from "postcss";
 
@@ -48,7 +54,7 @@ export async function filterDuplicateStyles(
 
     return newStylesRoot.toString();
   } catch (error) {
-    // console.error("Error filtering styles:", error);
+    console.error("Error filtering styles:", error);
     return newStyles;
   }
 }
@@ -59,9 +65,41 @@ export const getChaiCommonStyles = async () => {
   return tailwindCss;
 };
 
-export const getFontHref = (bodyFont: string, headingFont: string) => {
-  if (bodyFont === headingFont) {
-    return `https://fonts.googleapis.com/css2?family=${bodyFont.replace(" ", "+")}&display=swap`;
-  }
-  return `https://fonts.googleapis.com/css2?family=${bodyFont.replace(" ", "+")}&family=${headingFont.replace(" ", "+")}&display=swap`;
+/** TODO: Move to @chaibuilder/sdk/render */
+export const getThemeCustomFontFace = (fonts: string[]) => {
+  const fontdefintions = filter(
+    compact(map(fonts, getRegisteredFont)),
+    (font: ChaiFont) => has(font, "src")
+  );
+  return getThemeCustomFontFaceStyle(fontdefintions as ChaiFontViaSrc[]);
+};
+
+export const getThemeCustomFontFaceStyle = (fonts: ChaiFontViaSrc[]) => {
+  if (!fonts || fonts.length === 0) return "";
+
+  return uniqBy(fonts, "family")
+    .map((font: ChaiFontViaSrc) =>
+      font.src
+        .map(
+          (source) => `@font-face {
+        font-family: "${font.family}";
+        src: url("${source.url}") format("${source.format}");
+        font-display: swap;
+        ${source.fontWeight ? `font-weight: ${source.fontWeight};` : ""}
+        ${source.fontStyle ? `font-style: ${source.fontStyle};` : ""}
+        ${source.fontStretch ? `font-stretch: ${source.fontStretch};` : ""}
+      }`
+        )
+        .join("\n")
+    )
+    .join("\n");
+};
+
+export const getFontHref = (fonts: string[]): string[] => {
+  const fontdefintions = filter(
+    uniqBy(compact(map(fonts, getRegisteredFont)), "family"),
+    (font: ChaiFont) => has(font, "url")
+  );
+  if (fontdefintions.length === 0) return [];
+  return map(fontdefintions, "url") as string[];
 };
