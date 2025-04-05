@@ -5,7 +5,7 @@ import { ChaiBuilderPagesUserManagement } from "@chaibuilder/pages/server";
 import { isEmpty } from "lodash";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   try {
     // Check for `authorization` header
     const authorization = req.headers.get("authorization");
@@ -16,20 +16,19 @@ export async function GET(req: Request) {
       );
     }
 
-    const auth = new ChaiBuilderPagesUserManagement();
+    const userManagement = new ChaiBuilderPagesUserManagement();
+    chaiBuilderPages.setUserManagement(userManagement);
 
     // Check and extract, valid token string `authorization`
     const token = authorization ? authorization.split(" ")[1] : undefined;
-    const user = await auth.verifyTokenAndGetUser(token as string);
+    const user = await userManagement.verifyTokenAndGetUser(token as string);
 
-    if (isEmpty(user.id)) {
+    if (isEmpty(user?.id)) {
       return NextResponse.json(
         { error: "Invalid or expired token" },
         { status: 401 }
       );
     }
-
-    chaiBuilderPages.setUserManagement(auth);
 
     const response: unknown = [];
     return NextResponse.json(response);

@@ -2,7 +2,7 @@
 import { registerBlocks } from "@/blocks";
 import { bluePreset, greenPreset, orangePreset } from "@/chai/theme-presets";
 import { registerFonts } from "@/fonts";
-import { useBuilderAuth } from "@/hooks/use-builder-auth";
+import { useSupabaseAuth } from "@/hooks/use-supabase-auth";
 import ChaiBuilderPages from "@chaibuilder/pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import dynamic from "next/dynamic";
@@ -30,8 +30,8 @@ const Login = dynamic(() => import("@/components/builder/login"), {
 });
 
 export default function ChaiBuilderPagesWrapper() {
-  const { isLoggedIn, user } = useBuilderAuth();
-  if (!isLoggedIn) return <Login logo={Logo} />;
+  const { isLoggedIn, user } = useSupabaseAuth();
+  if (!isLoggedIn) return <Login logo={<Logo width={50} height={50} />} />;
   return (
     <QueryClientProvider client={queryClient}>
       <ChaiBuilderPages

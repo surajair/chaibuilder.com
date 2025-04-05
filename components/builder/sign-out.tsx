@@ -1,6 +1,6 @@
 "use client";
 
-import { useBuilderAuth } from "@/hooks/use-builder-auth";
+import { useSupabaseAuth } from "@/hooks/use-supabase-auth";
 import {
   Button,
   Dialog,
@@ -18,18 +18,18 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function UserAvatarMenu() {
-  const { user, logout } = useBuilderAuth();
+  const { user, logout } = useSupabaseAuth();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [img, setImg] = useState<string | null>(null);
 
   useEffect(() => {
     if (!user) return;
-    if (user?.photoURL) {
+    if (user?.avatar) {
       const img = new window.Image();
-      img.onload = () => setImg(user.photoURL);
-      img.src = user.photoURL;
+      img.onload = () => setImg(user.avatar || null);
+      img.src = user.avatar;
     }
-  }, [user, user?.photoURL]);
+  }, [user, user?.avatar]);
 
   const name = user?.name;
 
