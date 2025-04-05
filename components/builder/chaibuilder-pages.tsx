@@ -30,8 +30,11 @@ const Login = dynamic(() => import("@/components/builder/login"), {
 });
 
 export default function ChaiBuilderPagesWrapper() {
-  const { isLoggedIn, user } = useSupabaseAuth();
-  if (!isLoggedIn) return <Login logo={<Logo width={50} height={50} />} />;
+  const { isLoggedIn, user, logout } = useSupabaseAuth();
+
+  if (!isLoggedIn || !user)
+    return <Login logo={<Logo width={50} height={50} />} />;
+
   return (
     <QueryClientProvider client={queryClient}>
       <ChaiBuilderPages
@@ -50,10 +53,13 @@ export default function ChaiBuilderPagesWrapper() {
           name: user.name,
           email: user.email,
           authToken: user.authToken,
-          role: "admin",
-          permissions: [],
         }}
-        onSessionExpired={() => window.location.reload()}
+        onSessionExpired={() => {
+          logout();
+          setTimeout(() => {
+            window.location.reload();
+          }, 500);
+        }}
       />
     </QueryClientProvider>
   );
