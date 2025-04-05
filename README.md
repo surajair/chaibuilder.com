@@ -6,6 +6,7 @@ This is a starter project for Chai builder + NextJS.
 
 - `CHAIBUILDER_API_KEY` - Your Chai builder `API key`.
   Please send us an email at [support@chaibuilder.com](mailto:support@chaibuilder.com) to get your API key.
+- Supabase keys for login and user management. (You can implement any auth and user management system)
 
 ## Features
 
@@ -29,6 +30,14 @@ This is a starter project for Chai builder + NextJS.
 - Custom authentication ( Implement your own auth provider )
 - Custom DAM ( Implement your own or use A DAM solution )
 
+## Installation:
+
+1. Fork this repo
+2. `pnpm install`
+3. Create a new .env file and add env variables from .env.sample
+4. `pnpm dev`
+5. Goto `/chai` route to login and edit in builder
+
 ## Stack
 
 - NextJS15 + React 19
@@ -45,7 +54,7 @@ pnpm install
 pnpm run dev
 ```
 
-Navigate to `/chai` route to view the builder and publish.
+Navigate to `/chai` route to view the builder and publish. Sign in and start publishing your website.
 
 ## Deployment
 
