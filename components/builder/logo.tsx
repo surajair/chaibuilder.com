@@ -1,6 +1,12 @@
 import Image from "next/image";
 
-export const Logo = () => (
+export const Logo = ({
+  width = 30,
+  height = 30,
+}: {
+  width?: number;
+  height?: number;
+}) => (
   <div className="rounded-lg">
     <a
       className="flex-none flex rounded text-xl items-center font-semibold focus:outline-none focus:opacity-80"
@@ -10,11 +16,11 @@ export const Logo = () => (
         src={"https://ucarecdn.com/fbfc3b05-cb73-4e99-92a2-3a367b7c36cd/"}
         alt=""
         loading="lazy"
-        width="30"
-        height="30"
+        width={width}
+        height={height}
         decoding="async"
         data-nimg="1"
-        className="w-8 h-8 text-primary-400 dark:text-primary-300 rounded"
+        className="text-primary-400 dark:text-primary-300 rounded"
       />
     </a>
   </div>
