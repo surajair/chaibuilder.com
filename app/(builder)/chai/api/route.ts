@@ -2,7 +2,7 @@ import { chaiBuilderPages } from "@/chai";
 import "@/data";
 import "@/page-types";
 import { ChaiBuilderPagesUserManagement } from "@chaibuilder/pages/server";
-import { get, isEmpty } from "lodash";
+import { get, has, isEmpty } from "lodash";
 import { revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,11 +19,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const auth = new ChaiBuilderPagesUserManagement();
+    const userMgmt = new ChaiBuilderPagesUserManagement();
 
     // Check and extract, valid token string `authorization`
     const token = authorization ? authorization.split(" ")[1] : undefined;
-    const user = await auth.verifyTokenAndGetUser(token as string);
+    const user = await userMgmt.verifyTokenAndGetUser(token as string);
 
     if (isEmpty(user.id)) {
       return NextResponse.json(
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    chaiBuilderPages.setUserManagement(auth);
+    chaiBuilderPages.setUserManagement(userMgmt);
     const response = await chaiBuilderPages.handle(requestBody, user.id);
     const tags = get(response, "tags", []);
 
@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       revalidateTag(tag);
     }
 
-    if ("error" in response) {
+    if (has(response, "error")) {
       return NextResponse.json(response, { status: 400 });
     }
 

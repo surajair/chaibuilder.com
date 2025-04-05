@@ -23,12 +23,13 @@ export default function UserAvatarMenu() {
   const [img, setImg] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!user) return;
     if (user?.photoURL) {
       const img = new window.Image();
       img.onload = () => setImg(user.photoURL);
       img.src = user.photoURL;
     }
-  }, [user?.photoURL]);
+  }, [user, user?.photoURL]);
 
   const name = user?.name;
 
