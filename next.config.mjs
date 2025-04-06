@@ -8,6 +8,7 @@ const nextConfig = {
       { hostname: "img.shields.io" },
       { hostname: "cdn.rareblocks.xyz" },
       { hostname: "picsum.photos" },
+      { hostname: "via.placeholder.com" },
     ],
   },
 };
