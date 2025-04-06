@@ -3,7 +3,7 @@
   "version": "0.1.4",
   "private": true,
   "scripts": {
-    "dev": "pnpm install && node scripts/check-env.cjs && next dev --turbopack",
+    "dev": "pnpm install && node scripts/check-env.cjs && concurrently \"node scripts/tailwind.cjs --dev\" \"next dev --turbopack\"",
     "prebuild": "node scripts/tailwind.cjs",
     "build": "next build",
     "dev-no-check": "pnpm install && next dev",
@@ -67,6 +67,7 @@
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "concurrently": "^9.1.2",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.1.7",
     "eslint-config-prettier": "^9.1.0",
