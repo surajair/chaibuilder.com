@@ -1,4 +1,4 @@
-import { registerChaiBlock } from "@chaibuilder/pages/builder";
+import { registerChaiBlock } from "@chaibuilder/pages/runtime";
 import {
   Accordion,
   AccordionConfig,
