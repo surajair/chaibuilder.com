@@ -21,10 +21,7 @@ interface DocsSidebarProps {
 export function DocsSidebarClient({ links, className }: DocsSidebarProps) {
   return (
     <div
-      className={cn(
-        "w-full h-full overflow-auto border-r bg-background",
-        className
-      )}>
+      className={cn("w-full h-full overflow-auto  bg-background", className)}>
       <div className="py-2">
         {links.map((section, i) => (
           <div key={i} className="px-3 py-2">
