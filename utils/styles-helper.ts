@@ -29,14 +29,10 @@ export async function filterDuplicateStyles(
     });
 
     newStylesRoot.walkRules((rule) => {
-      // Check if the rule has a parent and if it's a media query (breakpoint)
-      const hasBreakpoint =
-        rule.parent?.type === "atrule" &&
-        "name" in rule.parent &&
-        rule.parent.name === "media";
-
-      // Only remove the rule if it's in tailwindSelectors and doesn't have a breakpoint
-      if (tailwindSelectors.has(rule.selector) && !hasBreakpoint) {
+      if (
+        tailwindSelectors.has(rule.selector) &&
+        !rule.selector.match(/sm\\:|md\\:|lg\\:|xl\\:|2xl\\:/)
+      ) {
         rule.remove();
       }
     });
