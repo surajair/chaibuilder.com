@@ -1,12 +1,9 @@
+import "@/app/(public)/public.css";
 import { chaiBuilderPages, getChaiSiteSettings } from "@/chai";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import "@/data";
 import { registerFonts } from "@/fonts";
-import {
-  getChaiCommonStyles,
-  getFontHref,
-  getThemeCustomFontFace,
-} from "@/utils/styles-helper";
+import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { get } from "lodash";
 import { draftMode } from "next/headers";
@@ -33,7 +30,6 @@ export default async function RootLayout({
   // Add empty theme object as fallback
   const theme = get(siteSettings, "theme", {});
   const themeCssVariables = getChaiThemeCssVariables(theme);
-  const commonStyles = await getChaiCommonStyles();
   const bodyFont = get(theme, "fontFamily.body", "Inter");
   const headingFont = get(theme, "fontFamily.heading", "Inter");
   const fontUrls = getFontHref([bodyFont, headingFont]);
@@ -69,14 +65,6 @@ export default async function RootLayout({
         <style
           id="custom-font-face"
           dangerouslySetInnerHTML={{ __html: customFontFace }}
-        />
-        <style
-          id="common-styles"
-          dangerouslySetInnerHTML={{ __html: commonStyles }}
-        />
-        <meta
-          name="format-detection"
-          content="telephone=no, date=no, email=no, address=no"
         />
       </head>
       <body className={`font-body antialiased`}>
