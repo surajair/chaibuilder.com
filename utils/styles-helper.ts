@@ -9,24 +9,6 @@ import path from "path";
 import postcss from "postcss";
 
 async function findTailwindCssFile(): Promise<string> {
-  if (process.env.NODE_ENV === "development") {
-    const chunksDir = path.join(process.cwd(), ".next/static/chunks");
-    try {
-      const files = await fs.readdir(chunksDir);
-      // Find all CSS files that match the pattern
-      const tailwindCssFiles = files.filter((file) =>
-        file.match(/^app_\(public\)_globals.*\.css$/)
-      );
-
-      if (tailwindCssFiles.length > 0) {
-        // Use the first matching file
-        return path.join(chunksDir, tailwindCssFiles[0]);
-      }
-    } catch (error) {
-      // Handle case where directory doesn't exist or can't be read
-      console.warn("Could not read .next/static/chunks directory:", error);
-    }
-  }
   // Use absolute path for production to work on Vercel
   return path.resolve("./public/chaistyles.css");
 }
@@ -47,7 +29,14 @@ export async function filterDuplicateStyles(
     });
 
     newStylesRoot.walkRules((rule) => {
-      if (tailwindSelectors.has(rule.selector)) {
+      // Check if the rule has a parent and if it's a media query (breakpoint)
+      const hasBreakpoint =
+        rule.parent?.type === "atrule" &&
+        "name" in rule.parent &&
+        rule.parent.name === "media";
+
+      // Only remove the rule if it's in tailwindSelectors and doesn't have a breakpoint
+      if (tailwindSelectors.has(rule.selector) && !hasBreakpoint) {
         rule.remove();
       }
     });
