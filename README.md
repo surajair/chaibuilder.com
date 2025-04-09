@@ -44,10 +44,11 @@ This is a starter project for Chai builder + NextJS.
 - Tailwind CSS 3.4+
 - Shadcn UI
 - TypeScript
+- Vitest (Unit Testing)
 
 ## Development
 
-We recomment using `pnpm` for development.
+We recommend using `pnpm` for development.
 
 ```bash
 pnpm install
@@ -56,9 +57,19 @@ pnpm run dev
 
 Navigate to `/chai` route to view the builder and publish. Sign in and start publishing your website.
 
+## Testing
+
+This project uses Vitest for unit testing. Run tests with:
+
+```bash
+pnpm test
+```
+
+For more testing options and documentation, see [tests/README.md](tests/README.md).
+
 ## Deployment
 
-We recomment using `Vercel` for deployment for better ISR support.
+We recommend using `Vercel` for deployment for better ISR support.
 
 ## License
 
