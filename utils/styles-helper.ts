@@ -29,10 +29,7 @@ export async function filterDuplicateStyles(
     });
 
     newStylesRoot.walkRules((rule) => {
-      if (
-        tailwindSelectors.has(rule.selector) &&
-        !rule.selector.match(/sm\\:|md\\:|lg\\:|xl\\:|2xl\\:/)
-      ) {
+      if (tailwindSelectors.has(rule.selector)) {
         rule.remove();
       }
     });
