@@ -1,5 +1,6 @@
 import "@/app/(public)/public.css";
 import { chaiBuilderPages, getChaiSiteSettings } from "@/chai";
+import { Clarity } from "@/components/clarity";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import "@/data";
 import { registerFonts } from "@/fonts";
@@ -75,6 +76,7 @@ export default async function RootLayout({
           disableTransitionOnChange>
           {children}
         </ThemeProvider>
+        <Clarity />
       </body>
     </html>
   );
