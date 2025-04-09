@@ -13,7 +13,8 @@ interface DocContent {
 
 export const getDocContent = async (
   slug: string,
-  pageType: string
+  pageType: string,
+  isDraft: boolean
 ): Promise<DocContent | null> => {
   try {
     // Check if database ID is defined
@@ -29,7 +30,9 @@ export const getDocContent = async (
         and: [
           { property: "Page Type", select: { equals: pageType } },
           { property: "Slug", rich_text: { equals: slug } },
-          { property: "Status", select: { equals: "Published" } },
+          ...(isDraft
+            ? []
+            : [{ property: "Status", select: { equals: "Published" } }]),
         ],
       },
       page_size: 1,

@@ -50,7 +50,7 @@ type NotionPage = {
 /**
  * Fetch documentation pages from Notion database
  */
-async function fetchNotionPages(): Promise<NotionPage[]> {
+async function fetchNotionPages(isDraft: boolean): Promise<NotionPage[]> {
   if (!databaseId || !process.env.NOTION_API_KEY) {
     console.warn("Notion API key or database ID not configured");
     return [];
@@ -63,7 +63,9 @@ async function fetchNotionPages(): Promise<NotionPage[]> {
       filter: {
         and: [
           { property: "Page Type", select: { equals: "Documentation" } },
-          { property: "Status", select: { equals: "Published" } },
+          ...(isDraft
+            ? []
+            : [{ property: "Status", select: { equals: "Published" } }]),
         ],
       },
     });
@@ -165,10 +167,12 @@ function transformNotionToDocLinks(pages: NotionPage[]): DocLink[] {
   return publishedItems;
 }
 
-export const getDocSidebarLinks = async (): Promise<DocLink[]> => {
+export const getDocSidebarLinks = async (
+  isDraft: boolean
+): Promise<DocLink[]> => {
   try {
     // Try to fetch from Notion
-    const notionPages = await fetchNotionPages();
+    const notionPages = await fetchNotionPages(isDraft);
 
     if (notionPages.length > 0) {
       const docLinks = transformNotionToDocLinks(notionPages);

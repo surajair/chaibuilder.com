@@ -10,7 +10,8 @@ registerChaiPageType("docs", {
     const slug = props.slug;
     const document = await getDocContent(
       inBuilder ? "overview" : slug.replace("/docs/", ""),
-      "Documentation"
+      "Documentation",
+      _isDraft
     );
     return {
       page: {
