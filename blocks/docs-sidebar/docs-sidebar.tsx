@@ -1,12 +1,31 @@
-import { ChaiBlockComponentProps } from "@chaibuilder/pages/runtime";
-import { DocLink, DocsSidebarClient } from "./docs-sidebar.client";
+import { cn } from "@/lib/utils";
+import {
+  ChaiBlockComponentProps,
+  registerChaiBlockSchema,
+} from "@chaibuilder/pages/runtime";
+import { DocLink, NavItem } from "./nav-item";
 
 export type DocsSidebarProps = {
-  links: DocLink[];
+  items: DocLink[];
+  title: string;
 };
 
 const DocsSidebar = (props: ChaiBlockComponentProps<DocsSidebarProps>) => {
-  return <DocsSidebarClient {...props} />;
+  const { blockProps } = props;
+  return (
+    <div {...blockProps} className={cn("w-full")}>
+      {props.title && (
+        <h4 className="text-sm border-b border-border pb-2 mr-6 font-medium text-muted-foreground">
+          {props.title}
+        </h4>
+      )}
+      <div className="space-y-1 mr-6">
+        {props.items?.map((item, i) => (
+          <NavItem key={i} item={item} inBuilder={props.inBuilder} />
+        ))}
+      </div>
+    </div>
+  );
 };
 
 const DocsSidebarConfig = {
@@ -15,67 +34,24 @@ const DocsSidebarConfig = {
   group: "docs",
   category: "core",
   pageTypes: ["docs"],
+  ...registerChaiBlockSchema({
+    properties: {
+      title: {
+        type: "string",
+        label: "Title",
+        default: "Untitled",
+      },
+    },
+  }),
   dataProvider: () => {
     return {
-      links: [
+      items: [
         {
           title: "Getting Started",
           items: [
             {
               title: "Introduction",
               href: "/docs/introduction",
-            },
-            {
-              title: "Installation",
-              href: "/docs/installation",
-            },
-          ],
-        },
-        {
-          title: "Components",
-          items: [
-            {
-              title: "UI Components",
-              items: [
-                {
-                  title: "Button",
-                  href: "/docs/components/button",
-                },
-                {
-                  title: "Card",
-                  href: "/docs/components/card",
-                },
-                {
-                  title: "Input",
-                  href: "/docs/components/input",
-                },
-              ],
-            },
-            {
-              title: "Layout Components",
-              items: [
-                {
-                  title: "Container",
-                  href: "/docs/components/container",
-                },
-                {
-                  title: "Grid",
-                  href: "/docs/components/grid",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          title: "API Reference",
-          items: [
-            {
-              title: "Authentication",
-              href: "/docs/api/authentication",
-            },
-            {
-              title: "Endpoints",
-              href: "/docs/api/endpoints",
             },
           ],
         },

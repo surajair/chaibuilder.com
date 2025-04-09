@@ -1,4 +1,4 @@
-import { DocLink } from "@/blocks/docs-sidebar/docs-sidebar.client";
+import { DocLink } from "@/blocks/docs-sidebar/nav-item";
 import { Client } from "@notionhq/client";
 
 // Extended DocLink interface with related docs

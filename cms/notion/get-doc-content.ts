@@ -16,6 +16,7 @@ export const getDocContent = async (
   pageType: string
 ): Promise<DocContent | null> => {
   try {
+    console.log("slug #2", slug);
     // Check if database ID is defined
     if (!databaseId) {
       console.error("Notion database ID is not configured");
