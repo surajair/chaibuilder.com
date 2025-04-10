@@ -12,6 +12,19 @@ const ErrorParamHandler = ({ showToast }: { showToast: () => void }) => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const session = await supabase.auth.getSession();
+        if (session?.data?.session?.access_token) {
+          router.replace("/sites");
+        }
+      } catch (error) {}
+    };
+
+    checkSession();
+  }, [router]);
+
+  useEffect(() => {
     const error = searchParams.get("error");
     if (error === "auth-failed") {
       showToast();
@@ -41,7 +54,7 @@ export default function LoginButton() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: `${window.location.origin}/auth/callback?next=/sites`,
+          redirectTo: `${window.location.origin}/login`,
         },
       });
 
