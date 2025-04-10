@@ -1,22 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { supabase } from "@/hooks/supabase";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function LoginButton() {
-  const [loading, setLoading] = useState(false);
-  const searchParams = useSearchParams();
+const ErrorParamHandler = ({ showToast }: { showToast: () => void }) => {
   const router = useRouter();
-
-  const showToast = () => {
-    toast.error("Failed to sign in. Please try again.", {
-      position: "top-left",
-    });
-  };
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const error = searchParams.get("error");
@@ -27,7 +20,19 @@ export default function LoginButton() {
       const newUrl = window.location.pathname;
       router.replace(newUrl);
     }
-  }, [searchParams, router]);
+  }, [searchParams, router, showToast]);
+
+  return <Suspense />;
+};
+
+export default function LoginButton() {
+  const [loading, setLoading] = useState(false);
+
+  const showToast = () => {
+    toast.error("Failed to sign in. Please try again.", {
+      position: "top-left",
+    });
+  };
 
   const handleGoogleSignIn = async () => {
     try {
@@ -50,6 +55,7 @@ export default function LoginButton() {
 
   return (
     <>
+      <ErrorParamHandler showToast={showToast} />
       <Button
         onClick={handleGoogleSignIn}
         disabled={loading}
