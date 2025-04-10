@@ -22,7 +22,7 @@ const ErrorParamHandler = ({ showToast }: { showToast: () => void }) => {
     }
   }, [searchParams, router, showToast]);
 
-  return <Suspense />;
+  return null;
 };
 
 export default function LoginButton() {
@@ -55,7 +55,9 @@ export default function LoginButton() {
 
   return (
     <>
-      <ErrorParamHandler showToast={showToast} />
+      <Suspense>
+        <ErrorParamHandler showToast={showToast} />
+      </Suspense>
       <Button
         onClick={handleGoogleSignIn}
         disabled={loading}
