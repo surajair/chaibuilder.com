@@ -1,14 +1,14 @@
 import { Metadata } from "next";
-import "@/public/chaistyles.css";
+import "@/app/(public)/public.css";
 import { Toaster } from "sonner";
 import AuthProvider from "@/components/auth/auth-provider";
 
 export const metadata: Metadata = {
-  title: "Chaibuilder - Login",
-  description: "Authentication pages for Chaibuilder",
+  title: "Chaibuilder - Websites",
+  description: "Manage your Chaibuilder websites",
 };
 
-export default function AuthLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
