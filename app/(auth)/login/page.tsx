@@ -1,8 +1,17 @@
 import { Logo } from "@/components/builder/logo";
 import LoginButton from "@/components/auth/login-button";
 import Link from "next/link";
+import { createClient } from "@/chai/supabase-server";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const supabase = await createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session) redirect("/sites");
+
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col-reverse lg:flex-row">
       {/* Left side - Link, Content */}
