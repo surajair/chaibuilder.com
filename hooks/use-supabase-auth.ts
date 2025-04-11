@@ -1,4 +1,4 @@
-import { supabase } from "@/hooks/supabase";
+import { supabase } from "@/chai/supabase";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 

@@ -1,8 +1,13 @@
-import { Logo } from "@/components/builder/logo";
-import LoginButton from "@/components/auth/login-button";
 import Link from "next/link";
+import LoginButton from "@/components/auth/login-button";
+import { Logo } from "@/components/builder/logo";
+import { redirect } from "next/navigation";
+import { getSession } from "@/actions/get-user-action";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const session = await getSession();
+  if (session) redirect("/sites");
+
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col-reverse lg:flex-row">
       {/* Left side - Link, Content */}
