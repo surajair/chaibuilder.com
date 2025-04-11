@@ -1,15 +1,11 @@
-import { Logo } from "@/components/builder/logo";
-import LoginButton from "@/components/auth/login-button";
 import Link from "next/link";
-import { createClient } from "@/chai/supabase-server";
+import LoginButton from "@/components/auth/login-button";
+import { Logo } from "@/components/builder/logo";
 import { redirect } from "next/navigation";
+import { getSession } from "@/actions/get-user-action";
 
 export default async function LoginPage() {
-  const supabase = await createClient();
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
+  const session = await getSession();
   if (session) redirect("/sites");
 
   return (

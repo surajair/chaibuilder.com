@@ -1,7 +1,5 @@
 "use client";
 
-import "@/public/chaistyles.css";
-
 import {
   Tooltip,
   TooltipContent,
@@ -19,10 +17,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-// } from "@/components/ui/select";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -30,54 +27,60 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@chaibuilder/sdk/ui";
+import { createSite } from "@/actions/create-site-action";
+import { toast } from "sonner";
+import Loader from "./loader";
+import { Logo } from "../builder/logo";
 
 const MAX_SITES = 2;
 
 interface CreateSiteModalProps {
   open: boolean;
+  isSiteLimitReached: boolean;
   onOpenChange: (open: boolean) => void;
-  onCreateSite: (site: Omit<any, "id" | "apiKey">) => void;
-  isCreating: boolean;
 }
 
 const AVAILABLE_LANGUAGES = [
-  { value: "en", label: "English" },
-  { value: "es", label: "Spanish" },
-  { value: "fr", label: "French" },
-  { value: "de", label: "German" },
-  { value: "it", label: "Italian" },
-  { value: "pt", label: "Portuguese" },
-  { value: "ru", label: "Russian" },
-  { value: "zh", label: "Chinese" },
-  { value: "ja", label: "Japanese" },
-  { value: "ko", label: "Korean" },
+  { name: "English", code: "en" },
+  { name: "Spanish", code: "es" },
+  { name: "French", code: "fr" },
+  { name: "Portuguese", code: "pt" },
+  { name: "Russian", code: "ru" },
+  { name: "Japanese", code: "ja" },
 ];
 
 function CreateSiteModal({
   open,
+  isSiteLimitReached,
   onOpenChange,
-  onCreateSite,
-  isCreating,
 }: CreateSiteModalProps) {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    fallbackLang: "",
-    languages: [] as string[],
+    fallbackLang: "en",
+    languages: ["en"] as string[],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onCreateSite({
-      name: formData.name,
-      fallbackLang: formData.fallbackLang,
-      languages: formData.languages,
-      createdAt: new Date().toISOString(),
-    });
-    setFormData({
-      name: "",
-      fallbackLang: "",
-      languages: [],
-    });
+    try {
+      setLoading(true);
+      const result = await createSite(formData);
+      if (result.success) {
+        toast.success("Site created successfully!");
+        setFormData({
+          name: "",
+          fallbackLang: "",
+          languages: [],
+        });
+        onOpenChange(false);
+      } else {
+        toast.error(result.error || "Failed to create site");
+      }
+    } catch (error) {
+      toast.error("An error occurred while creating the site");
+    }
+    setLoading(false);
   };
 
   const toggleLanguage = (lang: string) => {
@@ -96,95 +99,131 @@ function CreateSiteModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] z-[9999]">
-        <DialogHeader>
-          <DialogTitle>Create New Site</DialogTitle>
-          <DialogDescription>
-            Fill in the details to create a new site.
-          </DialogDescription>
-        </DialogHeader>
-
-        <form onSubmit={handleSubmit}>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Site Name</Label>
-              <Input
-                id="name"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-                placeholder="My Awesome Site"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="fallback-lang">Default Language</Label>
-              <Select
-                value={formData.fallbackLang}
-                onValueChange={(value) =>
-                  setFormData({ ...formData, fallbackLang: value })
-                }
-                required
+      {isSiteLimitReached ? (
+        <DialogContent className="bg-white">
+          <Logo />
+          <DialogHeader>
+            <DialogTitle>Website Limit Reached</DialogTitle>
+            <DialogDescription>
+              You have reached the maximum number of websites allowed. If you
+              need more, please reach out to us on{" "}
+              <a
+                className="underline text-blue-500 hover:text-blue-400"
+                href="https://discord.gg/QPzCkjq5"
               >
-                <SelectTrigger id="fallback-lang">
-                  <SelectValue placeholder="Select a language" />
-                </SelectTrigger>
-                <SelectContent>
-                  {AVAILABLE_LANGUAGES.map((lang) => (
-                    <SelectItem key={lang.value} value={lang.value}>
-                      {lang.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <p className="text-xs text-muted-foreground">
-                Note: Once set, the default language cannot be changed.
-              </p>
-            </div>
+                Discord
+              </a>{" "}
+              for further assistance.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      ) : (
+        <DialogContent className="sm:max-w-[500px] z-[999] bg-white">
+          <DialogHeader>
+            <DialogTitle>Create New Site</DialogTitle>
+            <DialogDescription>
+              Fill in the details to create a new site.
+            </DialogDescription>
+          </DialogHeader>
 
-            <div className="space-y-2">
-              <Label>Additional Languages</Label>
-              <div className="flex flex-wrap gap-2">
-                {AVAILABLE_LANGUAGES.map((lang) => (
-                  <Button
-                    key={lang.value}
-                    type="button"
-                    variant={
-                      formData.languages.includes(lang.value)
-                        ? "default"
-                        : "outline"
-                    }
-                    size="sm"
-                    onClick={() => toggleLanguage(lang.value)}
-                    disabled={lang.value === formData.fallbackLang}
-                    className="h-8"
-                  >
-                    {lang.label}
-                  </Button>
-                ))}
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <Label htmlFor="name">Site Name</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  placeholder="My Awesome Site"
+                  required
+                  disabled={loading}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="fallback-lang">Default Language</Label>
+                <Select
+                  value={formData.fallbackLang}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      fallbackLang: value,
+                      languages: formData.languages.includes(value)
+                        ? formData.languages
+                        : [...formData.languages, value],
+                    })
+                  }
+                  required
+                  disabled={loading}
+                >
+                  <SelectTrigger id="fallback-lang">
+                    <SelectValue placeholder="Select a language" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white z-[9999]">
+                    {AVAILABLE_LANGUAGES.map((lang) => (
+                      <SelectItem key={lang.code} value={lang.code}>
+                        {lang.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <p className="text-xs text-muted-foreground">
+                  Note: Once set, the default language cannot be changed.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Additional Languages</Label>
+                <div className="flex flex-wrap gap-2">
+                  {AVAILABLE_LANGUAGES.map((lang) => (
+                    <Button
+                      key={lang.code}
+                      type="button"
+                      variant={
+                        formData.languages.includes(lang.code)
+                          ? "default"
+                          : "outline"
+                      }
+                      size="sm"
+                      onClick={() => toggleLanguage(lang.code)}
+                      disabled={lang.code === formData.fallbackLang || loading}
+                      className="h-8"
+                    >
+                      {lang.name}
+                    </Button>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
 
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              disabled={isCreating || !formData.name || !formData.fallbackLang}
-            >
-              {isCreating ? "Creating..." : "Create Site"}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => onOpenChange(false)}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                disabled={loading || !formData.name || !formData.fallbackLang}
+              >
+                {loading ? (
+                  <>
+                    <Loader />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Site"
+                )}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      )}
     </Dialog>
   );
 }
@@ -194,37 +233,14 @@ export function CreateSite({
 }: {
   isSiteLimitReached: boolean;
 }) {
-  const [isCreatingSite, setIsCreatingSite] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-
-  // Create a new site
-  const handleCreateSite = async (siteData: Omit<any, "id" | "apiKey">) => {
-    if (isSiteLimitReached) return;
-
-    setIsCreatingSite(true);
-
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    const newSite: any = {
-      ...siteData,
-      id: Math.random().toString(36).substring(2, 9),
-    };
-
-    setIsCreatingSite(false);
-    setShowCreateModal(false);
-  };
 
   return (
     <>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              variant="default"
-              onClick={() => !isSiteLimitReached && setShowCreateModal(true)}
-              disabled={isSiteLimitReached}
-            >
+            <Button variant="default" onClick={() => setShowCreateModal(true)}>
               <Plus className="mr-2 h-4 w-4" /> Add New Site
             </Button>
           </TooltipTrigger>
@@ -239,8 +255,7 @@ export function CreateSite({
         <CreateSiteModal
           open={showCreateModal}
           onOpenChange={setShowCreateModal}
-          onCreateSite={handleCreateSite}
-          isCreating={isCreatingSite}
+          isSiteLimitReached={isSiteLimitReached}
         />
       )}
     </>
