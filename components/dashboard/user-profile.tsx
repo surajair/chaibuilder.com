@@ -9,7 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
-import { supabase } from "@/hooks/supabase";
+import { supabase } from "@/chai/supabase";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 

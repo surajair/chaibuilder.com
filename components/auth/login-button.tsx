@@ -1,9 +1,8 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { supabase } from "@/hooks/supabase";
+import { supabase } from "@/chai/supabase";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useSearchParams, useRouter } from "next/navigation";
 import Loader from "../dashboard/loader";
