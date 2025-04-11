@@ -8,7 +8,6 @@ registerChaiPageType("docs", {
   dynamicSlug: "{{slug}}",
   dataProvider: async (props, _lang, _draft, inBuilder) => {
     const slug = props.slug;
-    console.log("slug #3", slug);
     const document = await getDocContent(
       inBuilder ? "about-chai-builder" : slug.replace("/docs/", ""),
       "Documentation"
