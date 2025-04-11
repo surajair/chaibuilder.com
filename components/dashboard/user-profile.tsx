@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,25 +9,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
-import { useEffect, useState } from "react";
 import { supabase } from "@/hooks/supabase";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 
-export function UserProfile() {
+export function UserProfile({ user }: { user: User }) {
   const router = useRouter();
-  const [user, setUser] = useState<User>({} as User);
-
-  useEffect(() => {
-    // * Fetching user
-    (async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) router.replace("/login");
-      setUser(user as User);
-    })();
-  }, [router]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
