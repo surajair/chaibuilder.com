@@ -5,7 +5,9 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SiteMenu } from "@/components/dashboard/site-menu";
-import { User } from "@supabase/supabase-js";
+import { getSites } from "@/actions/get-sites-actions";
+import { getUser } from "@/actions/get-user-action";
+import { Site } from "@/utils/types";
 
 // Check if site was created in the last 2 minutes
 const isNew = (site: any) =>
@@ -21,38 +23,31 @@ const formatDate = (dateString: string) => {
   });
 };
 
-const SITES = [
-  { name: "Site 1", id: "1", createdAt: new Date() },
-  { name: "Site 1", id: "1", createdAt: new Date() },
-];
-
-export default function ChaibuilderWebsites() {
-  const sites: any[] = SITES;
+export default async function ChaibuilderWebsites() {
+  const user = await getUser();
+  const data = await getSites(user.id);
+  const sites: Site[] = data as Site[];
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <header className="border-b bg-white">
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <Link href="/" className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <Logo />
               <span className="text-xl font-bold">CHAI BUILDER</span>
-            </Link>
+            </div>
           </div>
           <div className="flex items-center gap-4">
-            <UserProfile />
+            <UserProfile user={user} />
           </div>
         </div>
       </header>
 
-      <div className="container flex-1 flex items-center justify-center">
-        Coming soon...
-      </div>
-
-      <main className="hidden container flex-1 py-8">
+      <main className="container flex-1 py-8">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Your Sites</h1>
-          <CreateSite isSiteLimitReached={false} />
+          <h1 className="text-3xl font-bold">Your Websites</h1>
+          <CreateSite isSiteLimitReached={sites.length > 1} />
         </div>
 
         {sites.length === 0 ? (
@@ -68,7 +63,7 @@ export default function ChaibuilderWebsites() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 overflow-y-auto">
             {sites.map((site) => {
               return (
                 <Card

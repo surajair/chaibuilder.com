@@ -1,5 +1,5 @@
+import { createClient } from "@/chai/supabase.auth.server";
 import { NextResponse } from "next/server";
-import { createClient } from "@/chai/supabase-server";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
