@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import "@/public/chaistyles.css";
 import { Toaster } from "sonner";
-import AuthProvider from "@/components/auth/auth-provider";
 
 export const metadata: Metadata = {
   title: "Chaibuilder - Login",
@@ -25,7 +24,7 @@ export default function AuthLayout({
       </head>
       <body className="font-sans antialiased">
         <Toaster />
-        <AuthProvider>{children}</AuthProvider>
+        {children}
       </body>
     </html>
   );
