@@ -1,30 +1,19 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { createClient } from "@/chai/supabase-auth";
+import { type NextRequest } from "next/server";
+import { updateSession } from "@/lib/updateSession";
 
 export async function middleware(request: NextRequest) {
-  // Create a Supabase client configured to use cookies
-  const supabase = await createClient();
-
-  // Refresh session if expired - required for Server Components
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  // If there is a session and the user is on the login page, redirect to /sites
-  if (session && request.nextUrl.pathname.startsWith("/login")) {
-    const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/sites";
-    return NextResponse.redirect(redirectUrl);
-  }
-
-  return NextResponse.next();
+  return await updateSession(request);
 }
 
 export const config = {
   matcher: [
-    // Apply this middleware to these routes
-    "/sites/:path*",
-    "/login",
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * Feel free to modify this pattern to include more paths.
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
