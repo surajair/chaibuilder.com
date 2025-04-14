@@ -20,12 +20,11 @@ import { toast } from "sonner";
 import { updateSite } from "@/actions/update-site-action";
 import { revokeApiKey } from "@/actions/revoke-api-action";
 import { find } from "lodash";
+import Loader from "./loader";
 
 interface SiteDetailsModalProps {
   site: Site;
-  open: boolean;
   onOpenChange: (open: boolean) => void;
-  onUpdate: (site: Site) => void;
 }
 
 const AVAILABLE_LANGUAGES = [
@@ -39,11 +38,10 @@ const AVAILABLE_LANGUAGES = [
 
 export function SiteDetailsModal({
   site,
-  open,
   onOpenChange,
-  onUpdate,
 }: SiteDetailsModalProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showRevokeConfirm, setShowRevokeConfirm] = useState(false);
   const [formData, setFormData] = useState({
@@ -53,6 +51,8 @@ export function SiteDetailsModal({
 
   const handleSave = async () => {
     try {
+      setIsSaving(true);
+
       await updateSite(site.id, formData);
       onOpenChange(false);
       toast.success("Website details updated successfully.");
@@ -60,21 +60,18 @@ export function SiteDetailsModal({
       toast.error("Failed to updated website data.");
     }
     setIsEditing(false);
+    setIsSaving(false);
   };
 
   const handleRevokeApiKey = async () => {
     try {
       await revokeApiKey(site);
-      onOpenChange(false);
       toast.success("Website API key revked successfully.");
     } catch (error) {
       toast.error("Failed to revoke website API key.");
     }
-    setShowRevokeConfirm(false);
-  };
 
-  const generateNewApiKey = () => {
-    return `sk_${Math.random().toString(36).substring(2, 15)}${Math.random().toString(36).substring(2, 15)}`;
+    setShowRevokeConfirm(false);
   };
 
   const toggleLanguage = (lang: string) => {
@@ -93,7 +90,7 @@ export function SiteDetailsModal({
 
   return (
     <>
-      <Dialog open={open} onOpenChange={onOpenChange}>
+      <Dialog open={true} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Site Details</DialogTitle>
@@ -112,7 +109,7 @@ export function SiteDetailsModal({
                     value={site.apiKey}
                     type={showApiKey ? "text" : "password"}
                     readOnly
-                    className="pr-9"
+                    className="pr-9 h-10"
                   />
                   <Button
                     type="button"
@@ -164,7 +161,7 @@ export function SiteDetailsModal({
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                readOnly={!isEditing}
+                readOnly={!isEditing || isSaving}
                 placeholder="Enter website name"
                 required
                 className={`focus-visible:ring-0 border-0 focus-visible:ring-transparent rounded-none px-0 !text-2xl text-purple-800 font-bold ${isEditing ? "border-b" : ""}`}
@@ -200,6 +197,7 @@ export function SiteDetailsModal({
                       onClick={() => isEditing && toggleLanguage(lang.code)}
                       disabled={
                         !isEditing ||
+                        isSaving ||
                         lang.code === site.fallbackLang ||
                         (lang.code !== site.fallbackLang &&
                           !formData.languages.includes(lang.code) &&
@@ -220,6 +218,7 @@ export function SiteDetailsModal({
               <>
                 <Button
                   variant="outline"
+                  disabled={isSaving}
                   onClick={() => {
                     setFormData({
                       name: site.name,
@@ -232,9 +231,16 @@ export function SiteDetailsModal({
                 </Button>
                 <Button
                   onClick={handleSave}
-                  className="bg-gray-900 hover:bg-gray-700"
+                  disabled={isSaving}
+                  className="bg-gray-900 hover:bg-gray-700 flex items-center gap-x-1.5 min-w-24"
                 >
-                  Save Changes
+                  {isSaving ? (
+                    <>
+                      <Loader fullscreen={false} />
+                    </>
+                  ) : (
+                    <>Save Changes</>
+                  )}
                 </Button>
               </>
             ) : (

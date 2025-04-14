@@ -10,24 +10,12 @@ import {
 import { Button } from "../ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@chaibuilder/sdk/ui";
 import { ConfirmDialog } from "./confirm-dialog";
 import { deleteSite } from "@/actions/delete-site-action";
 import { Site } from "@/utils/types";
 import { toast } from "sonner";
 import { SiteDetailsModal } from "./site-detail-modal";
 import Loader from "./loader";
-
-const SiteDetailModal = () => {};
 
 export const SiteMenu = ({ site }: { site: Site }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -86,12 +74,9 @@ export const SiteMenu = ({ site }: { site: Site }) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <SiteDetailsModal
-        site={site}
-        open={showDetailsModal}
-        onOpenChange={setShowDetailsModal}
-        onUpdate={() => {}}
-      />
+      {showDetailsModal && (
+        <SiteDetailsModal site={site} onOpenChange={setShowDetailsModal} />
+      )}
 
       <ConfirmDialog
         open={showDeleteConfirm}
