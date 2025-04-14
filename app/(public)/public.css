@@ -17,3 +17,8 @@
     height: inherit;
   }
 }
+
+/* TO HANDLE POINTERS EVENT NONE ISSUE ON CLOSING MODAL */
+body {
+  pointer-events: auto !important;
+}
