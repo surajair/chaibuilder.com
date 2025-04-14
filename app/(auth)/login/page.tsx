@@ -37,7 +37,7 @@ export default async function LoginPage() {
         {/* Logo and brand */}
         <div className="relative z-10 flex items-center space-x-4 mb-12">
           <div className="border-2 border-2 rounded">
-            <Logo />
+            <Logo shouldRedirect={false} />
           </div>
           <h1 className="text-white text-3xl font-bold">Chai Builder</h1>
         </div>
@@ -76,7 +76,7 @@ export default async function LoginPage() {
       <div className="w-full lg:w-1/2 h-full bg-white flex items-center justify-center p-8 lg:p-16">
         <div className="w-full max-w-md">
           <div className="flex justify-center mb-8">
-            <Logo width={50} height={50} />
+            <Logo width={50} height={50} shouldRedirect={false} />
           </div>
 
           <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">
@@ -90,26 +90,26 @@ export default async function LoginPage() {
 
           <p className="text-xs text-center text-gray-500">
             By signing in, you agree to our
-            <a
-              href="#"
+            <Link
+              href="https://www.chaibuilder.com/terms-and-conditions"
               className="text-purple-600 hover:text-purple-800 font-medium"
             >
               {" "}
               Terms of Service
-            </a>{" "}
+            </Link>{" "}
             and
-            <a
-              href="#"
+            <Link
+              href="https://www.chaibuilder.com/privacy-policy"
               className="text-purple-600 hover:text-purple-800 font-medium"
             >
               {" "}
               Privacy Policy
-            </a>
+            </Link>
           </p>
 
           <div className="mt-8 text-center">
             <Link
-              href="/"
+              href="https://www.chaibuilder.com/docs"
               className="text-sm text-gray-600 hover:text-purple-600"
             >
               Learn more about Chai Builder

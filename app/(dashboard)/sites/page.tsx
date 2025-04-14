@@ -30,7 +30,7 @@ export default async function ChaibuilderWebsites() {
       <header className="border-b bg-white">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
-            <Logo />
+            <Logo shouldRedirect={false} />
             <span className="text-xl font-bold">CHAI BUILDER</span>
           </div>
           <UserProfile user={user} />

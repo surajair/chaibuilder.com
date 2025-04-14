@@ -9,20 +9,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { User } from "@supabase/supabase-js";
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@chaibuilder/sdk/ui";
 import { supabase } from "@/chai/supabase";
 import { useRouter } from "next/navigation";
+import Loader from "./loader";
 
 export function UserProfile({ user }: { user: User }) {
   const router = useRouter();
   const [isSigningOut, setIsSigningOut] = useState(false);
 
-  const handleSignOut = async () => {
+  const handleSignOut = async (e: any) => {
+    e.preventDefault();
+
     try {
       setIsSigningOut(true);
-
       await supabase.auth.signOut();
       router.replace("/login");
     } catch (error) {
@@ -69,7 +71,7 @@ export function UserProfile({ user }: { user: User }) {
         >
           {isSigningOut ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader fullscreen={false} />
               Signing out...
             </>
           ) : (
