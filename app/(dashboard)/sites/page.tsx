@@ -1,7 +1,6 @@
 import { Logo } from "@/components/builder/logo";
 import { CreateSite } from "@/components/dashboard/create-site";
 import { UserProfile } from "@/components/dashboard/user-profile";
-import { Badge } from "@/components/ui/badge";
 import { SiteMenu } from "@/components/dashboard/site-menu";
 import { getSites } from "@/actions/get-sites-actions";
 import { getUser } from "@/actions/get-user-action";
@@ -31,20 +30,16 @@ export default async function ChaibuilderWebsites() {
       <header className="border-b bg-white">
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2">
-              <Logo />
-              <span className="text-xl font-bold">CHAI BUILDER</span>
-            </div>
+            <Logo />
+            <span className="text-xl font-bold">CHAI BUILDER</span>
           </div>
-          <div className="flex items-center gap-4">
-            <UserProfile user={user} />
-          </div>
+          <UserProfile user={user} />
         </div>
       </header>
 
       <main className="container flex-1 py-8">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold">Your Websites</h1>
+          <h1 className="text-xl sm:text-3xl font-bold">Your Websites</h1>
           <CreateSite isSiteLimitReached={sites.length > 1} />
         </div>
 
@@ -66,7 +61,7 @@ export default async function ChaibuilderWebsites() {
               return (
                 <div
                   key={site.id}
-                  className="relative w-full max-w-sm bg-white border border-gray-200 rounded-lg group shadow-sm dark:bg-gray-800 dark:border-gray-700 p-8"
+                  className="relative w-full sm:max-w-sm bg-white border border-gray-200 rounded-lg group shadow-sm dark:bg-gray-800 dark:border-gray-700 p-8"
                 >
                   <div className="absolute top-2 right-2">
                     <SiteMenu site={site} />
