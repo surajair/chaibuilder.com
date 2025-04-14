@@ -1,32 +1,45 @@
 "use server";
 
 import { supabaseServer } from "@/chai/supabase.server";
-import { randomUUID } from "crypto";
 import { getUser } from "./get-user-action";
 import { Site } from "@/utils/types";
 import { revalidatePath } from "next/cache";
+import { encodedApiKey } from "@/utils/api-key";
 
 export async function createSite(formData: Partial<Site>) {
   try {
     const user = await getUser();
 
-    const id = randomUUID();
-    const revokeId = randomUUID();
-
-    const newSite = {
-      id,
+    // Create entry in apps table
+    const newApp = {
       user: user.id,
       name: formData.name,
       languages: formData.languages,
       fallbackLang: formData.fallbackLang,
-      apiKey: JSON.stringify({ userId: user.id, siteId: id, revokeId }),
     };
 
-    const { data, error } = await supabaseServer.from("apps").insert(newSite);
-    if (error) throw error;
+    const { data: appData, error: appError } = await supabaseServer
+      .from("apps")
+      .insert(newApp)
+      .select("id, user, name, languages, fallbackLang")
+      .single();
+    if (appError) throw appError;
+
+    // Create entry in apps_online table
+    const { error: onlineError } = await supabaseServer
+      .from("apps_online")
+      .insert(appData);
+    if (onlineError) throw onlineError;
+
+    // Creating and adding api key
+    const apiKey = encodedApiKey(user.id, appData.id);
+    const { error: apiKeyError } = await supabaseServer
+      .from("app_api_keys")
+      .insert({ apiKey, app: appData.id });
+    if (apiKeyError) throw onlineError;
 
     revalidatePath("/sites");
-    return { success: true, data };
+    return { success: true, data: appData };
   } catch (error: any) {
     return { success: false, error: error?.message || "An error occurred" };
   }

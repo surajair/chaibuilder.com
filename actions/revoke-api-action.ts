@@ -2,20 +2,21 @@
 
 import { supabaseServer } from "@/chai/supabase.server";
 import { Site } from "@/utils/types";
-import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
+import { encodedApiKey } from "@/utils/api-key";
 
 export async function revokeApiKey(site: Site) {
   try {
-    const newApiKey = {
-      userId: (site as any).user,
-      siteId: site.id,
-      revokeId: randomUUID(),
-    };
+    // Generate new API key
+    const newApiKey = encodedApiKey(site.user, site.id);
+
+    console.log("##", { newApiKey, api: site.apiKey });
+
+    // Update the API key in app_api_keys table
     const { data, error } = await supabaseServer
-      .from("apps")
-      .update({ apiKey: JSON.stringify(newApiKey) })
-      .eq("id", site.id)
+      .from("app_api_keys")
+      .update({ apiKey: newApiKey })
+      .eq("app", site.id)
       .select()
       .single();
 
