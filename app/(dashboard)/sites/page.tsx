@@ -31,7 +31,9 @@ export default async function ChaibuilderWebsites() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Logo shouldRedirect={false} />
-            <span className="text-xl font-bold">CHAI BUILDER</span>
+            <span className="ml-2 text-xl font-bold tracking-wide uppercase">
+              Chai Builder
+            </span>
           </div>
           <UserProfile user={user} />
         </div>
@@ -61,17 +63,22 @@ export default async function ChaibuilderWebsites() {
               return (
                 <div
                   key={site.id}
-                  className="relative w-full sm:max-w-sm bg-white border border-gray-200 rounded-lg group shadow-sm dark:bg-gray-800 dark:border-gray-700 p-8"
+                  className="overflow-hidden relative w-full sm:max-w-sm border border-gray-200 rounded-lg group dark:bg-gray-800 dark:border-gray-700 p-8 bg-white"
                 >
+                  {isNew(site) && (
+                    <div className="bg-green-600 px-3 py-1.5 text-white absolute top-0 left-0 text-xs rounded-br-lg">
+                      New
+                    </div>
+                  )}
                   <div className="absolute top-2 right-2">
                     <SiteMenu site={site} />
                   </div>
                   <div className="flex flex-col items-center">
-                    <h1 className="text-5xl text-gray-300 font-black group-hover:text-blue-300 duration-300">
-                      <span className="text-gray-200">#</span>
+                    <h1 className="text-5xl text-gray-300 font-black group-hover:text-primary duration-300">
+                      <span className="text-gray-200 font-light">#</span>
                       {index + 1}
                     </h1>
-                    <h5 className="mb-1 pt-8 text-xl font-medium text-gray-900 dark:text-white font-bold">
+                    <h5 className="mb-1 pt-8 text-xl font-black text-gray-900 dark:text-white font-bold">
                       {site.name}
                     </h5>
                     <span className="text-sm text-gray-500 dark:text-gray-400 text-sm">
