@@ -38,6 +38,15 @@ export async function createSite(formData: Partial<Site>) {
       .insert({ apiKey, app: appData.id });
     if (apiKeyError) throw onlineError;
 
+    // Create entry in libraries table
+    const { error: libraryError } = await supabaseServer
+      .from("libraries")
+      .insert({
+        name: newApp.name,
+        app: appData.id,
+      });
+    if (libraryError) throw libraryError;
+
     revalidatePath("/sites");
     return { success: true, data: appData };
   } catch (error: any) {

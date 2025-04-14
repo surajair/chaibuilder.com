@@ -34,7 +34,10 @@ export function UserProfile({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative rounded-full">
+        <Button
+          variant="ghost"
+          className="relative rounded-full p-0 h-max pl-2 hover:border"
+        >
           <span className="ml-1 leading-tight hidden sm:block">
             {user.user_metadata.name || user.email}
           </span>
@@ -60,7 +63,7 @@ export function UserProfile({ user }: { user: User }) {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          className="cursor-pointer hover:bg-gray-100"
+          className="cursor-pointer hover:bg-gray-100 text-red-800"
           onClick={handleSignOut}
           disabled={isSigningOut}
         >

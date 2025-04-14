@@ -240,7 +240,11 @@ export function CreateSite({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="default" onClick={() => setShowCreateModal(true)}>
+            <Button
+              variant="default"
+              onClick={() => setShowCreateModal(true)}
+              className="bg-black hover:bg-black/80"
+            >
               <Plus className="mr-2 h-4 w-4" /> Add New Site
             </Button>
           </TooltipTrigger>

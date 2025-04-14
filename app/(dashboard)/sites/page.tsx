@@ -28,7 +28,7 @@ export default async function ChaibuilderWebsites() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <header className="border-b bg-white">
-        <div className="container flex h-16 items-center justify-between px-4">
+        <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
             <Logo />
             <span className="text-xl font-bold">CHAI BUILDER</span>

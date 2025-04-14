@@ -10,8 +10,6 @@ export async function revokeApiKey(site: Site) {
     // Generate new API key
     const newApiKey = encodedApiKey(site.user, site.id);
 
-    console.log("##", { newApiKey, api: site.apiKey });
-
     // Update the API key in app_api_keys table
     const { data, error } = await supabaseServer
       .from("app_api_keys")
