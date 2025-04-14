@@ -34,7 +34,10 @@ export function UserProfile({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="ghost" className="relative rounded-full">
+          <span className="ml-1 leading-tight hidden sm:block">
+            {user.user_metadata.name || user.email}
+          </span>
           <Avatar className="h-7 w-7 border-2 text-xs bg-gray-100">
             <AvatarImage
               src={user.user_metadata.avatar_url}
@@ -44,9 +47,6 @@ export function UserProfile({ user }: { user: User }) {
               {user?.user_metadata?.name?.charAt(0) || "U"}
             </AvatarFallback>
           </Avatar>
-          <span className="ml-1 leading-tight">
-            {user.user_metadata.full_name || user.email}
-          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
