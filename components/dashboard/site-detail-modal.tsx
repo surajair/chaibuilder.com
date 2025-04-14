@@ -19,6 +19,7 @@ import { Site } from "@/utils/types";
 import { toast } from "sonner";
 import { updateSite } from "@/actions/update-site-action";
 import { revokeApiKey } from "@/actions/revoke-api-action";
+import { find } from "lodash";
 
 interface SiteDetailsModalProps {
   site: Site;
@@ -111,13 +112,13 @@ export function SiteDetailsModal({
                     value={site.apiKey}
                     type={showApiKey ? "text" : "password"}
                     readOnly
-                    className="pr-14"
+                    className="pr-9"
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-6 top-0 h-full px-3"
+                    className="absolute right-0 top-0 h-full px-3"
                     onClick={() => setShowApiKey(!showApiKey)}
                   >
                     {showApiKey ? (
@@ -129,20 +130,19 @@ export function SiteDetailsModal({
                       {showApiKey ? "Hide API key" : "Show API key"}
                     </span>
                   </Button>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => {
-                      navigator.clipboard.writeText(site.apiKey);
-                      toast.success("API key copied");
-                    }}
-                  >
-                    <CopyIcon className="h-4 w-4" />
-                    <span className="sr-only">Copy API key</span>
-                  </Button>
                 </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    navigator.clipboard.writeText(site.apiKey);
+                    toast.success("API key copied");
+                  }}
+                >
+                  <CopyIcon className="h-4 w-4" />
+                  <span className="sr-only">Copy API key</span>
+                </Button>
                 <Button
                   variant="outline"
                   onClick={() => setShowRevokeConfirm(true)}
@@ -154,15 +154,20 @@ export function SiteDetailsModal({
 
             <Separator />
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="name">Site Name</Label>
               <Input
                 id="name"
+                type="text"
+                size={60}
                 value={formData.name}
-                readOnly={!isEditing}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
+                readOnly={!isEditing}
+                placeholder="Enter website name"
+                required
+                className={`focus-visible:ring-0 border-0 focus-visible:ring-transparent rounded-none px-0 !text-2xl text-purple-800 font-bold ${isEditing ? "border-b" : ""}`}
               />
             </div>
 
@@ -170,7 +175,10 @@ export function SiteDetailsModal({
               <Label htmlFor="fallback-lang">Fallback Language</Label>
               <Input
                 id="fallback-lang"
-                value={site.fallbackLang}
+                value={
+                  find(AVAILABLE_LANGUAGES, { code: site.fallbackLang })
+                    ?.name || ""
+                }
                 readOnly
                 disabled
               />
@@ -182,28 +190,27 @@ export function SiteDetailsModal({
             <div className="space-y-2">
               <Label>Languages</Label>
               <div className="flex flex-wrap gap-2">
-                {AVAILABLE_LANGUAGES.map((lang) => (
-                  <Button
-                    key={lang.code}
-                    variant={
-                      formData.languages.includes(lang.code)
-                        ? "default"
-                        : "outline"
-                    }
-                    size="sm"
-                    onClick={() => isEditing && toggleLanguage(lang.code)}
-                    disabled={
-                      !isEditing ||
-                      lang.code === site.fallbackLang ||
-                      (lang.code !== site.fallbackLang &&
-                        !formData.languages.includes(lang.code) &&
-                        !isEditing)
-                    }
-                    className="h-8"
-                  >
-                    {lang.name}
-                  </Button>
-                ))}
+                {AVAILABLE_LANGUAGES.map((lang) => {
+                  const isSelected = formData.languages.includes(lang.code);
+                  return (
+                    <Button
+                      key={lang.code}
+                      variant={isSelected ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => isEditing && toggleLanguage(lang.code)}
+                      disabled={
+                        !isEditing ||
+                        lang.code === site.fallbackLang ||
+                        (lang.code !== site.fallbackLang &&
+                          !formData.languages.includes(lang.code) &&
+                          !isEditing)
+                      }
+                      className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700" : "hover:bg-gray-100 duration-300"}`}
+                    >
+                      {lang.name}
+                    </Button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -223,14 +230,24 @@ export function SiteDetailsModal({
                 >
                   Cancel
                 </Button>
-                <Button onClick={handleSave}>Save Changes</Button>
+                <Button
+                  onClick={handleSave}
+                  className="bg-gray-900 hover:bg-gray-700"
+                >
+                  Save Changes
+                </Button>
               </>
             ) : (
               <>
                 <Button variant="outline" onClick={() => onOpenChange(false)}>
                   Close
                 </Button>
-                <Button onClick={() => setIsEditing(true)}>Edit</Button>
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-gray-900 hover:bg-gray-700 w-24"
+                >
+                  Edit
+                </Button>
               </>
             )}
           </DialogFooter>
