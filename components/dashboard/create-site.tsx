@@ -101,7 +101,7 @@ function CreateSiteModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {isSiteLimitReached ? (
         <DialogContent className="bg-white">
-          <Logo />
+          <Logo shouldRedirect={false} />
           <DialogHeader>
             <DialogTitle>Website Limit Reached</DialogTitle>
             <DialogDescription>
