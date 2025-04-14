@@ -1,8 +1,6 @@
 import { Logo } from "@/components/builder/logo";
 import { CreateSite } from "@/components/dashboard/create-site";
 import { UserProfile } from "@/components/dashboard/user-profile";
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SiteMenu } from "@/components/dashboard/site-menu";
 import { getSites } from "@/actions/get-sites-actions";
@@ -64,34 +62,28 @@ export default async function ChaibuilderWebsites() {
           </div>
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 overflow-y-auto">
-            {sites.map((site) => {
+            {sites.map((site, index) => {
               return (
-                <Card
+                <div
                   key={site.id}
-                  className="group overflow-hidden transition-all hover:shadow-md"
+                  className="relative w-full max-w-sm bg-white border border-gray-200 rounded-lg group shadow-sm dark:bg-gray-800 dark:border-gray-700 p-8"
                 >
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-xl font-bold">
+                  <div className="absolute top-2 right-2">
+                    <SiteMenu site={site} />
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <h1 className="text-5xl text-gray-300 font-black group-hover:text-blue-300 duration-300">
+                      <span className="text-gray-200">#</span>
+                      {index + 1}
+                    </h1>
+                    <h5 className="mb-1 pt-8 text-xl font-medium text-gray-900 dark:text-white font-bold">
                       {site.name}
-                    </CardTitle>
-                    <div className="flex items-center gap-2">
-                      {isNew(site) && (
-                        <Badge
-                          variant="default"
-                          className="bg-green-500 text-white"
-                        >
-                          New
-                        </Badge>
-                      )}
-                      <SiteMenu site={site} />
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-sm text-muted-foreground">
-                      <p>Created: {formatDate(site.createdAt)}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </h5>
+                    <span className="text-sm text-gray-500 dark:text-gray-400 text-sm">
+                      {formatDate(site.createdAt)}
+                    </span>
+                  </div>
+                </div>
               );
             })}
           </div>
