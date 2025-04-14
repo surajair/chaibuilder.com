@@ -46,7 +46,6 @@ const AVAILABLE_LANGUAGES = [
   { name: "French", code: "fr" },
   { name: "Portuguese", code: "pt" },
   { name: "Russian", code: "ru" },
-  { name: "Japanese", code: "ja" },
 ];
 
 function CreateSiteModal({
@@ -128,17 +127,20 @@ function CreateSiteModal({
 
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Site Name</Label>
+              <div className="space-y-1">
+                <Label htmlFor="name">Website Name</Label>
                 <Input
                   id="name"
+                  type="text"
+                  size={60}
                   value={formData.name}
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  placeholder="My Awesome Site"
+                  placeholder="Enter website name"
                   required
                   disabled={loading}
+                  className="focus-visible:ring-0 border-0 focus-visible:ring-transparent border-b rounded-none px-0 !text-2xl text-purple-800 font-bold"
                 />
               </div>
 
@@ -158,7 +160,7 @@ function CreateSiteModal({
                   required
                   disabled={loading}
                 >
-                  <SelectTrigger id="fallback-lang">
+                  <SelectTrigger id="fallback-lang" className="h-10">
                     <SelectValue placeholder="Select a language" />
                   </SelectTrigger>
                   <SelectContent className="bg-white z-[9999]">
@@ -170,35 +172,38 @@ function CreateSiteModal({
                   </SelectContent>
                 </Select>
                 <p className="text-xs text-muted-foreground">
-                  Note: Once set, the default language cannot be changed.
+                  Note: Once set, the default language{" "}
+                  <span className="text-black font-medium">cannot</span> be
+                  changed.
                 </p>
               </div>
 
               <div className="space-y-2">
                 <Label>Additional Languages</Label>
                 <div className="flex flex-wrap gap-2">
-                  {AVAILABLE_LANGUAGES.map((lang) => (
-                    <Button
-                      key={lang.code}
-                      type="button"
-                      variant={
-                        formData.languages.includes(lang.code)
-                          ? "default"
-                          : "outline"
-                      }
-                      size="sm"
-                      onClick={() => toggleLanguage(lang.code)}
-                      disabled={lang.code === formData.fallbackLang || loading}
-                      className="h-8"
-                    >
-                      {lang.name}
-                    </Button>
-                  ))}
+                  {AVAILABLE_LANGUAGES.map((lang) => {
+                    const isSelected = formData.languages.includes(lang.code);
+                    return (
+                      <Button
+                        key={lang.code}
+                        type="button"
+                        variant={isSelected ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => toggleLanguage(lang.code)}
+                        disabled={
+                          lang.code === formData.fallbackLang || loading
+                        }
+                        className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700" : "hover:bg-gray-100 duration-300"}`}
+                      >
+                        {lang.name}
+                      </Button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
-            <DialogFooter>
+            <DialogFooter className="pt-4">
               <Button
                 type="button"
                 variant="outline"
@@ -209,6 +214,7 @@ function CreateSiteModal({
               </Button>
               <Button
                 type="submit"
+                className="bg-gray-900 hover:bg-gray-700"
                 disabled={loading || !formData.name || !formData.fallbackLang}
               >
                 {loading ? (

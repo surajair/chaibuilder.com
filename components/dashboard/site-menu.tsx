@@ -25,20 +25,24 @@ import { deleteSite } from "@/actions/delete-site-action";
 import { Site } from "@/utils/types";
 import { toast } from "sonner";
 import { SiteDetailsModal } from "./site-detail-modal";
+import Loader from "./loader";
 
 const SiteDetailModal = () => {};
 
 export const SiteMenu = ({ site }: { site: Site }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = async () => {
     try {
+      setIsDeleting(true);
       await deleteSite(site.id);
       toast.success("Website deleted successfully");
     } catch (error) {
       toast.error("Failed to delete website.");
     }
+    setIsDeleting(false);
   };
 
   return (
@@ -48,9 +52,14 @@ export const SiteMenu = ({ site }: { site: Site }) => {
           <Button
             variant="ghost"
             size="icon"
+            disabled={isDeleting}
             className="h-8 w-8 hover:bg-gray-100"
           >
-            <MoreHorizontal className="h-4 w-4" />
+            {isDeleting ? (
+              <Loader fullscreen={false} />
+            ) : (
+              <MoreHorizontal className="h-4 w-4" />
+            )}
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
