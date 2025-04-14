@@ -48,6 +48,7 @@
     "notion-to-md": "3.1.7",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "shiki": "^3.2.2",
     "sonner": "^2.0.1"
   },
   "devDependencies": {
