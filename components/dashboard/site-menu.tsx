@@ -25,8 +25,13 @@ export const SiteMenu = ({ site }: { site: Site }) => {
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      await deleteSite(site.id);
-      toast.success("Website deleted successfully");
+      toast.promise(deleteSite(site.id), {
+        loading: "Deleting website...",
+        success: () => "Website deleted successfully",
+        error: () => "Failed to delete website",
+        position: "top-center",
+      });
+      setShowDeleteConfirm(false);
     } catch (error) {
       toast.error("Failed to delete website.");
     }

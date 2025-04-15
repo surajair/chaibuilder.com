@@ -63,23 +63,29 @@ function CreateSiteModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      const result = await createSite(formData);
-      if (result.success) {
-        toast.success("Site created successfully!");
-        setFormData({
-          name: "",
-          fallbackLang: "",
-          languages: [],
-        });
-        onOpenChange(false);
-      } else {
-        toast.error(result.error || "Failed to create site");
-      }
+      toast.promise(createSite(formData), {
+        loading: "Creating your website...",
+        success: () => {
+          setFormData({
+            name: "",
+            fallbackLang: "",
+            languages: [],
+          });
+          return {
+            message: "Website created successfully",
+            action: {
+              label: "Deploy to vercel",
+              onClick: () => alert("View site. Coming soon..."),
+            },
+          };
+        },
+        error: () => "Failed to create website",
+        position: "top-center",
+      });
+      onOpenChange(false);
     } catch (error) {
-      toast.error("An error occurred while creating the site");
+      toast.error("An error occurred while creating the website");
     }
-    setLoading(false);
   };
 
   const toggleLanguage = (lang: string) => {
