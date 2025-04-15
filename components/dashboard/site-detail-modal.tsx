@@ -66,7 +66,7 @@ export function SiteDetailsModal({
   const handleRevokeApiKey = async () => {
     try {
       await revokeApiKey(site);
-      toast.success("Website API key revked successfully.");
+      toast.success("Website API key revoked successfully.");
     } catch (error) {
       toast.error("Failed to revoke website API key.");
     }

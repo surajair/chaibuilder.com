@@ -57,7 +57,7 @@ function CreateSiteModal({
   const [formData, setFormData] = useState({
     name: "",
     fallbackLang: "en",
-    languages: ["en"] as string[],
+    languages: [] as string[],
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
