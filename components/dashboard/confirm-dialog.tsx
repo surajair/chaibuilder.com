@@ -1,18 +1,20 @@
 "use client";
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+  Dialog,
+  // DialogAction,
+  // DialogCancel,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@chaibuilder/sdk/ui";
+import { Button } from "../ui/button";
+import { useState } from "react";
+import Loader from "./loader";
 
 interface ConfirmDialogProps {
-  open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
   description: string;
@@ -20,31 +22,40 @@ interface ConfirmDialogProps {
 }
 
 export function ConfirmDialog({
-  open,
   onOpenChange,
   title,
   description,
   onConfirm,
 }: ConfirmDialogProps) {
+  const [loading, setLoading] = useState(true);
+
+  const onClickConfirm = async () => {
+    setLoading(true);
+    await onConfirm?.();
+    setLoading(false);
+  };
+
+  const handleStateChange = (newState: boolean) => {
+    if (!loading) onOpenChange(newState);
+  };
+
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="z-[999]">
-        <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={(e) => e.stopPropagation()}>
+    <Dialog open={true} onOpenChange={handleStateChange}>
+      <DialogContent className={`z-[999]`}>
+        {loading && <Loader />}
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button onClick={(e) => handleStateChange(false)} variant="outline">
             Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={onConfirm}
-            className="bg-red-600 hover:bg-red-700 mt-1.5"
-          >
+          </Button>
+          <Button onClick={onClickConfirm} className="bg-red-600 hover:bg-red-">
             Confirm
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

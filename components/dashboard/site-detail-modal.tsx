@@ -260,13 +260,14 @@ export function SiteDetailsModal({
         </DialogContent>
       </Dialog>
 
-      <ConfirmDialog
-        open={showRevokeConfirm}
-        onOpenChange={setShowRevokeConfirm}
-        title="Revoke API Key"
-        description="Are you sure you want to revoke this API key? This action cannot be undone and will invalidate any existing integrations using this key."
-        onConfirm={handleRevokeApiKey}
-      />
+      {showRevokeConfirm && (
+        <ConfirmDialog
+          onOpenChange={setShowRevokeConfirm}
+          title="Revoke API Key"
+          description="Are you sure you want to revoke this API key? This action cannot be undone and will invalidate any existing integrations using this key."
+          onConfirm={handleRevokeApiKey}
+        />
+      )}
     </>
   );
 }

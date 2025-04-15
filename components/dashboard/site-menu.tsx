@@ -78,13 +78,14 @@ export const SiteMenu = ({ site }: { site: Site }) => {
         <SiteDetailsModal site={site} onOpenChange={setShowDetailsModal} />
       )}
 
-      <ConfirmDialog
-        open={showDeleteConfirm}
-        onOpenChange={setShowDeleteConfirm}
-        title="Delete Site"
-        description={`Are you sure you want to delete "${site.name}"? This action cannot be undone.`}
-        onConfirm={handleDelete}
-      />
+      {showDeleteConfirm && (
+        <ConfirmDialog
+          onOpenChange={setShowDeleteConfirm}
+          title="Delete Site"
+          description={`Are you sure you want to delete "${site.name}"? This action cannot be undone.`}
+          onConfirm={handleDelete}
+        />
+      )}
     </>
   );
 };

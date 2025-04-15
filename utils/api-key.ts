@@ -1,14 +1,16 @@
 import { createHmac, randomBytes } from "crypto";
 
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY as string;
-
-export const encodedApiKey = (userId: string, appId: string): string => {
+export const encodedApiKey = (
+  userId: string,
+  appId: string,
+  secretKey: string
+): string => {
   // Generate a random component (16 bytes = 32 hex characters)
-  const ramdomizer = randomBytes(16).toString("hex");
+  const randomizer = randomBytes(16).toString("hex");
   const timestamp = Date.now();
-  const data = `${ramdomizer}#${userId}#${appId}#${timestamp}`;
+  const data = `${randomizer}#${userId}#${appId}#${timestamp}`;
 
-  const hmac = createHmac("sha256", ENCRYPTION_KEY);
+  const hmac = createHmac("sha256", secretKey);
   hmac.update(data);
   const signature = hmac.digest("hex");
   const apiKey = Buffer.from(`${data}:${signature}`).toString("base64");
@@ -16,7 +18,8 @@ export const encodedApiKey = (userId: string, appId: string): string => {
 };
 
 export const decodedApiKey = (
-  apiKey: string
+  apiKey: string,
+  secretKey: string
 ): {
   isValid: boolean;
   data?: { userId: string; appId: string; timestamp: number };
@@ -28,7 +31,7 @@ export const decodedApiKey = (
     if (!data || !signature) return { isValid: false };
 
     // Verify the signature
-    const hmac = createHmac("sha256", ENCRYPTION_KEY);
+    const hmac = createHmac("sha256", secretKey);
     hmac.update(data);
     const expectedSignature = hmac.digest("hex");
     if (signature !== expectedSignature) return { isValid: false };
