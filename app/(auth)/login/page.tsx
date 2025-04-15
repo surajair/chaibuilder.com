@@ -91,7 +91,7 @@ export default async function LoginPage() {
           <p className="text-xs text-center text-gray-500">
             By signing in, you agree to our
             <Link
-              href="https://www.chaibuilder.com/terms-and-conditions"
+              href="/terms-and-conditions"
               className="text-purple-600 hover:text-purple-800 font-medium"
             >
               {" "}
@@ -99,7 +99,7 @@ export default async function LoginPage() {
             </Link>{" "}
             and
             <Link
-              href="https://www.chaibuilder.com/privacy-policy"
+              href="/privacy-policy"
               className="text-purple-600 hover:text-purple-800 font-medium"
             >
               {" "}
@@ -109,7 +109,7 @@ export default async function LoginPage() {
 
           <div className="mt-8 text-center">
             <Link
-              href="https://www.chaibuilder.com/docs"
+              href="/docs"
               className="text-sm text-gray-600 hover:text-purple-600"
             >
               Learn more about Chai Builder
