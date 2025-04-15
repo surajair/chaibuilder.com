@@ -6,13 +6,16 @@ import {
   getChaiPageData,
   getChaiPageSeoMetadata,
   getChaiPageStyles,
+  getChaiSiteSettings,
   NextPageProps,
 } from "@/chai";
 import PreviewBanner from "@/components/preview-banner";
 import "@/page-types";
 import { ChaiBlock } from "@chaibuilder/pages/builder";
 import { RenderChaiBlocks } from "@chaibuilder/pages/render";
+import { ChaiPageProps } from "@chaibuilder/pages/runtime";
 import { loadWebBlocks } from "@chaibuilder/pages/web-blocks";
+import { get } from "lodash";
 import isEmpty from "lodash/isEmpty";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
@@ -24,7 +27,19 @@ registerServerBlocks();
 export const dynamic = "force-static"; // Remove this if you want to use ssr mode
 
 export const generateMetadata = async (props: NextPageProps) => {
-  return await getChaiPageSeoMetadata({ params: await props.params });
+  const nextParams = await props.params;
+  const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
+
+  const siteSettings = await getChaiSiteSettings();
+  chaiBuilderPages.setFallbackLang(get(siteSettings, "fallbackLang", ""));
+  chaiBuilderPages.setLanguageFromSlug(nextParams.slug);
+  const chaiPage = await getChaiBuilderPage(slug);
+  const pageProps: ChaiPageProps = {
+    slug,
+    pageType: chaiPage.pageType,
+    fallbackLang: chaiBuilderPages.getFallbackLang(),
+  };
+  return await getChaiPageSeoMetadata(pageProps);
 };
 
 export default async function Page({
@@ -35,6 +50,9 @@ export default async function Page({
   const { isEnabled } = await draftMode();
   const nextParams = await params;
   const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
+
+  const siteSettings = await getChaiSiteSettings();
+  chaiBuilderPages.setFallbackLang(get(siteSettings, "fallbackLang", ""));
   chaiBuilderPages.setLanguageFromSlug(nextParams.slug);
 
   const chaiPage = await getChaiBuilderPage(slug);
@@ -43,12 +61,16 @@ export default async function Page({
     return notFound();
   }
 
+  const pageProps: ChaiPageProps = {
+    slug,
+    pageType: chaiPage.pageType,
+    fallbackLang: chaiBuilderPages.getFallbackLang(),
+  };
+
   const pageStyles = await getChaiPageStyles(chaiPage.blocks as ChaiBlock[]);
   const fallbackLang = chaiBuilderPages.getFallbackLang();
 
-  const pageData = await getChaiPageData(chaiPage.pageType, {
-    params: nextParams,
-  });
+  const pageData = await getChaiPageData(chaiPage.pageType, pageProps);
 
   return (
     <>
@@ -61,12 +83,8 @@ export default async function Page({
         externalData={pageData}
         blocks={chaiPage.blocks as unknown as ChaiBlock[]}
         fallbackLang={fallbackLang}
-        {...(!isEmpty(chaiPage.lang) && { lang: chaiPage.lang })}
-        metadata={{
-          params: nextParams,
-          pageType: chaiPage.pageType,
-          fallbackLang,
-        }}
+        lang={isEmpty(chaiPage.lang) ? fallbackLang : chaiPage.lang}
+        pageProps={pageProps}
       />
     </>
   );

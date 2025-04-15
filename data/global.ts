@@ -2,7 +2,8 @@ import { registerChaiGlobalDataProvider } from "@chaibuilder/pages/server";
 import { unstable_cache as nextCache } from "next/cache";
 import { cache } from "react";
 
-const globalDataProvider = cache(async (_lang: string) => {
+const globalDataProvider = cache(async ({ lang }: { lang: string }) => {
+  console.log("lang", lang);
   return await nextCache(
     async () => {
       return {

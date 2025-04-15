@@ -4,6 +4,7 @@ import { getStylesForBlocks } from "@chaibuilder/pages/render";
 import {
   ChaiBuilderPages,
   ChaiBuilderPagesBackend,
+  ChaiPageProps,
 } from "@chaibuilder/pages/server";
 import { ChaiBlock } from "@chaibuilder/sdk";
 import { each, isEmpty } from "lodash";
@@ -48,84 +49,80 @@ export const getChaiSiteSettings = cache(async () => {
 });
 
 export const getChaiPageData = cache(
-  async (pageType: string, props: { params: { slug: string[] } }) => {
+  async (pageType: string, props: ChaiPageProps) => {
     const pageData = await chaiBuilderPages.getPageData(pageType, props);
     return pageData;
   }
 );
 
-export const getChaiPageSeoMetadata = cache(
-  async ({ params }: { params: { slug: string[] } }) => {
-    const slug = params.slug ? `/${params.slug.join("/")}` : "/";
-    const pageData = await getChaiBuilderPage(slug);
-    let seoData = pageData?.seo ?? {};
-    // check if the seo json has any dynamic values. stringify and check if it has any dynamic values.
-    let seoJson = JSON.stringify(seoData);
-    const hasDynamicValues = seoJson.match(/\{\{.*?\}\}/g);
-    if (hasDynamicValues) {
-      const pageSeoFields = await getChaiPageData(pageData.pageType, {
-        params,
-      });
+export const getChaiPageSeoMetadata = cache(async (props: ChaiPageProps) => {
+  const slug = props.slug;
+  const pageData = await getChaiBuilderPage(slug);
+  let seoData = pageData?.seo ?? {};
+  // check if the seo json has any dynamic values. stringify and check if it has any dynamic values.
+  let seoJson = JSON.stringify(seoData);
+  const hasDynamicValues = seoJson.match(/\{\{.*?\}\}/g);
+  if (hasDynamicValues) {
+    const pageSeoFields = await getChaiPageData(pageData.pageType, props);
 
-      if (!isEmpty(pageSeoFields)) {
-        // Recursively get all possible paths from the pageSeoFields object
-        const replaceNestedValues = (
-          obj: Record<string, unknown>,
-          prefix = ""
-        ): { [key: string]: string } => {
-          let paths: { [key: string]: string } = {};
+    if (!isEmpty(pageSeoFields)) {
+      // Recursively get all possible paths from the pageSeoFields object
+      const replaceNestedValues = (
+        obj: Record<string, unknown>,
+        prefix = ""
+      ): { [key: string]: string } => {
+        let paths: { [key: string]: string } = {};
 
-          for (const key in obj) {
-            const value = obj[key];
-            const newPrefix = prefix ? `${prefix}.${key}` : key;
+        for (const key in obj) {
+          const value = obj[key];
+          const newPrefix = prefix ? `${prefix}.${key}` : key;
 
-            if (
-              typeof value === "object" &&
-              value !== null &&
-              !Array.isArray(value)
-            ) {
-              paths = {
-                ...paths,
-                ...replaceNestedValues(
-                  value as Record<string, unknown>,
-                  newPrefix
-                ),
-              };
-            } else if (!Array.isArray(value)) {
-              paths[newPrefix] = String(value);
-            }
+          if (
+            typeof value === "object" &&
+            value !== null &&
+            !Array.isArray(value)
+          ) {
+            paths = {
+              ...paths,
+              ...replaceNestedValues(
+                value as Record<string, unknown>,
+                newPrefix
+              ),
+            };
+          } else if (!Array.isArray(value)) {
+            paths[newPrefix] = String(value);
           }
+        }
 
-          return paths;
-        };
+        return paths;
+      };
 
-        const flattenedFields = replaceNestedValues(pageSeoFields);
+      const flattenedFields = replaceNestedValues(pageSeoFields);
 
-        // Replace all dynamic values with their corresponding values
-        each(flattenedFields, (value, path) => {
-          seoJson = seoJson.replace(`{{${path}}}`, value);
-        });
-      }
-
-      try {
-        seoData = JSON.parse(seoJson);
-      } catch (error) {
-        console.error("Error parsing SEO JSON:", error);
-      }
-      return seoData;
+      // Replace all dynamic values with their corresponding values
+      each(flattenedFields, (value, path) => {
+        seoJson = seoJson.replace(`{{${path}}}`, value);
+      });
     }
 
-    return {
-      title: seoData?.title,
-      description: seoData?.description,
-      openGraph: {
-        title: seoData?.ogTitle,
-        description: seoData?.ogDescription,
-        images: seoData?.ogImage ? [seoData?.ogImage] : [],
-      },
-    };
+    try {
+      seoData = JSON.parse(seoJson);
+    } catch (error) {
+      console.error("Error parsing SEO JSON:", error);
+    }
+    return seoData;
   }
-);
+
+  return {
+    title: seoData?.title,
+    description: seoData?.description,
+    openGraph: {
+      title: seoData?.ogTitle,
+      description: seoData?.ogDescription,
+      images: seoData?.ogImage ? [seoData?.ogImage] : [],
+    },
+  };
+});
 
 export const getChaiPageStyles = async (blocks: ChaiBlock[]) => {
   const styles = await getStylesForBlocks(blocks);
