@@ -127,7 +127,7 @@ function CreateSiteModal({
 
           <form onSubmit={handleSubmit}>
             <div className="space-y-4 py-4">
-              <div className="space-y-1">
+              <div className="space-y-2">
                 <Label htmlFor="name">Website Name</Label>
                 <Input
                   id="name"
@@ -139,8 +139,7 @@ function CreateSiteModal({
                   }
                   placeholder="Enter website name"
                   required
-                  disabled={loading}
-                  className="focus-visible:ring-0 border-0 focus-visible:ring-transparent border-b rounded-none px-0 !text-2xl text-purple-800 font-bold"
+                  className={`focus-visible:ring-0`}
                 />
               </div>
 
