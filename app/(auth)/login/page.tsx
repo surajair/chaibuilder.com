@@ -39,7 +39,9 @@ export default async function LoginPage() {
           <div className="border-2 border-2 rounded">
             <Logo shouldRedirect={false} />
           </div>
-          <h1 className="text-white text-3xl font-bold">Chai Builder</h1>
+          <h1 className="text-white text-3xl font-bold uppercase leading-tight tracking-wide">
+            Chai Builder
+          </h1>
         </div>
 
         {/* Main content */}

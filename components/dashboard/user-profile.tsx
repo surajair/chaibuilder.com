@@ -38,7 +38,7 @@ export function UserProfile({ user }: { user: User }) {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          className="relative rounded-full p-0 h-max pl-2 hover:border"
+          className="relative rounded-full p-0 h-max pl-2 border border-transparent hover:border-gray-100"
         >
           <span className="ml-1 leading-tight hidden sm:block">
             {user.user_metadata.name || user.email}
