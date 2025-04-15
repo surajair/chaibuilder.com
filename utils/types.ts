@@ -5,5 +5,4 @@ export type Site = {
   fallbackLang: string;
   languages: string[];
   apiKey: string;
-  user: string;
 };
