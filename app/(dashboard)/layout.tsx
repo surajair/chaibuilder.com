@@ -1,10 +1,12 @@
 import "@/app/(public)/public.css";
 import { getChaiSiteSettings } from "@/chai";
+import { Clarity } from "@/components/clarity";
 import { registerFonts } from "@/fonts";
 import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { get } from "lodash";
 import { Metadata } from "next";
+import Script from "next/script";
 import { Toaster } from "sonner";
 
 registerFonts();
@@ -64,6 +66,19 @@ export default async function DashboardLayout({
       <body className="font-body antialiased">
         <Toaster />
         {children}
+        <Clarity />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+          `}
+        </Script>
       </body>
     </html>
   );
