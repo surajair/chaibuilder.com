@@ -155,7 +155,7 @@ export function SiteDetailsModal({
               </>
             )}
 
-            <div className="space-y-1">
+            <div className="space-y-2">
               <Label htmlFor="name">Site Name</Label>
               <Input
                 id="name"
