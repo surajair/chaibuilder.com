@@ -6,7 +6,7 @@ export const encodedApiKey = (
   secretKey: string
 ): string => {
   // Generate a random component (16 bytes = 32 hex characters)
-  const randomizer = randomBytes(16).toString("hex");
+  const randomizer = randomBytes(4).toString("hex");
   const timestamp = Date.now();
   const data = `${randomizer}#${userId}#${appId}#${timestamp}`;
 

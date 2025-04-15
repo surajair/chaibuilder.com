@@ -3,6 +3,9 @@ import LoginButton from "@/components/auth/login-button";
 import { Logo } from "@/components/builder/logo";
 import { redirect } from "next/navigation";
 import { getSession } from "@/actions/get-user-action";
+import { registerFonts } from "@/fonts";
+
+registerFonts();
 
 export default async function LoginPage() {
   const session = await getSession();

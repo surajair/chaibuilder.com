@@ -41,13 +41,12 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
-    !pathname.startsWith("/login") &&
-    !pathname.startsWith("/auth") &&
-    pathname !== "/"
+    (pathname.startsWith("/sites") || pathname.startsWith("/chai"))
   ) {
     // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone();
+    const url = new URL(request.nextUrl.href);
     url.pathname = "/login";
+    url.search = "";
     return NextResponse.redirect(url);
   }
   // IMPORTANT: You *must* return the supabaseResponse object as it is. If you're
@@ -62,5 +61,18 @@ export async function updateSession(request: NextRequest) {
   //    return myNewResponse
   // If this is not done, you may be causing the browser and server to go out
   // of sync and terminate the user's session prematurely!
+
+  if (user && pathname.startsWith("/chai")) {
+    const userId = user?.id as string;
+    const allowedUsers = (process.env.ALLOWED_USER_IDS || []) as string[];
+    if (!allowedUsers.includes(userId)) {
+      // Redirecting to sites for not allowed logged in user
+      const url = new URL(request.nextUrl.href);
+      url.pathname = "/sites";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return supabaseResponse;
 }

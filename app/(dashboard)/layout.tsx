@@ -1,10 +1,13 @@
 import "@/app/(public)/public.css";
 import { getChaiSiteSettings } from "@/chai";
+import { registerFonts } from "@/fonts";
 import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { get } from "lodash";
 import { Metadata } from "next";
 import { Toaster } from "sonner";
+
+registerFonts();
 
 export const metadata: Metadata = {
   title: "Chaibuilder - Websites",
