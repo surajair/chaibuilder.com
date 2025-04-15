@@ -58,12 +58,14 @@ export const SiteMenu = ({ site }: { site: Site }) => {
           >
             Site Details
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => setShowDetailsModal(true)}
-            className="cursor-pointer hover:bg-gray-100"
-          >
-            API Key
-          </DropdownMenuItem>
+          {site?.apiKey?.length > 0 && (
+            <DropdownMenuItem
+              onClick={() => setShowDetailsModal(true)}
+              className="cursor-pointer hover:bg-gray-100"
+            >
+              API Key
+            </DropdownMenuItem>
+          )}
           <DropdownMenuSeparator className="border-t" />
           <DropdownMenuItem
             onClick={() => setShowDeleteConfirm(true)}

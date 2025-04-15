@@ -40,7 +40,6 @@ export function SiteDetailsModal({
   site,
   onOpenChange,
 }: SiteDetailsModalProps) {
-  const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showApiKey, setShowApiKey] = useState(false);
   const [showRevokeConfirm, setShowRevokeConfirm] = useState(false);
@@ -59,7 +58,6 @@ export function SiteDetailsModal({
     } catch (error) {
       toast.error("Failed to updated website data.");
     }
-    setIsEditing(false);
     setIsSaving(false);
   };
 
@@ -88,6 +86,8 @@ export function SiteDetailsModal({
     }
   };
 
+  const hasApiKey = site.apiKey?.length > 0;
+
   return (
     <>
       <Dialog open={true} onOpenChange={onOpenChange}>
@@ -100,56 +100,60 @@ export function SiteDetailsModal({
           </DialogHeader>
 
           <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="api-key">API Key</Label>
-              <div className="flex items-center space-x-2">
-                <div className="relative flex-1">
-                  <Input
-                    id="api-key"
-                    value={site.apiKey}
-                    type={showApiKey ? "text" : "password"}
-                    readOnly
-                    className="pr-9 h-10"
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => setShowApiKey(!showApiKey)}
-                  >
-                    {showApiKey ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                    <span className="sr-only">
-                      {showApiKey ? "Hide API key" : "Show API key"}
-                    </span>
-                  </Button>
+            {hasApiKey && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="api-key">API Key</Label>
+                  <div className="flex items-center space-x-2">
+                    <div className="relative flex-1">
+                      <Input
+                        id="api-key"
+                        value={site.apiKey}
+                        type={showApiKey ? "text" : "password"}
+                        readOnly
+                        className="pr-9 h-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3"
+                        onClick={() => setShowApiKey(!showApiKey)}
+                      >
+                        {showApiKey ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                        <span className="sr-only">
+                          {showApiKey ? "Hide API key" : "Show API key"}
+                        </span>
+                      </Button>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      onClick={() => {
+                        navigator.clipboard.writeText(site.apiKey);
+                        toast.success("API key copied");
+                      }}
+                    >
+                      <CopyIcon className="h-4 w-4" />
+                      <span className="sr-only">Copy API key</span>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowRevokeConfirm(true)}
+                    >
+                      Revoke
+                    </Button>
+                  </div>
                 </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="icon"
-                  onClick={() => {
-                    navigator.clipboard.writeText(site.apiKey);
-                    toast.success("API key copied");
-                  }}
-                >
-                  <CopyIcon className="h-4 w-4" />
-                  <span className="sr-only">Copy API key</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowRevokeConfirm(true)}
-                >
-                  Revoke
-                </Button>
-              </div>
-            </div>
 
-            <Separator />
+                <Separator />
+              </>
+            )}
 
             <div className="space-y-1">
               <Label htmlFor="name">Site Name</Label>
@@ -161,10 +165,10 @@ export function SiteDetailsModal({
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
-                readOnly={!isEditing || isSaving}
+                disabled={isSaving}
                 placeholder="Enter website name"
                 required
-                className={`focus-visible:ring-0 border-0 focus-visible:ring-transparent rounded-none px-0 !text-2xl text-purple-800 font-bold ${isEditing ? "border-b" : ""}`}
+                className={`focus-visible:ring-0`}
               />
             </div>
 
@@ -192,18 +196,11 @@ export function SiteDetailsModal({
                   return (
                     <Button
                       key={lang.code}
-                      variant={isSelected ? "default" : "outline"}
+                      variant={isSelected ? "secondary" : "outline"}
                       size="sm"
-                      onClick={() => isEditing && toggleLanguage(lang.code)}
-                      disabled={
-                        !isEditing ||
-                        isSaving ||
-                        lang.code === site.fallbackLang ||
-                        (lang.code !== site.fallbackLang &&
-                          !formData.languages.includes(lang.code) &&
-                          !isEditing)
-                      }
-                      className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700" : "hover:bg-gray-100 duration-300"}`}
+                      onClick={() => toggleLanguage(lang.code)}
+                      disabled={isSaving || lang.code === site.fallbackLang}
+                      className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700 text-white" : "hover:bg-gray-100 duration-300"}`}
                     >
                       {lang.name}
                     </Button>
@@ -214,48 +211,31 @@ export function SiteDetailsModal({
           </div>
 
           <DialogFooter>
-            {isEditing ? (
-              <>
-                <Button
-                  variant="outline"
-                  disabled={isSaving}
-                  onClick={() => {
-                    setFormData({
-                      name: site.name,
-                      languages: site.languages,
-                    });
-                    setIsEditing(false);
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleSave}
-                  disabled={isSaving}
-                  className="bg-gray-900 hover:bg-gray-700 flex items-center gap-x-1.5 min-w-24"
-                >
-                  {isSaving ? (
-                    <>
-                      <Loader fullscreen={false} />
-                    </>
-                  ) : (
-                    <>Save Changes</>
-                  )}
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button variant="outline" onClick={() => onOpenChange(false)}>
-                  Close
-                </Button>
-                <Button
-                  onClick={() => setIsEditing(true)}
-                  className="bg-gray-900 hover:bg-gray-700 w-24"
-                >
-                  Edit
-                </Button>
-              </>
-            )}
+            <Button
+              variant="outline"
+              disabled={isSaving}
+              onClick={() => {
+                setFormData({
+                  name: site.name,
+                  languages: site.languages,
+                });
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSave}
+              disabled={isSaving}
+              className="bg-gray-900 hover:bg-gray-700 flex items-center gap-x-1.5 min-w-24"
+            >
+              {isSaving ? (
+                <>
+                  <Loader fullscreen={false} />
+                </>
+              ) : (
+                <>Save Changes</>
+              )}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
