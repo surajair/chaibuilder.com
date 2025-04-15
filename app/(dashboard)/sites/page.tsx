@@ -63,7 +63,7 @@ export default async function ChaibuilderWebsites() {
               return (
                 <div
                   key={site.id}
-                  className="overflow-hidden relative w-full sm:max-w-sm border border-gray-200 rounded-lg group dark:bg-gray-800 dark:border-gray-700 p-8 bg-white"
+                  className="overflow-hidden relative w-full sm:max-w-sm border border-gray-200 hover:border-gray-400 duration-300 rounded-lg group dark:bg-gray-800 dark:border-gray-700 p-8 bg-white"
                 >
                   {isNew(site) && (
                     <div className="bg-green-600 px-3 py-1.5 text-white absolute top-0 left-0 text-xs rounded-br-lg">
