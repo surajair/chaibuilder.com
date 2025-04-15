@@ -16,7 +16,7 @@ export default function Loader({
       />
     );
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm">
+    <div className="fixed inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm pointer-events-none z-[999999]">
       <div
         className={`animate-spin w-8 h-8 border-8 border-dashed rounded-full border-fuchsia-500 ${className}`}
       />

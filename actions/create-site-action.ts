@@ -6,6 +6,8 @@ import { Site } from "@/utils/types";
 import { revalidatePath } from "next/cache";
 import { encodedApiKey } from "@/utils/api-key";
 
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY as string;
+
 const DEFAULT_THEME = {
   fontFamily: {
     heading: "Poppins",
@@ -62,7 +64,7 @@ export async function createSite(formData: Partial<Site>) {
     if (onlineError) throw onlineError;
 
     // Creating and adding api key
-    const apiKey = encodedApiKey(user.id, appData.id);
+    const apiKey = encodedApiKey(user.id, appData.id, ENCRYPTION_KEY);
     const { error: apiKeyError } = await supabaseServer
       .from("app_api_keys")
       .insert({ apiKey, app: appData.id });

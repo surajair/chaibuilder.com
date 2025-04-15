@@ -5,10 +5,12 @@ import { Site } from "@/utils/types";
 import { revalidatePath } from "next/cache";
 import { encodedApiKey } from "@/utils/api-key";
 
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY as string;
+
 export async function revokeApiKey(site: Site) {
   try {
     // Generate new API key
-    const newApiKey = encodedApiKey(site.user, site.id);
+    const newApiKey = encodedApiKey(site.user, site.id, ENCRYPTION_KEY);
 
     // Update the API key in app_api_keys table
     const { data, error } = await supabaseServer
