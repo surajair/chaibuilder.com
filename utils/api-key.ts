@@ -2,13 +2,12 @@ import { createHmac, randomBytes } from "crypto";
 
 export const encodedApiKey = (appId: string, secretKey: string): string => {
   // Generate a random component (16 bytes = 32 hex characters)
-  const randomizer = randomBytes(4).toString("hex");
-  const timestamp = Date.now();
+  const randomizer = randomBytes(3).toString("hex");
+  const timestamp = Date.now().toString(36);
   const data = `${randomizer}#${appId}#${timestamp}`;
-
-  const hmac = createHmac("sha256", secretKey);
-  hmac.update(data);
-  const signature = hmac.digest("hex");
+  const signature = createHmac("sha256", secretKey)
+    .update(data)
+    .digest("base64url");
   const apiKey = Buffer.from(`${data}:${signature}`).toString("base64");
   return apiKey;
 };
@@ -27,9 +26,9 @@ export const decodedApiKey = (
     if (!data || !signature) return { isValid: false };
 
     // Verify the signature
-    const hmac = createHmac("sha256", secretKey);
-    hmac.update(data);
-    const expectedSignature = hmac.digest("hex");
+    const expectedSignature = createHmac("sha256", secretKey)
+      .update(data)
+      .digest("base64url");
     if (signature !== expectedSignature) return { isValid: false };
 
     // Parse the data - now randomComponent is first
@@ -40,7 +39,7 @@ export const decodedApiKey = (
       isValid: true,
       data: {
         appId,
-        timestamp: parseInt(timestamp, 10),
+        timestamp: parseInt(timestamp, 36),
       },
     };
   } catch (error) {
