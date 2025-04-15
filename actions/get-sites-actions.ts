@@ -9,7 +9,6 @@ export async function getSites(userId: string) {
       `
       id,
       name,
-      user,
       createdAt,
       fallbackLang,
       languages,
