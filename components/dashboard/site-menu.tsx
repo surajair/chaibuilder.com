@@ -83,7 +83,7 @@ export const SiteMenu = ({ site }: { site: Site }) => {
             onClick={() => window.open("/docs/dev/setup-locally", "_blank")}
             className="cursor-pointer text-gray-500 hover:bg-gray-100"
           >
-            Setup
+            Setup Locally
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => window.open("/docs/dev/deploy-to-vercel", "_blank")}
