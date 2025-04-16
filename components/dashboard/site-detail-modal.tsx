@@ -33,7 +33,6 @@ const AVAILABLE_LANGUAGES = [
   { name: "French", code: "fr" },
   { name: "Portuguese", code: "pt" },
   { name: "Russian", code: "ru" },
-  { name: "Japanese", code: "ja" },
 ];
 
 export function SiteDetailsModal({
