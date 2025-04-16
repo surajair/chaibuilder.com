@@ -33,7 +33,7 @@ export class SupabaseUserManagement
     /**
      * TODO: implement user active status checks in the future
      */
-    const allowedUsers = (process.env.ALLOWED_USER_IDS || []) as string[];
+    const allowedUsers = (process.env.ALLOWED_USER_IDS || "") as string;
     return allowedUsers.includes(userId);
   }
 
