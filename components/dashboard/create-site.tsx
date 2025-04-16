@@ -74,8 +74,9 @@ function CreateSiteModal({
           return {
             message: "Website created successfully",
             action: {
-              label: "Deploy to vercel",
-              onClick: () => alert("View site. Coming soon..."),
+              label: "Deploy to Vercel",
+              onClick: () =>
+                window.open("/docs/dev/deploy-to-vercel", "_blank"),
             },
           };
         },

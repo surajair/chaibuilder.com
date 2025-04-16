@@ -50,25 +50,38 @@ export function SiteDetailsModal({
 
   const handleSave = async () => {
     try {
-      setIsSaving(true);
-
-      await updateSite(site.id, formData);
-      onOpenChange(false);
-      toast.success("Website details updated successfully.");
+      toast.promise(updateSite(site.id, formData), {
+        loading: "Saving changes...",
+        success: () => {
+          onOpenChange(false);
+          return "Website details updated successfully";
+        },
+        error: () => "Failed to update website data",
+        position: "top-center",
+      });
     } catch (error) {
-      toast.error("Failed to updated website data.");
+      console.error("Error updating site:", error);
     }
-    setIsSaving(false);
+    onOpenChange(false);
   };
 
   const handleRevokeApiKey = async () => {
     try {
-      await revokeApiKey(site);
-      toast.success("Website API key revoked successfully.");
-    } catch (error) {
-      toast.error("Failed to revoke website API key.");
-    }
+      setIsSaving(true);
+      setShowApiKey(false);
 
+      toast.promise(revokeApiKey(site), {
+        loading: "Revoking API key...",
+        success: () => {
+          setIsSaving(false);
+          return "API key revoked successfully";
+        },
+        error: () => "Failed to revoke API key",
+        position: "top-center",
+      });
+    } catch (error) {
+      console.error("Error revoking API key:", error);
+    }
     setShowRevokeConfirm(false);
   };
 
@@ -119,6 +132,7 @@ export function SiteDetailsModal({
                         size="icon"
                         className="absolute right-0 top-0 h-full px-3"
                         onClick={() => setShowApiKey(!showApiKey)}
+                        disabled={isSaving}
                       >
                         {showApiKey ? (
                           <EyeOff className="h-4 w-4" />
@@ -134,6 +148,7 @@ export function SiteDetailsModal({
                       type="button"
                       variant="outline"
                       size="icon"
+                      disabled={isSaving}
                       onClick={() => {
                         navigator.clipboard.writeText(site.apiKey);
                         toast.success("API key copied");
@@ -144,6 +159,7 @@ export function SiteDetailsModal({
                     </Button>
                     <Button
                       variant="outline"
+                      disabled={isSaving}
                       onClick={() => setShowRevokeConfirm(true)}
                     >
                       Revoke
