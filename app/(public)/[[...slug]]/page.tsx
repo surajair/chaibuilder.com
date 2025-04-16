@@ -31,7 +31,7 @@ export const generateMetadata = async (props: NextPageProps) => {
   const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
 
   const siteSettings = await getChaiSiteSettings();
-  chaiBuilderPages.setFallbackLang(get(siteSettings, "fallbackLang", ""));
+  chaiBuilderPages.setFallbackLang(get(siteSettings, "fallbackLang", "en"));
   chaiBuilderPages.setLanguageFromSlug(nextParams.slug);
   const chaiPage = await getChaiBuilderPage(slug);
   const pageProps: ChaiPageProps = {
