@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { createApiKey } from "@/actions/create-site-action";
+import { revokeApiKey } from "@/actions/revoke-api-action";
+import { updateSite } from "@/actions/update-site-action";
 import { Button } from "@/components/ui/button";
+import { Site } from "@/utils/types";
 import {
   Dialog,
   DialogContent,
@@ -13,13 +16,11 @@ import {
   Label,
   Separator,
 } from "@chaibuilder/sdk/ui";
-import { CopyIcon, Eye, EyeOff } from "lucide-react";
-import { ConfirmDialog } from "./confirm-dialog";
-import { Site } from "@/utils/types";
-import { toast } from "sonner";
-import { updateSite } from "@/actions/update-site-action";
-import { revokeApiKey } from "@/actions/revoke-api-action";
 import { find } from "lodash";
+import { CopyIcon, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ConfirmDialog } from "./confirm-dialog";
 import Loader from "./loader";
 
 interface SiteDetailsModalProps {
@@ -46,6 +47,7 @@ export function SiteDetailsModal({
     name: site.name,
     languages: site.languages,
   });
+  const [localApiKey, setLocalApiKey] = useState(site.apiKey || "");
 
   const handleSave = async () => {
     try {
@@ -84,6 +86,22 @@ export function SiteDetailsModal({
     setShowRevokeConfirm(false);
   };
 
+  const handleCreateApiKey = async () => {
+    setIsSaving(true);
+    try {
+      const res = await createApiKey(site.id);
+      if (res.success) {
+        setLocalApiKey(res.apiKey);
+        toast.success("API key created successfully");
+      } else {
+        toast.error(res.error || "Failed to create API key");
+      }
+    } catch (error) {
+      toast.error("Failed to create API key");
+    }
+    setIsSaving(false);
+  };
+
   const toggleLanguage = (lang: string) => {
     if (formData.languages.includes(lang)) {
       setFormData({
@@ -98,7 +116,7 @@ export function SiteDetailsModal({
     }
   };
 
-  const hasApiKey = site.apiKey?.length > 0;
+  const hasApiKey = (localApiKey || site.apiKey)?.length > 0;
 
   return (
     <>
@@ -112,7 +130,7 @@ export function SiteDetailsModal({
           </DialogHeader>
 
           <div className="space-y-4 py-4">
-            {hasApiKey && (
+            {hasApiKey ? (
               <>
                 <div className="space-y-2">
                   <Label htmlFor="api-key">API Key</Label>
@@ -120,7 +138,7 @@ export function SiteDetailsModal({
                     <div className="relative flex-1">
                       <Input
                         id="api-key"
-                        value={site.apiKey}
+                        value={localApiKey || site.apiKey}
                         type={showApiKey ? "text" : "password"}
                         readOnly
                         className="pr-9 h-10"
@@ -131,8 +149,7 @@ export function SiteDetailsModal({
                         size="icon"
                         className="absolute right-0 top-0 h-full px-3"
                         onClick={() => setShowApiKey(!showApiKey)}
-                        disabled={isSaving}
-                      >
+                        disabled={isSaving}>
                         {showApiKey ? (
                           <EyeOff className="h-4 w-4" />
                         ) : (
@@ -149,18 +166,18 @@ export function SiteDetailsModal({
                       size="icon"
                       disabled={isSaving}
                       onClick={() => {
-                        navigator.clipboard.writeText(site.apiKey);
+                        navigator.clipboard.writeText(
+                          localApiKey || site.apiKey
+                        );
                         toast.success("API key copied");
-                      }}
-                    >
+                      }}>
                       <CopyIcon className="h-4 w-4" />
                       <span className="sr-only">Copy API key</span>
                     </Button>
                     <Button
                       variant="outline"
                       disabled={isSaving}
-                      onClick={() => setShowRevokeConfirm(true)}
-                    >
+                      onClick={() => setShowRevokeConfirm(true)}>
                       Revoke
                     </Button>
                   </div>
@@ -168,6 +185,22 @@ export function SiteDetailsModal({
 
                 <Separator />
               </>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor="api-key">API Key</Label>
+                <div className="flex items-center space-x-2">
+                  <Button
+                    onClick={handleCreateApiKey}
+                    disabled={isSaving}
+                    className="bg-gray-900 hover:bg-gray-700 min-w-32">
+                    {isSaving ? (
+                      <Loader fullscreen={false} />
+                    ) : (
+                      "Create API Key"
+                    )}
+                  </Button>
+                </div>
+              </div>
             )}
 
             <div className="space-y-2">
@@ -215,8 +248,7 @@ export function SiteDetailsModal({
                       size="sm"
                       onClick={() => toggleLanguage(lang.code)}
                       disabled={isSaving || lang.code === site.fallbackLang}
-                      className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700 text-white" : "hover:bg-gray-100 duration-300"}`}
-                    >
+                      className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700 text-white" : "hover:bg-gray-100 duration-300"}`}>
                       {lang.name}
                     </Button>
                   );
@@ -230,19 +262,14 @@ export function SiteDetailsModal({
               variant="outline"
               disabled={isSaving}
               onClick={() => {
-                setFormData({
-                  name: site.name,
-                  languages: site.languages,
-                });
-              }}
-            >
+                onOpenChange(false);
+              }}>
               Cancel
             </Button>
             <Button
               onClick={handleSave}
               disabled={isSaving}
-              className="bg-gray-900 hover:bg-gray-700 flex items-center gap-x-1.5 min-w-24"
-            >
+              className="bg-gray-900 hover:bg-gray-700 flex items-center gap-x-1.5 min-w-24">
               {isSaving ? (
                 <>
                   <Loader fullscreen={false} />

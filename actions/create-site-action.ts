@@ -1,10 +1,10 @@
 "use server";
 
 import { supabaseServer } from "@/chai/supabase.server";
-import { getUser } from "./get-user-action";
+import { encodedApiKey } from "@/utils/api-key";
 import { Site } from "@/utils/types";
 import { revalidatePath } from "next/cache";
-import { encodedApiKey } from "@/utils/api-key";
+import { getUser } from "./get-user-action";
 
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY as string;
 
@@ -84,5 +84,24 @@ export async function createSite(formData: Partial<Site>) {
     return { success: true, data: appData };
   } catch (error: any) {
     return { success: false, error: error?.message || "An error occurred" };
+  }
+}
+
+export async function createApiKey(appId: string) {
+  try {
+    const apiKey = encodedApiKey(appId, ENCRYPTION_KEY);
+    const { data, error } = await supabaseServer
+      .from("app_api_keys")
+      .insert({ apiKey, app: appId })
+      .select()
+      .single();
+    if (error) throw error;
+    revalidatePath("/sites");
+    return { success: true, apiKey: data.apiKey };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error?.message || "Failed to create API key",
+    };
   }
 }

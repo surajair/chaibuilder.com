@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteSite } from "@/actions/delete-site-action";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,15 +8,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "../ui/button";
+import { Site } from "@/utils/types";
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
-import { ConfirmDialog } from "./confirm-dialog";
-import { deleteSite } from "@/actions/delete-site-action";
-import { Site } from "@/utils/types";
 import { toast } from "sonner";
-import { SiteDetailsModal } from "./site-detail-modal";
+import { Button } from "../ui/button";
+import { ConfirmDialog } from "./confirm-dialog";
 import Loader from "./loader";
+import { SiteDetailsModal } from "./site-detail-modal";
 
 export const SiteMenu = ({ site }: { site: Site }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -46,8 +46,7 @@ export const SiteMenu = ({ site }: { site: Site }) => {
             variant="ghost"
             size="icon"
             disabled={isDeleting}
-            className="h-8 w-8 hover:bg-gray-100"
-          >
+            className="h-8 w-8 hover:bg-gray-100">
             {isDeleting ? (
               <Loader fullscreen={false} />
             ) : (
@@ -59,37 +58,21 @@ export const SiteMenu = ({ site }: { site: Site }) => {
         <DropdownMenuContent align="end" className="bg-white cursor-pointer">
           <DropdownMenuItem
             onClick={() => setShowDetailsModal(true)}
-            className="cursor-pointer hover:bg-gray-100"
-          >
+            className="cursor-pointer hover:bg-gray-100">
             Site Details
           </DropdownMenuItem>
           {site?.apiKey?.length > 0 && (
             <DropdownMenuItem
               onClick={() => setShowDetailsModal(true)}
-              className="cursor-pointer hover:bg-gray-100"
-            >
+              className="cursor-pointer hover:bg-gray-100">
               API Key
             </DropdownMenuItem>
           )}
           <DropdownMenuSeparator className="border-t" />
           <DropdownMenuItem
             onClick={() => setShowDeleteConfirm(true)}
-            className="text-red-600 cursor-pointer hover:bg-gray-100"
-          >
+            className="text-red-600 cursor-pointer hover:bg-gray-100">
             Delete Site
-          </DropdownMenuItem>
-          <DropdownMenuSeparator className="border-t" />
-          <DropdownMenuItem
-            onClick={() => window.open("/docs/dev/setup-locally", "_blank")}
-            className="cursor-pointer text-gray-500 hover:bg-gray-100"
-          >
-            Setup Locally
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => window.open("/docs/dev/deploy-to-vercel", "_blank")}
-            className="cursor-pointer text-gray-500 hover:bg-gray-100"
-          >
-            Deploy to Vercel
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

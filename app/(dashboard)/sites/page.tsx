@@ -1,9 +1,9 @@
-import { Logo } from "@/components/builder/logo";
-import { CreateSite } from "@/components/dashboard/create-site";
-import { UserProfile } from "@/components/dashboard/user-profile";
-import { SiteMenu } from "@/components/dashboard/site-menu";
 import { getSites } from "@/actions/get-sites-actions";
 import { getUser } from "@/actions/get-user-action";
+import { Logo } from "@/components/builder/logo";
+import { CreateSite } from "@/components/dashboard/create-site";
+import SiteCard from "@/components/dashboard/site-card";
+import { UserProfile } from "@/components/dashboard/user-profile";
 import { Site } from "@/utils/types";
 
 // Check if site was created in the last 2 minutes
@@ -58,36 +58,10 @@ export default async function ChaibuilderWebsites() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 overflow-y-auto">
-            {sites.map((site, index) => {
-              return (
-                <div
-                  key={site.id}
-                  className="overflow-hidden relative w-full sm:max-w-sm border border-gray-200 hover:border-gray-400 duration-300 rounded-lg group dark:bg-gray-800 dark:border-gray-700 p-8 bg-white"
-                >
-                  {isNew(site) && (
-                    <div className="bg-green-600 px-3 py-1.5 text-white absolute top-0 left-0 text-xs rounded-br-lg">
-                      New
-                    </div>
-                  )}
-                  <div className="absolute top-2 right-2">
-                    <SiteMenu site={site} />
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <h1 className="text-5xl text-gray-300 font-black group-hover:text-primary duration-300">
-                      <span className="text-gray-200 font-light">#</span>
-                      {index + 1}
-                    </h1>
-                    <h5 className="mb-1 pt-8 text-xl font-black text-gray-900 dark:text-white font-bold">
-                      {site.name}
-                    </h5>
-                    <span className="text-sm text-gray-500 dark:text-gray-400 text-sm">
-                      {formatDate(site.createdAt)}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="grid gap-6 w-full sm:grid-cols-2 lg:grid-cols-3 overflow-y-auto">
+            {sites.map((site, index) => (
+              <SiteCard key={site.id} site={site} index={index} />
+            ))}
           </div>
         )}
       </main>

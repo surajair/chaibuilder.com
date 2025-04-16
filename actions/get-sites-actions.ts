@@ -17,7 +17,8 @@ export async function getSites(userId: string) {
       )
     `
     )
-    .eq("user", userId);
+    .eq("user", userId)
+    .is("deletedAt", null);
 
   if (error) throw error;
 
