@@ -64,7 +64,7 @@ export default async function DashboardLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <Toaster />
+        <Toaster richColors />
         {children}
         <Clarity />
         <Script
