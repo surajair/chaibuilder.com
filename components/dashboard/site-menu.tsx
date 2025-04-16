@@ -85,6 +85,12 @@ export const SiteMenu = ({ site }: { site: Site }) => {
           >
             Setup
           </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => window.open("/docs/dev/deploy-to-vercel", "_blank")}
+            className="cursor-pointer text-gray-500 hover:bg-gray-100"
+          >
+            Deploy to Vercel
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
