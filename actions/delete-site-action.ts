@@ -4,6 +4,10 @@ import { supabaseServer } from "@/chai/supabase.server";
 import { getSession } from "./get-user-action";
 import { revalidatePath } from "next/cache";
 
+const noIsNotFound = (error: any) => {
+  return error && !error.message.includes("not found");
+};
+
 export async function deleteSite(siteId: string) {
   // Get current user's session
   const session = await getSession();
@@ -16,14 +20,19 @@ export async function deleteSite(siteId: string) {
     .from("libraries")
     .delete()
     .eq("app", siteId);
-  if (libraryError) throw libraryError;
+
+  if (noIsNotFound(libraryError)) {
+    throw libraryError;
+  }
 
   // Delete from app_api_keys table
   const { error: apiKeyError } = await supabaseServer
     .from("app_api_keys")
     .delete()
     .eq("app", siteId);
-  if (apiKeyError) throw apiKeyError;
+  if (noIsNotFound(apiKeyError)) {
+    throw apiKeyError;
+  }
 
   // Delete from apps_online table
   const { error: onlineError } = await supabaseServer
@@ -31,7 +40,9 @@ export async function deleteSite(siteId: string) {
     .delete()
     .eq("id", siteId)
     .eq("user", session?.user?.id);
-  if (onlineError) throw onlineError;
+  if (noIsNotFound(onlineError)) {
+    throw onlineError;
+  }
 
   // Finally delete from apps table
   const { error } = await supabaseServer
@@ -40,7 +51,9 @@ export async function deleteSite(siteId: string) {
     .eq("id", siteId)
     .eq("user", session?.user?.id);
 
-  if (error) throw error;
+  if (noIsNotFound(error)) {
+    throw error;
+  }
 
   revalidatePath("/sites");
   return true;
