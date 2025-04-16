@@ -106,8 +106,7 @@ export const BlogsListConfig = {
   group: "Custom",
   category: "core",
   pageTypes: ["listing"],
-  dataProvider: (block: ChaiBlock, _lang: string) => {
-    console.log("lang", _lang);
+  dataProvider: ({ block }: { block: ChaiBlock }) => {
     const { blogCount = 3 } = block;
     return {
       blogs: [

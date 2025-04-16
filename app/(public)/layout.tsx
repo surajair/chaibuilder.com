@@ -27,7 +27,6 @@ export default async function RootLayout({
   if ("error" in siteSettings) {
     console.error(siteSettings.error);
   }
-  chaiBuilderPages.setFallbackLang(get(siteSettings, "fallbackLang", ""));
 
   // Add empty theme object as fallback
   const theme = get(siteSettings, "theme", {});

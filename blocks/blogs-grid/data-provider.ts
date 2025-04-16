@@ -1,6 +1,10 @@
 import { ChaiBlock } from "@chaibuilder/sdk";
 
-export const blogsGridDataProvider = async (block: ChaiBlock) => {
+export const blogsGridDataProvider = async ({
+  block,
+}: {
+  block: ChaiBlock;
+}) => {
   const { blogCount } = block;
   const response = await fetch("https://jsonplaceholder.typicode.com/photos");
   // pick on 10 posts
