@@ -40,9 +40,9 @@ export default function ChaiBuilderPagesWrapper() {
     <QueryClientProvider client={queryClient}>
       <ChaiBuilderPages
         themePresets={[
-          { orange: orangePreset },
-          { green: greenPreset },
-          { blue: bluePreset },
+          { orange: orangePreset as any },
+          { green: greenPreset as any },
+          { blue: bluePreset as any },
         ]}
         getPreviewUrl={(slug: string) => `/chai/api/preview?slug=${slug}`}
         autoSaveSupport={false}
