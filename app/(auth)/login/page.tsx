@@ -1,3 +1,4 @@
+import LoginButton from "@/components/auth/login-button";
 import LoginForm from "@/components/auth/login-form";
 import Link from "next/link";
 
@@ -23,6 +24,10 @@ export default async function LoginPage() {
           </Link>
         </p>
       </div>
+
+      <div className="my-6 text-center text-xs text-gray-500"> OR</div>
+
+      <LoginButton />
     </>
   );
 }
