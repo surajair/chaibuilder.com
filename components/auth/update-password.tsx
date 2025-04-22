@@ -7,7 +7,13 @@ import { toast } from "sonner";
 import { EyeIcon, EyeClosed, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 
-export default function UpdatePassword() {
+interface UpdatePasswordProps {
+  type?: "set" | "reset" | "change";
+}
+
+export default function UpdatePassword({
+  type = "change",
+}: UpdatePasswordProps) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -16,6 +22,12 @@ export default function UpdatePassword() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const buttonText = {
+    set: "Set Password",
+    reset: "Reset Password",
+    change: "Change Password",
+  }[type];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +111,7 @@ export default function UpdatePassword() {
                 setShowPassword(!showPassword);
               }}
             >
-              {showPassword ? <EyeIcon /> : <EyeClosed />}
+              {!showPassword ? <EyeIcon /> : <EyeClosed />}
             </Button>
           </div>
         </div>
@@ -125,7 +137,7 @@ export default function UpdatePassword() {
               }}
               className="absolute right-0 top-1/2 -translate-y-1/2 w-8 hover:bg-transparent hover:text-gray-500"
             >
-              {showConfirmPassword ? <EyeIcon /> : <EyeClosed />}
+              {!showConfirmPassword ? <EyeIcon /> : <EyeClosed />}
             </Button>
           </div>
         </div>
@@ -134,7 +146,7 @@ export default function UpdatePassword() {
           className="w-full bg-fuchsia-800 hover:bg-fuchsia-700"
           disabled={isLoading}
         >
-          {isLoading ? "Updating..." : "Update Password"}
+          {isLoading ? "Updating..." : buttonText}
         </Button>
       </form>
     </>

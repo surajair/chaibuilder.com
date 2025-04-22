@@ -76,7 +76,7 @@ export default function LoginForm() {
                 setShowPassword(!showPassword);
               }}
             >
-              {showPassword ? <EyeIcon /> : <EyeClosed />}
+              {!showPassword ? <EyeIcon /> : <EyeClosed />}
             </Button>
           </div>
         </div>

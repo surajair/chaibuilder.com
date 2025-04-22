@@ -97,7 +97,7 @@ export default function SignupForm() {
                 setShowPassword(!showPassword);
               }}
             >
-              {showPassword ? <EyeIcon /> : <EyeClosed />}
+              {!showPassword ? <EyeIcon /> : <EyeClosed />}
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
@@ -127,7 +127,7 @@ export default function SignupForm() {
                 setShowConfirmPassword(!showConfirmPassword);
               }}
             >
-              {showConfirmPassword ? <EyeIcon /> : <EyeClosed />}
+              {!showConfirmPassword ? <EyeIcon /> : <EyeClosed />}
             </Button>
           </div>
         </div>

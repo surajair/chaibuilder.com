@@ -3,7 +3,26 @@ import { Logo } from "@/components/builder/logo";
 import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
 
-export default function UpdatePasswordPage() {
+type PasswordType = "set" | "reset" | "change";
+
+export default function UpdatePasswordPage({
+  searchParams,
+}: {
+  searchParams: { type?: PasswordType };
+}) {
+  const type = (searchParams.type || "change") as PasswordType;
+  const title = {
+    set: "Set your password",
+    reset: "Reset your password",
+    change: "Change your password",
+  }[type];
+
+  const description = {
+    set: "Set a password for your account to enhance security",
+    reset: "Enter your new password below",
+    change: "Enter your new password below",
+  }[type];
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <header className="border-b bg-white">
@@ -29,14 +48,14 @@ export default function UpdatePasswordPage() {
               <Logo width={50} height={50} shouldRedirect={false} />
             </div>
             <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Reset your password
+              {title}
             </h2>
 
             <p className="mt-2 text-center text-sm text-gray-600">
-              Enter your new password below
+              {description}
             </p>
           </div>
-          <UpdatePassword />
+          <UpdatePassword type={type} />
         </div>
       </div>
     </div>
