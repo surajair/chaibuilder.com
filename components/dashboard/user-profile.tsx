@@ -65,6 +65,13 @@ export function UserProfile({ user }: { user: User }) {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => router.push("/update-password")}
+          disabled={isSigningOut}
+        >
+          Change Password
+        </DropdownMenuItem>
+        <DropdownMenuItem
           className="cursor-pointer hover:bg-gray-100 text-red-800"
           onClick={handleSignOut}
           disabled={isSigningOut}

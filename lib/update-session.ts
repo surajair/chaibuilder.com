@@ -41,7 +41,9 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
-    (pathname.startsWith("/sites") || pathname.startsWith("/chai"))
+    (pathname.startsWith("/sites") ||
+      pathname.startsWith("/chai") ||
+      pathname.startsWith("/update-password"))
   ) {
     // no user, potentially respond by redirecting the user to the login page
     const url = new URL(request.nextUrl.href);
