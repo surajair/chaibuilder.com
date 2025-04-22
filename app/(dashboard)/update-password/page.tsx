@@ -10,7 +10,7 @@ export default function UpdatePasswordPage({
 }: {
   searchParams: { type?: PasswordType };
 }) {
-  const type = (searchParams.type || "change") as PasswordType;
+  const type = (searchParams?.type || "change") as PasswordType;
   const title = {
     set: "Set your password",
     reset: "Reset your password",
