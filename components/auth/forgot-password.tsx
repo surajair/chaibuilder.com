@@ -2,12 +2,55 @@
 
 import { Button, Input, Label } from "@chaibuilder/sdk/ui";
 import { useState } from "react";
+import { resetPassword } from "@/actions/user-auth-action";
+import { toast } from "sonner";
+import Link from "next/link";
 
 export default function ForgetPassword() {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      await resetPassword(email);
+      setIsSubmitted(true);
+      toast.success("Password reset link sent! Please check your email.", {
+        position: "top-right",
+      });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Failed to send reset link",
+        {
+          position: "top-right",
+        }
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isSubmitted) {
+    return (
+      <div className="space-y-4 text-center">
+        <h2 className="text-normal font-semibold">Check your email</h2>
+        <p className="text-muted-foreground">
+          We&apos;ve sent a password reset link to {email}. Please check your
+          email and follow the instructions to reset your password.
+        </p>
+        <br />
+        <Link
+          href="/login"
+          className="w-full bg-fuchsia-800 hover:bg-fuchsia-700 text-white font-medium py-2 px-16 rounded"
+        >
+          Go to login
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <>
