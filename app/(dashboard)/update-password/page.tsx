@@ -5,12 +5,12 @@ import { ArrowLeftIcon } from "lucide-react";
 
 type PasswordType = "set" | "reset" | "change";
 
-export default function UpdatePasswordPage({
+export default async function UpdatePasswordPage({
   searchParams,
 }: {
   searchParams: { type?: PasswordType };
 }) {
-  const type = (searchParams?.type || "change") as PasswordType;
+  const type = ((await searchParams?.type) || "change") as PasswordType;
   const title = {
     set: "Set your password",
     reset: "Reset your password",
