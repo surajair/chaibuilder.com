@@ -16,7 +16,7 @@ export default function ForgetPassword() {
     setIsLoading(true);
 
     try {
-      await resetPassword(email);
+      await resetPassword(email, window.location.origin);
       setIsSubmitted(true);
       toast.success("Password reset link sent! Please check your email.", {
         position: "top-right",
@@ -65,6 +65,7 @@ export default function ForgetPassword() {
             onChange={(e) => setEmail(e.target.value)}
             required
             className="border-gray-300"
+            disabled={isLoading}
           />
         </div>
         <Button

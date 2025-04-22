@@ -43,11 +43,11 @@ export async function signupWithEmail(email: string, password: string) {
   return data;
 }
 
-export async function resetPassword(email: string) {
+export async function resetPassword(email: string, baseUrl: string) {
   const supabase = await createClient();
 
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/update-password`,
+    redirectTo: `${baseUrl}/auth/callback?next=/update-password`,
   });
 
   if (error) {

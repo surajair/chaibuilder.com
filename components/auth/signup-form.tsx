@@ -71,6 +71,7 @@ export default function SignupForm() {
             onChange={(e) => setEmail(e.target.value)}
             required
             className="border-gray-300"
+            disabled={isLoading}
           />
         </div>
         <div className="space-y-2">
@@ -84,6 +85,7 @@ export default function SignupForm() {
               required
               className="border-gray-300"
               placeholder="Password"
+              disabled={isLoading}
             />
             <Button
               type="button"
@@ -113,6 +115,7 @@ export default function SignupForm() {
               required
               className="border-gray-300"
               placeholder="Confirm Password"
+              disabled={isLoading}
             />
             <Button
               type="button"

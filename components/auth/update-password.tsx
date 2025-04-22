@@ -5,7 +5,7 @@ import { useState } from "react";
 import { updatePassword } from "@/actions/user-auth-action";
 import { toast } from "sonner";
 import Link from "next/link";
-import { EyeIcon, EyeClosed } from "lucide-react";
+import { EyeIcon, EyeClosed, Check } from "lucide-react";
 
 export default function UpdatePassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -57,17 +57,18 @@ export default function UpdatePassword() {
   if (isSubmitted) {
     return (
       <div className="space-y-4 text-center">
-        <h2 className="text-normal font-semibold">Password Updated</h2>
+        <h2 className="text-normal font-semibold text-green-500 flex items-center gap-2 justify-center">
+          <Check className="w-4 h-4" /> Password Updated
+        </h2>
         <p className="text-muted-foreground">
-          Your password has been successfully updated. You can now log in with
-          your new password.
+          Your password has been successfully updated.
         </p>
         <br />
         <Link
-          href="/login"
+          href="/sites"
           className="w-full bg-fuchsia-800 hover:bg-fuchsia-700 text-white font-medium py-2 px-16 rounded"
         >
-          Go to login
+          Go to websites
         </Link>
       </div>
     );
