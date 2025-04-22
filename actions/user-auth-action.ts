@@ -30,6 +30,9 @@ export async function signupWithEmail(email: string, password: string) {
     password,
     options: {
       emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      data: {
+        hasPassword: true,
+      },
     },
   });
 
@@ -65,6 +68,9 @@ export async function updatePassword(newPassword: string) {
 
   const { data, error } = await supabase.auth.updateUser({
     password: newPassword,
+    data: {
+      hasPassword: true,
+    },
   });
 
   if (error) {

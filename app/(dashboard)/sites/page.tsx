@@ -6,20 +6,6 @@ import SiteCard from "@/components/dashboard/site-card";
 import { UserProfile } from "@/components/dashboard/user-profile";
 import { Site } from "@/utils/types";
 
-// Check if site was created in the last 2 minutes
-const isNew = (site: any) =>
-  new Date().getTime() - new Date(site.createdAt).getTime() < 2 * 60 * 1000;
-
-// Format the creation date
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-};
-
 export default async function ChaibuilderWebsites() {
   const user = await getUser();
   const data = await getSites(user.id);

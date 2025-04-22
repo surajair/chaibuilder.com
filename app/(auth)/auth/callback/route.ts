@@ -12,6 +12,9 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (!error) {
+      if (next === "/update-password") {
+        return NextResponse.redirect(`${origin}/update-password?type=reset`);
+      }
       return NextResponse.redirect(`${origin}${next}`);
     }
   }
