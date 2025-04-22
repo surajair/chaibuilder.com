@@ -1,11 +1,11 @@
 "use client";
 
-import { Button, Input, Label } from "@chaibuilder/sdk/ui";
-import { useState } from "react";
+import { Alert, Button, Input, Label } from "@chaibuilder/sdk/ui";
+import { useEffect, useState } from "react";
 import { updatePassword } from "@/actions/user-auth-action";
 import { toast } from "sonner";
-import Link from "next/link";
 import { EyeIcon, EyeClosed, Check } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function UpdatePassword() {
   const [newPassword, setNewPassword] = useState("");
@@ -14,23 +14,22 @@ export default function UpdatePassword() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
 
     // Validate passwords match
     if (newPassword !== confirmPassword) {
-      toast.error("Passwords do not match", {
-        position: "top-right",
-      });
+      setError("Passwords do not match");
       return;
     }
 
     // Validate password length
     if (newPassword.length < 8) {
-      toast.error("Password must be at least 8 characters long", {
-        position: "top-right",
-      });
+      setError("Password must be at least 8 characters long");
       return;
     }
 
@@ -40,19 +39,22 @@ export default function UpdatePassword() {
       await updatePassword(newPassword);
       setIsSubmitted(true);
       toast.success("Password updated successfully!", {
-        position: "top-right",
+        position: "top-center",
       });
+      router.push("/sites");
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Failed to update password",
-        {
-          position: "top-right",
-        }
+      setError(
+        error instanceof Error ? error.message : "Failed to update password"
       );
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (error) setError("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newPassword, confirmPassword]);
 
   if (isSubmitted) {
     return (
@@ -63,19 +65,17 @@ export default function UpdatePassword() {
         <p className="text-muted-foreground">
           Your password has been successfully updated.
         </p>
-        <br />
-        <Link
-          href="/sites"
-          className="w-full bg-fuchsia-800 hover:bg-fuchsia-700 text-white font-medium py-2 px-16 rounded"
-        >
-          Go to websites
-        </Link>
       </div>
     );
   }
 
   return (
     <>
+      {error && (
+        <Alert variant="destructive" className="text-red-500 text-center">
+          {error}
+        </Alert>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="new-password">New Password</Label>
