@@ -1,14 +1,14 @@
 import UpdatePassword from "@/components/auth/update-password";
 import { Logo } from "@/components/builder/logo";
-import Link from "next/link";
 import { ArrowLeftIcon } from "lucide-react";
+import Link from "next/link";
 
 type PasswordType = "set" | "reset" | "change";
 
 export default async function UpdatePasswordPage({
   searchParams,
 }: {
-  searchParams: { type?: PasswordType };
+  searchParams: Promise<{ type?: string }>;
 }) {
   const { type = "set" } = await searchParams;
   const title = {
@@ -35,8 +35,7 @@ export default async function UpdatePasswordPage({
           </div>
           <Link
             href="/sites"
-            className="text-sm text-fuchsia-500 hover:text-fuchsia-700 flex items-center gap-2"
-          >
+            className="text-sm text-fuchsia-500 hover:text-fuchsia-700 flex items-center gap-2">
             <ArrowLeftIcon className="w-4 h-4" /> Back to websites
           </Link>
         </div>
@@ -55,7 +54,7 @@ export default async function UpdatePasswordPage({
               {description}
             </p>
           </div>
-          <UpdatePassword type={type} />
+          <UpdatePassword type={type as PasswordType} />
         </div>
       </div>
     </div>
