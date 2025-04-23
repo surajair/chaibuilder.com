@@ -10,7 +10,7 @@ export default async function UpdatePasswordPage({
 }: {
   searchParams: { type?: PasswordType };
 }) {
-  const type = ((await searchParams?.type) || "change") as PasswordType;
+  const { type = "set" } = await searchParams;
   const title = {
     set: "Set your password",
     reset: "Reset your password",

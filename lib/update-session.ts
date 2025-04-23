@@ -39,6 +39,10 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!user) {
+    await supabase.auth.signOut();
+  }
+
   if (
     !user &&
     (pathname.startsWith("/sites") ||

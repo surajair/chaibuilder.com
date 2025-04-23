@@ -12,23 +12,8 @@ const ErrorAndSuccessHandler = ({ showToast }: { showToast: () => void }) => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const session = await supabase.auth.getSession();
-        if (session?.data?.session?.access_token) {
-          router.replace("/sites");
-        }
-      } catch (error) {
-        showToast();
-      }
-    };
-
-    checkSession();
-  }, [router, showToast]);
-
-  useEffect(() => {
     const error = searchParams.get("error");
-    if (error === "auth-failed") {
+    if (error) {
       showToast();
 
       // * Remove the error parameter from URL
