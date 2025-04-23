@@ -1,10 +1,10 @@
+import { ChaiBlock } from "@chaibuilder/pages";
 import {
   ChaiBlockComponentProps,
   ChaiStyles,
   registerChaiBlockSchema,
   StylesProp,
 } from "@chaibuilder/pages/runtime";
-import { ChaiBlock } from "@chaibuilder/sdk";
 
 type AsyncProp<T> = T | undefined;
 
