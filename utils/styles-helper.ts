@@ -2,7 +2,7 @@ import {
   ChaiFont,
   ChaiFontViaSrc,
   getRegisteredFont,
-} from "@chaibuilder/sdk/runtime";
+} from "@chaibuilder/pages/runtime";
 import fs from "fs/promises";
 import { compact, filter, has, map, uniqBy } from "lodash";
 import path from "path";
@@ -54,7 +54,7 @@ export const getChaiCommonStyles = async () => {
   return tailwindCss;
 };
 
-/** TODO: Move to @chaibuilder/sdk/render */
+/** TODO: Move to @chaibuilder/pages/render */
 export const getThemeCustomFontFace = (fonts: string[]) => {
   const fontdefintions = filter(
     compact(map(fonts, getRegisteredFont)),

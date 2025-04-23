@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import "@/data";
 import { registerFonts } from "@/fonts";
 import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
-import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
+import { getChaiThemeCssVariables } from "@chaibuilder/pages/render";
 import { get } from "lodash";
 import { draftMode } from "next/headers";
 

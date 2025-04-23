@@ -1,12 +1,12 @@
 //TODO: Create a separate @chaibuilder/nextjs package for this file
 import { filterDuplicateStyles } from "@/utils/styles-helper";
+import type { ChaiBlock } from "@chaibuilder/pages";
 import { getStylesForBlocks } from "@chaibuilder/pages/render";
 import {
   ChaiBuilderPages,
   ChaiBuilderPagesBackend,
   ChaiPageProps,
 } from "@chaibuilder/pages/server";
-import { ChaiBlock } from "@chaibuilder/sdk";
 import { each, isEmpty } from "lodash";
 import { unstable_cache as nextCache } from "next/cache";
 import { cache } from "react";
