@@ -80,7 +80,13 @@ export async function createSite(formData: Partial<Site>) {
       });
     if (libraryError) throw libraryError;
 
-    revalidatePath("/sites");
+    await supabaseServer.from("app_users").insert({
+      user: user.id,
+      app: appData.id,
+      role: "admin",
+      status: "active",
+    });
+
     return { success: true, data: appData };
   } catch (error: any) {
     return { success: false, error: error?.message || "An error occurred" };
