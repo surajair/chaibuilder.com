@@ -1,5 +1,5 @@
 import "@/app/(builder)/styles.css";
-import "@chaibuilder/sdk/styles";
+import "@chaibuilder/pages/styles";
 
 export const metadata = {
   title: "Chai Builder - Admin",

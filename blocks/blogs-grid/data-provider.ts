@@ -1,4 +1,4 @@
-import { ChaiBlock } from "@chaibuilder/sdk";
+import type { ChaiBlock } from "@chaibuilder/pages";
 
 export const blogsGridDataProvider = async ({
   block,
