@@ -19,7 +19,7 @@ export type NextPageProps = {
 };
 
 const chaiBuilderPages = new ChaiBuilderPages(
-  new ChaiBuilderPagesBackend(APP_API_KEY!)
+  new ChaiBuilderPagesBackend(APP_API_KEY!, "http://localhost:3001")
 );
 
 export const getChaiBuilderPage = cache(async (slug: string) => {
