@@ -36,11 +36,15 @@ export function UserProfile({ user }: { user: User }) {
   return (
     <>
       {!user?.user_metadata?.hasPassword && (
-        <div className="border border-blue-500 text-blue-500 rounded-md py-1.5 px-4 flex items-center gap-8">
-          Please set a your password
+        <div className="border border-gray-500 text-gray-500 rounded-md py-1 pl-2 pr-1 flex items-center gap-8">
+          <span className="text-gray-600 text-sm flex items-center gap-2">
+            <Info className="w-4 h-4" />
+            Please set a your password
+          </span>
           <Button
             variant="default"
             size="sm"
+            className="p-2 py-0 h-7 text-xs"
             onClick={() => router.push("/update-password?type=set")}
           >
             Set password
