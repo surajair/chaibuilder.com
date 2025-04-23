@@ -5,6 +5,7 @@ import { useState } from "react";
 import { resetPassword } from "@/actions/user-auth-action";
 import { toast } from "sonner";
 import Link from "next/link";
+import { CheckCircle } from "lucide-react";
 
 export default function ForgetPassword() {
   const [email, setEmail] = useState("");
@@ -36,15 +37,18 @@ export default function ForgetPassword() {
   if (isSubmitted) {
     return (
       <div className="space-y-4 text-center">
-        <h2 className="text-normal font-semibold">Check your email</h2>
-        <p className="text-muted-foreground">
-          We&apos;ve sent a password reset link to {email}. Please check your
-          email and follow the instructions to reset your password.
+        <div className="flex justify-center">
+          <CheckCircle className="h-12 w-12 text-green-500" />
+        </div>
+        <h3 className="text-xl font-semibold">Password Reset Link Sent</h3>
+        <p className="text-gray-400 text-sm">
+          Please check your email and follow the instructions to reset your
+          password.
         </p>
         <br />
         <Link
           href="/login"
-          className="w-full bg-fuchsia-800 hover:bg-fuchsia-700 text-white font-medium py-2 px-16 rounded"
+          className="w-full bg-fuchsia-800 hover:bg-fuchsia-700 text-white font-medium px-20 py-3 rounded"
         >
           Go to login
         </Link>
