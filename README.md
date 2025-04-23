@@ -5,8 +5,6 @@ This is a starter project for Chai builder + NextJS.
 ## Requirements
 
 - `CHAIBUILDER_API_KEY` - Get API KEY here [https://chaibuilder.com](https://chaibuilder.com/sites)
-- Supabase keys for login and user management. Get your api keys by creating a new project on [Supabase.com](https://supabase.com)
-- (Note: You can implement any auth and user management system, if you prefer using some other provider eg: Firebase)
 
 ## Features
 
