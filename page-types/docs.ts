@@ -9,7 +9,7 @@ registerChaiPageType("docs", {
   dataProvider: async ({ pageProps, inBuilder }) => {
     const slug = pageProps.slug;
     const document = await getDocContent(
-      inBuilder ? "about-chai-builder" : slug.replace("/docs/", ""),
+      inBuilder ? "open-source-website-builder" : slug.replace("/docs/", ""),
       "Documentation"
     );
     return {
