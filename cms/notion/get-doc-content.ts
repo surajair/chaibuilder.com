@@ -69,6 +69,33 @@ async function addSyntaxHighlighting(html: string): Promise<string> {
   return result;
 }
 
+/**
+ * Add anchor links to headings (h1, h2, h3)
+ */
+function addAnchorLinksToHeadings(html: string): string {
+  // Find heading tags (h1, h2, h3) in HTML
+  const headingRegex = /<(h[1-3])>(.*?)<\/h[1-3]>/g;
+
+  return html.replace(headingRegex, (match, tag, content) => {
+    // Generate an ID from the heading content
+    const id = content
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, "") // Remove special characters
+      .replace(/\s+/g, "-"); // Replace spaces with hyphens
+
+    // Create the anchor element with the heading
+    return `<${tag} id="${id}" class="group flex items-center relative">
+      ${content}
+      <a href="#${id}" class="anchor-link ml-2 opacity-0 group-hover:opacity-100 transition-opacity" aria-label="Link to this section">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-4 w-4">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      </a>
+    </${tag}>`;
+  });
+}
+
 export const getDocContent = async (
   slug: string,
   pageType: string
@@ -118,7 +145,11 @@ export const getDocContent = async (
     const htmlContent = marked.parse(markdown.parent) as string;
 
     // Add syntax highlighting to code blocks
-    const content = await addSyntaxHighlighting(htmlContent);
+    const contentWithSyntaxHighlighting =
+      await addSyntaxHighlighting(htmlContent);
+
+    // Add anchor links to headings
+    const content = addAnchorLinksToHeadings(contentWithSyntaxHighlighting);
 
     return {
       title,
