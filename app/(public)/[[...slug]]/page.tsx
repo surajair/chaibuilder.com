@@ -25,6 +25,7 @@ registerBlocks();
 registerServerBlocks();
 
 export const dynamic = "force-static"; // Remove this if you want to use ssr mode
+export const maxDuration = 30;
 
 export const generateMetadata = async (props: NextPageProps) => {
   const nextParams = await props.params;
