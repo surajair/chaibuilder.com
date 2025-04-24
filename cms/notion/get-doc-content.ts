@@ -96,6 +96,109 @@ function addAnchorLinksToHeadings(html: string): string {
   });
 }
 
+/**
+ * Replace Notion page IDs with slugs in links
+ */
+async function replacePagesIdsWithSlugs(content: string): Promise<string> {
+  // First check for Notion URLs
+  if (content.includes('href="https://www.notion.so/')) {
+    // Find all Notion page links in the HTML
+    const notionLinkRegex =
+      /href="https:\/\/www\.notion\.so\/([^"]*?)([a-zA-Z0-9]{32})([^"]*?)"/g;
+    const pageIds = new Set<string>();
+    let match;
+
+    // Collect all page IDs
+    while ((match = notionLinkRegex.exec(content)) !== null) {
+      pageIds.add(match[2]);
+    }
+
+    if (pageIds.size > 0) {
+      // Create a mapping of page IDs to slugs
+      const idToSlugMap = new Map<string, string>();
+
+      for (const pageId of pageIds) {
+        try {
+          // Try to get the page from Notion
+          const page = await notion.pages.retrieve({ page_id: pageId });
+
+          if (!page || !("properties" in page)) {
+            continue;
+          }
+
+          // Extract the slug if available
+          const slug = (page.properties.Slug as any)?.rich_text?.[0]
+            ?.plain_text;
+          if (slug) {
+            idToSlugMap.set(pageId, slug);
+          }
+        } catch (error) {
+          console.error(`Error fetching page ${pageId}:`, error);
+          continue;
+        }
+      }
+
+      // Replace all links with the corresponding slugs
+      let result = content;
+      for (const [pageId, slug] of idToSlugMap.entries()) {
+        const notionUrlRegex = new RegExp(
+          `href="https://www\\.notion\\.so/[^"]*?${pageId}[^"]*?"`,
+          "g"
+        );
+        result = result.replace(notionUrlRegex, `href="/docs/${slug}"`);
+      }
+
+      content = result;
+    }
+  }
+
+  // Now check for direct page ID links (without Notion domain)
+  const directPageIdRegex = /href="\/([a-zA-Z0-9]{32})"/g;
+  const directPageIds = new Set<string>();
+  let directMatch;
+
+  // Collect all direct page IDs
+  while ((directMatch = directPageIdRegex.exec(content)) !== null) {
+    directPageIds.add(directMatch[1]);
+  }
+
+  if (directPageIds.size > 0) {
+    // Create a mapping of page IDs to slugs
+    const idToSlugMap = new Map<string, string>();
+
+    for (const pageId of directPageIds) {
+      try {
+        // Try to get the page from Notion
+        const page = await notion.pages.retrieve({ page_id: pageId });
+
+        if (!page || !("properties" in page)) {
+          continue;
+        }
+
+        // Extract the slug if available
+        const slug = (page.properties.Slug as any)?.rich_text?.[0]?.plain_text;
+        if (slug) {
+          idToSlugMap.set(pageId, slug);
+        }
+      } catch (error) {
+        console.error(`Error fetching page ${pageId}:`, error);
+        continue;
+      }
+    }
+
+    // Replace all direct page ID links with the corresponding slugs
+    let result = content;
+    for (const [pageId, slug] of idToSlugMap.entries()) {
+      const directLinkRegex = new RegExp(`href="/${pageId}"`, "g");
+      result = result.replace(directLinkRegex, `href="/docs/${slug}"`);
+    }
+
+    return result;
+  }
+
+  return content;
+}
+
 export const getDocContent = async (
   slug: string,
   pageType: string
@@ -148,8 +251,13 @@ export const getDocContent = async (
     const contentWithSyntaxHighlighting =
       await addSyntaxHighlighting(htmlContent);
 
+    // Replace page IDs with slugs in links
+    const contentWithSlugs = await replacePagesIdsWithSlugs(
+      contentWithSyntaxHighlighting
+    );
+
     // Add anchor links to headings
-    const content = addAnchorLinksToHeadings(contentWithSyntaxHighlighting);
+    const content = addAnchorLinksToHeadings(contentWithSlugs);
 
     return {
       title,
