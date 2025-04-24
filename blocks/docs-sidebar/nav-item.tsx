@@ -30,7 +30,7 @@ export function NavItem({ item, inBuilder }: NavItemProps) {
         <button
           onClick={() => setOpen(!open)}
           className={cn(
-            "flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+            "flex w-full items-center justify-between rounded-md px-3 py-1 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
             open && "bg-accent/50"
           )}>
           {item.title}
@@ -54,7 +54,7 @@ export function NavItem({ item, inBuilder }: NavItemProps) {
       prefetch={true}
       href={inBuilder ? "#" : item.href || "#"}
       className={cn(
-        "block rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+        "block rounded-md px-3 py-1 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
         isActive ? "bg-accent text-accent-foreground" : "transparent"
       )}>
       {item.title}
