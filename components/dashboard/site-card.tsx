@@ -61,12 +61,7 @@ export default function SiteCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col items-center justify-center"></CardContent>
-      <CardFooter className="flex gap-2 pt-0">
-        <Link href="/docs/dev/getting-started" target="_blank">
-          <Button variant="secondary" size="sm" className="w-full">
-            Get started
-          </Button>
-        </Link>
+      <CardFooter className="flex gap-2 justify-start pt-0">
         {site.apiKey && (
           <Button
             variant="outline"
@@ -76,6 +71,11 @@ export default function SiteCard({
             View details
           </Button>
         )}
+        <Link href="/docs/dev/getting-started" target="_blank">
+          <Button variant="secondary" size="sm" className="w-full">
+            Get started
+          </Button>
+        </Link>
       </CardFooter>
       {showDetailsModal && (
         <SiteDetailsModal site={site} onOpenChange={setShowDetailsModal} />

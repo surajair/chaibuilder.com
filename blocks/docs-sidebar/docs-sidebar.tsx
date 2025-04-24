@@ -15,7 +15,7 @@ const DocsSidebar = (props: ChaiBlockComponentProps<DocsSidebarProps>) => {
   return (
     <div {...blockProps} className={cn("w-full")}>
       {props.title && (
-        <h4 className="text-sm border-b border-border pb-2 mr-6 font-medium text-muted-foreground">
+        <h4 className="text-sm pl-2 border-b mb-1 border-border pb-2 mr-6 font-medium text-muted-foreground">
           {props.title}
         </h4>
       )}
