@@ -24,25 +24,16 @@ export default async function UpdatePasswordPage({
   }[type];
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <header className="border-b bg-white">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Logo shouldRedirect={false} />
-            <span className="ml-2 text-xl font-bold tracking-wide uppercase">
-              Chai Builder
-            </span>
-          </div>
+    <div className="flex min-h-screen flex-col">
+      <div className="container flex h-16 items-center justify-between"></div>
+      <div className="flex flex-col items-center justify-center">
+        <div className="max-w-lg min-w-96  rounded-lg p-8">
           <Link
             href="/sites"
             className="text-sm text-fuchsia-500 hover:text-fuchsia-700 flex items-center gap-2">
-            <ArrowLeftIcon className="w-4 h-4" /> Back to websites
+            <ArrowLeftIcon className="w-4 h-4" /> Back to sites
           </Link>
-        </div>
-      </header>
-      <div className="flex flex-col items-center justify-center h-[80vh]">
-        <div className="max-w-lg min-w-96 border bg-white rounded-lg p-8">
-          <div className="pb-8">
+          <div className="py-8">
             <div className="flex justify-center mb-8">
               <Logo width={50} height={50} shouldRedirect={false} />
             </div>

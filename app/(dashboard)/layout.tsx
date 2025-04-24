@@ -1,6 +1,9 @@
+import { getUser } from "@/actions/get-user-action";
 import "@/app/(public)/public.css";
 import { getChaiSiteSettings } from "@/chai";
+import { Logo } from "@/components/builder/logo";
 import { Clarity } from "@/components/clarity";
+import { UserProfile } from "@/components/dashboard/user-profile";
 import { registerFonts } from "@/fonts";
 import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
@@ -31,7 +34,7 @@ export default async function DashboardLayout({
   const headingFont = get(theme, "fontFamily.heading", "Inter");
   const fontUrls = getFontHref([bodyFont, headingFont]);
   const customFontFace = getThemeCustomFontFace([bodyFont, headingFont]);
-
+  const user = await getUser();
   return (
     <html dir="ltr" className="smooth-scroll">
       <head>
@@ -64,8 +67,19 @@ export default async function DashboardLayout({
         />
       </head>
       <body className="font-body antialiased">
+        <header className="border-b bg-white">
+          <div className="container flex h-16 items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Logo shouldRedirect={false} />
+              <span className="ml-2 text-xl font-bold tracking-wide uppercase">
+                Chai Builder
+              </span>
+            </div>
+            <UserProfile user={user} />
+          </div>
+        </header>
+        <div className="container flex-1 py-8">{children}</div>
         <Toaster richColors />
-        {children}
         <Clarity />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}

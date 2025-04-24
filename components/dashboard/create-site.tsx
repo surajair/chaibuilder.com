@@ -1,12 +1,6 @@
 "use client";
 
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -16,10 +10,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-import { Button } from "../ui/button";
-import { useState } from "react";
-import { Plus, Loader2 } from "lucide-react";
+import { createSite } from "@/actions/create-site-action";
 import {
   Select,
   SelectContent,
@@ -27,10 +25,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@chaibuilder/sdk/ui";
-import { createSite } from "@/actions/create-site-action";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
-import Loader from "./loader";
 import { Logo } from "../builder/logo";
+import { Button } from "../ui/button";
+import Loader from "./loader";
 
 const MAX_SITES = 2;
 
@@ -114,9 +114,10 @@ function CreateSiteModal({
               You have reached the maximum number of websites allowed. If you
               need more, please reach out to us on{" "}
               <a
+                target="_blank"
+                rel="noopener noreferrer"
                 className="underline text-blue-500 hover:text-blue-400"
-                href="https://discord.gg/QPzCkjq5"
-              >
+                href="https://discord.gg/czkgwX2rnD">
                 Discord
               </a>{" "}
               for further assistance.
@@ -164,8 +165,7 @@ function CreateSiteModal({
                     })
                   }
                   required
-                  disabled={loading}
-                >
+                  disabled={loading}>
                   <SelectTrigger id="fallback-lang" className="h-10">
                     <SelectValue placeholder="Select a language" />
                   </SelectTrigger>
@@ -199,8 +199,7 @@ function CreateSiteModal({
                         disabled={
                           lang.code === formData.fallbackLang || loading
                         }
-                        className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700" : "hover:bg-gray-100 duration-300"}`}
-                      >
+                        className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700" : "hover:bg-gray-100 duration-300"}`}>
                         {lang.name}
                       </Button>
                     );
@@ -214,15 +213,13 @@ function CreateSiteModal({
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                disabled={loading}
-              >
+                disabled={loading}>
                 Cancel
               </Button>
               <Button
                 type="submit"
                 className="bg-gray-900 hover:bg-gray-700"
-                disabled={loading || !formData.name || !formData.fallbackLang}
-              >
+                disabled={loading || !formData.name || !formData.fallbackLang}>
                 {loading ? (
                   <>
                     <Loader />
@@ -255,8 +252,7 @@ export function CreateSite({
             <Button
               variant="default"
               onClick={() => setShowCreateModal(true)}
-              className="bg-black hover:bg-black/80"
-            >
+              className="bg-black hover:bg-black/80">
               <Plus className="mr-2 h-4 w-4" /> Add New Site
             </Button>
           </TooltipTrigger>

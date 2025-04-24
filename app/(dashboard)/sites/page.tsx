@@ -1,10 +1,11 @@
 import { getSites } from "@/actions/get-sites-actions";
 import { getUser } from "@/actions/get-user-action";
-import { Logo } from "@/components/builder/logo";
 import { CreateSite } from "@/components/dashboard/create-site";
 import SiteCard from "@/components/dashboard/site-card";
-import { UserProfile } from "@/components/dashboard/user-profile";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { Site } from "@/utils/types";
+import Link from "next/link";
 
 export default async function ChaibuilderWebsites() {
   const user = await getUser();
@@ -12,19 +13,27 @@ export default async function ChaibuilderWebsites() {
   const sites: Site[] = data as Site[];
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <header className="border-b bg-white">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Logo shouldRedirect={false} />
-            <span className="ml-2 text-xl font-bold tracking-wide uppercase">
-              Chai Builder
-            </span>
-          </div>
-          <UserProfile user={user} />
+    <div className="flex min-h-screen flex-col ">
+      {!user?.user_metadata?.hasPassword && (
+        <div className="">
+          <Alert variant="default">
+            <AlertTitle className="text-lg font-semibold">
+              Please set your password
+            </AlertTitle>
+            <AlertDescription className="flex flex-col gap-2">
+              <p>
+                Please set a your password to get started with Chai Builder.
+                This will allow you to access visual builder on your site
+              </p>
+              <Link href="/update-password">
+                <Button size="sm" variant="default">
+                  Set password
+                </Button>
+              </Link>
+            </AlertDescription>
+          </Alert>
         </div>
-      </header>
-
+      )}
       <main className="container flex-1 py-8">
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-xl sm:text-3xl font-bold">Your Websites</h1>
