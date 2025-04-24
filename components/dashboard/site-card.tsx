@@ -61,15 +61,10 @@ export default function SiteCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col items-center justify-center"></CardContent>
-      <CardFooter className="flex gap-2 pt-0 justify-center">
-        <Link href="/docs/dev/setup-locally" target="_blank">
-          <Button variant="ghost" size="sm" className="w-full">
-            Setup Locally
-          </Button>
-        </Link>
-        <Link href="/docs/dev/deploy-to-vercel" target="_blank">
-          <Button variant="ghost" size="sm" className="w-full">
-            Deploy to Vercel
+      <CardFooter className="flex gap-2 pt-0">
+        <Link href="/docs/dev/getting-started" target="_blank">
+          <Button variant="secondary" size="sm" className="w-full">
+            Get started
           </Button>
         </Link>
         {site.apiKey && (
@@ -78,7 +73,7 @@ export default function SiteCard({
             size="sm"
             className="w-full"
             onClick={() => setShowDetailsModal(true)}>
-            View API Key
+            View details
           </Button>
         )}
       </CardFooter>

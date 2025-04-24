@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 export type DocLink = {
   title: string;
   href?: string;
+  items?: DocLink[];
 };
 
 interface NavItemProps {
@@ -21,7 +22,7 @@ export function NavItem({ item, inBuilder }: NavItemProps) {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
   const isActive = item.href ? pathname === item.href : false;
-  const hasChildren = false;
+  const hasChildren = item.items && item.items.length > 0;
 
   if (hasChildren) {
     return (
@@ -37,6 +38,13 @@ export function NavItem({ item, inBuilder }: NavItemProps) {
             className={cn("h-4 w-4 transition-transform", open && "rotate-180")}
           />
         </button>
+        {open && item.items && (
+          <div className="ml-4 pl-2 border-l">
+            {item.items.map((child, index) => (
+              <NavItem key={index} item={child} inBuilder={inBuilder} />
+            ))}
+          </div>
+        )}
       </div>
     );
   }
