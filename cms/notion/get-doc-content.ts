@@ -4,6 +4,7 @@ import { NotionToMarkdown } from "notion-to-md";
 import { codeToHtml } from "shiki";
 import { databaseId, notion } from "./notion";
 
+// Create the base NotionToMarkdown instance
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
 interface DocContent {
@@ -199,6 +200,96 @@ async function replacePagesIdsWithSlugs(content: string): Promise<string> {
   return content;
 }
 
+/**
+ * Handle empty lines in Notion content
+ * This approach directly finds consecutive <p> tags and adds spacing between them
+ */
+function handleEmptyLines(html: string): string {
+  // 1. Handle actual empty paragraphs: <p></p>
+  let result = html.replace(/<p><\/p>/g, '<div class="my-6"></div>');
+
+  // 2. Handle paragraphs with only whitespace: <p> </p>
+  result = result.replace(/<p>\s+<\/p>/g, '<div class="my-6"></div>');
+
+  // 3. Handle special Notion divider blocks which often get lost
+  result = result.replace(/\n\n+/g, (match) => {
+    const lineBreaks = match.length;
+    if (lineBreaks >= 3) {
+      // For multiple line breaks, add more spacing with multiple divs
+      const divCount = Math.floor(lineBreaks / 2);
+      return Array(divCount).fill('<div class="my-6"></div>').join("");
+    }
+    return match;
+  });
+
+  return result;
+}
+
+/**
+ * Enhances markdown with improved empty line handling for Notion content
+ */
+function enhanceMarkdown(markdown: string): string {
+  // Find sequences of empty lines in markdown and mark them specially
+  return markdown.replace(/\n\n+/g, (match) => {
+    const lineBreaks = match.length;
+    if (lineBreaks >= 3) {
+      // Add a special marker for multiple line breaks
+      return "\n\n<!-- NOTION_SPACE -->\n\n";
+    }
+    return match;
+  });
+}
+
+/**
+ * Processes HTML to replace special markers with proper spacing divs
+ */
+function processSpaceMarkers(html: string): string {
+  // Convert our special space markers to proper div spaces
+  return html.replace(/<!-- NOTION_SPACE -->/g, '<div class="my-0"></div>');
+}
+
+/**
+ * Process the markdown to add extra line breaks for empty blocks
+ */
+function processMarkdownForEmptyLines(mdBlocks: any[]): any[] {
+  const processedBlocks = [];
+  let emptyBlockCount = 0;
+
+  // Look for empty paragraph blocks in sequence and mark them
+  for (let i = 0; i < mdBlocks.length; i++) {
+    const block = mdBlocks[i];
+
+    // Check if it's an empty paragraph (just a string with no content)
+    const isEmpty = typeof block === "string" && block.trim() === "";
+
+    if (isEmpty) {
+      emptyBlockCount++;
+
+      // Don't add empty blocks consecutively, but track how many we've seen
+      continue;
+    } else {
+      // If we had empty blocks before this one, add extra line breaks
+      if (emptyBlockCount > 0) {
+        // Add a special empty block with extra newlines based on count
+        const extraLineBreaks = "\n".repeat(emptyBlockCount * 2);
+        processedBlocks.push(extraLineBreaks);
+        emptyBlockCount = 0;
+      }
+
+      // Add the non-empty block
+      processedBlocks.push(block);
+    }
+  }
+
+  // If we had empty blocks at the end, add them too
+  if (emptyBlockCount > 0) {
+    const extraLineBreaks = "\n".repeat(emptyBlockCount * 2);
+    processedBlocks.push(extraLineBreaks);
+  }
+
+  return processedBlocks;
+}
+
 export const getDocContent = async (
   slug: string,
   pageType: string
@@ -242,19 +333,27 @@ export const getDocContent = async (
 
     // Convert Notion blocks to markdown
     const mdBlocks = await n2m.pageToMarkdown(doc.id);
-    const markdown = n2m.toMarkdownString(mdBlocks);
+
+    // Process blocks to handle empty lines before converting to markdown string
+    const processedBlocks = processMarkdownForEmptyLines(mdBlocks);
+
+    // Convert to markdown string
+    const markdownResult = n2m.toMarkdownString(processedBlocks);
 
     // Convert markdown to HTML
-    const htmlContent = marked.parse(markdown.parent) as string;
+    const htmlContent = marked.parse(markdownResult.parent) as string;
 
     // Add syntax highlighting to code blocks
     const contentWithSyntaxHighlighting =
       await addSyntaxHighlighting(htmlContent);
 
-    // Replace page IDs with slugs in links
-    const contentWithSlugs = await replacePagesIdsWithSlugs(
+    // Process space markers in HTML
+    const contentWithSpaces = processSpaceMarkers(
       contentWithSyntaxHighlighting
     );
+
+    // Replace page IDs with slugs in links
+    const contentWithSlugs = await replacePagesIdsWithSlugs(contentWithSpaces);
 
     // Add anchor links to headings
     const content = addAnchorLinksToHeadings(contentWithSlugs);
