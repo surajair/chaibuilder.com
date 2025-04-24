@@ -3,11 +3,13 @@ import {
   registerChaiBlockSchema,
 } from "@chaibuilder/pages/runtime";
 
-export type DocContentProps = {
+export type NotionContentProps = {
   content: string;
 };
 
-export const DocContent = (props: ChaiBlockComponentProps<DocContentProps>) => {
+export const NotionContent = (
+  props: ChaiBlockComponentProps<NotionContentProps>
+) => {
   return (
     <div
       {...props.blockProps}
@@ -17,11 +19,10 @@ export const DocContent = (props: ChaiBlockComponentProps<DocContentProps>) => {
   );
 };
 
-export const DocContentConfig = {
-  type: "DocContent",
-  label: "Doc Content",
-  group: "Documentation",
-  description: "DocContent",
+export const NotionContentConfig = {
+  type: "NotionContent",
+  label: "Notion Content",
+  group: "Content",
   ...registerChaiBlockSchema({
     properties: {
       content: {

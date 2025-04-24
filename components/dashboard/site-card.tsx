@@ -71,9 +71,7 @@ export default function SiteCard({
             View details
           </Button>
         )}
-        <Link
-          href="/docs/dev/creating-new-site#getting-started"
-          target="_blank">
+        <Link href="/docs/dev/creating-new-site#next-steps" target="_blank">
           <Button variant="secondary" size="sm" className="w-full">
             Get started
           </Button>

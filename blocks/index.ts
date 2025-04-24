@@ -10,11 +10,6 @@ import {
   BlogsListProps,
 } from "./blogs-grid/BlogsGrid";
 import {
-  DocContent,
-  DocContentConfig,
-  DocContentProps,
-} from "./doc-content/doc-content";
-import {
   DocsSidebar,
   DocsSidebarConfig,
   DocsSidebarProps,
@@ -25,11 +20,16 @@ import {
   Config as ModalConfig,
   ModalProps,
 } from "./modal/Modal";
+import {
+  NotionContent,
+  NotionContentConfig,
+  NotionContentProps,
+} from "./notion-content/notion-content";
 export const registerBlocks = () => {
   registerChaiBlock<BlogsListProps>(BlogsList, BlogsListConfig);
   registerChaiBlock<ModalProps>(Modal, ModalConfig);
   registerChaiBlock<DropdownProps>(Dropdown, DropdownConfig);
   registerChaiBlock<AccordionProps>(Accordion, AccordionConfig);
   registerChaiBlock<DocsSidebarProps>(DocsSidebar, DocsSidebarConfig);
-  registerChaiBlock<DocContentProps>(DocContent, DocContentConfig);
+  registerChaiBlock<NotionContentProps>(NotionContent, NotionContentConfig);
 };
