@@ -47,12 +47,14 @@ const DocsSidebarConfig = {
     return {
       items: [
         {
+          title: "Introduction",
+          href: "#",
+        },
+        {
           title: "Getting Started",
           items: [
-            {
-              title: "Introduction",
-              href: "/docs/introduction",
-            },
+            { title: "Introduction", href: "#" },
+            { title: "Getting Started", href: "#" },
           ],
         },
       ],
