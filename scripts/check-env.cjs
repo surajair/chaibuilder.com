@@ -60,8 +60,6 @@ try {
     }
   });
 
-  console.log(delimiter);
-
   const hasErrors = missingVars.length > 0 || emptyVars.length > 0;
 
   if (hasErrors) {
@@ -89,20 +87,6 @@ try {
       console.error(`  - ${key}${comment ? `\n\t${comment}` : ""}`)
     );
   }
-
-  // if (extraVars.length > 0) {
-  //   console.log(
-  //     "\n\x1b[33m%s\x1b[0m",
-  //     "ℹ️  Additional variables found in .env:"
-  //   );
-  //   extraVars.forEach((key) => console.log(`  - ${key}`));
-  //   console.log(
-  //     "\x1b[33m%s\x1b[0m",
-  //     "\nADD THEM TO .env.sample SO COLLEAGUES ARE WARNED THEY ARE MISSING FROM THEIR .env FILE."
-  //   );
-  // }
-
-  console.log(delimiter);
 
   if (hasErrors) {
     console.error(
