@@ -75,7 +75,7 @@ async function addSyntaxHighlighting(html: string): Promise<string> {
  */
 function addAnchorLinksToHeadings(html: string): string {
   // Find heading tags (h1, h2, h3) in HTML
-  const headingRegex = /<(h[1-3])>(.*?)<\/h[1-3]>/g;
+  const headingRegex = /<(h[1-2])>(.*?)<\/h[1-2]>/g;
 
   return html.replace(headingRegex, (match, tag, content) => {
     // Generate an ID from the heading content
@@ -198,46 +198,6 @@ async function replacePagesIdsWithSlugs(content: string): Promise<string> {
   }
 
   return content;
-}
-
-/**
- * Handle empty lines in Notion content
- * This approach directly finds consecutive <p> tags and adds spacing between them
- */
-function handleEmptyLines(html: string): string {
-  // 1. Handle actual empty paragraphs: <p></p>
-  let result = html.replace(/<p><\/p>/g, '<div class="my-6"></div>');
-
-  // 2. Handle paragraphs with only whitespace: <p> </p>
-  result = result.replace(/<p>\s+<\/p>/g, '<div class="my-6"></div>');
-
-  // 3. Handle special Notion divider blocks which often get lost
-  result = result.replace(/\n\n+/g, (match) => {
-    const lineBreaks = match.length;
-    if (lineBreaks >= 3) {
-      // For multiple line breaks, add more spacing with multiple divs
-      const divCount = Math.floor(lineBreaks / 2);
-      return Array(divCount).fill('<div class="my-6"></div>').join("");
-    }
-    return match;
-  });
-
-  return result;
-}
-
-/**
- * Enhances markdown with improved empty line handling for Notion content
- */
-function enhanceMarkdown(markdown: string): string {
-  // Find sequences of empty lines in markdown and mark them specially
-  return markdown.replace(/\n\n+/g, (match) => {
-    const lineBreaks = match.length;
-    if (lineBreaks >= 3) {
-      // Add a special marker for multiple line breaks
-      return "\n\n<!-- NOTION_SPACE -->\n\n";
-    }
-    return match;
-  });
 }
 
 /**
