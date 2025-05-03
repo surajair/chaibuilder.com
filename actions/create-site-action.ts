@@ -63,7 +63,7 @@ export async function createSite(formData: Partial<Site>) {
       .insert(appData);
     if (onlineError) throw onlineError;
 
-    await createHomePage(appData.id);
+    await createHomePage(appData.id, formData.name);
 
     // Creating and adding api key
     const apiKey = encodedApiKey(appData.id, ENCRYPTION_KEY);
@@ -115,7 +115,7 @@ export async function createApiKey(appId: string) {
   }
 }
 
-export async function createHomePage(appId: string) {
+export async function createHomePage(appId: string, name: string) {
   try {
     const { data, error } = await supabaseServer
       .from("app_pages")
@@ -125,13 +125,13 @@ export async function createHomePage(appId: string) {
         app: appId,
         pageType: "page",
         seo: {
-          title: "Homepage",
+          title: `Home - ${name}`,
           jsonLD: "",
           noIndex: false,
           ogImage: "",
           ogTitle: "",
           noFollow: "",
-          description: "",
+          description: `Build your ${name} website with Chai Builder`,
           searchTitle: "",
           cononicalUrl: "",
           ogDescription: "",
