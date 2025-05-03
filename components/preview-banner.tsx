@@ -1,9 +1,6 @@
 export default function PreviewBanner({ slug }: { slug: string }) {
   return (
-    <div
-      id="chai-preview-banner"
-      className="sticky top-0 z-50 bg-primary"
-      style={{ backgroundColor: "#ea580c" }}>
+    <div id="chai-preview-banner" className="sticky top-0 z-50 bg-orange-600">
       <div className="w-full py-1 px-2 mx-auto">
         <div className="flex items-center justify-between">
           <p className="text-white text-sm">
