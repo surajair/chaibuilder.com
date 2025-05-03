@@ -149,7 +149,7 @@ export const HOME_PAGE_BLOCKS = [
     _id: "qoucAg",
     styles: "#styles:,",
     image:
-      "https://www.chaibuilder.com/_next/image?url=https%3A%2F%2Fucarecdn.com%2Ffbfc3b05-cb73-4e99-92a2-3a367b7c36cd%2F&w=64&q=75",
+      "https://ucarecdn.com/a82e256c-1cf2-4755-b65c-5d85e7652daa/-/preview/400x400",
     alt: "",
     lazyLoading: true,
     width: "",
