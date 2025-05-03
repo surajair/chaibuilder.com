@@ -1,4 +1,3 @@
-import { ChaiBlock } from "@chaibuilder/pages";
 import {
   ChaiBlockComponentProps,
   ChaiStyles,
@@ -56,18 +55,16 @@ export const BlogsList = (props: ChaiBlockComponentProps<BlogsListProps>) => {
                   src={blog.thumbnailUrl}
                   alt="Blog Image"
                 />
-                <span className="absolute top-0 end-0 rounded-se-xl rounded-es-xl text-xs font-medium bg-secondary text-secondary-foreground py-1.5 px-3">
+                <span className="absolute top-0 end-0 rounded-se-xl rounded-es-xl text-xs font-medium bg-red-500 text-secondary-foreground py-1.5 px-3">
                   Sponsored
                 </span>
               </div>
 
               <div className="mt-7">
-                <h3 className="text-xl font-semibold text-secondary group-hover:text-secondary/90">
-                  {blog.title}
-                </h3>
+                <h3 className="text-xl font-semibold">{blog.title}</h3>
                 <p className="mt-3 text-primary">{blog.url}</p>
                 {!props.hideReadMore && (
-                  <p className="inline-flex items-center mt-5 text-sm font-medium gap-x-1 text-secondary decoration-2 group-hover:underline group-focus:underline">
+                  <p className="inline-flex items-center mt-5 text-sm font-medium gap-x-1 decoration-2 group-hover:underline group-focus:underline">
                     Read more
                     <svg
                       className="shrink-0 size-4"
@@ -105,33 +102,31 @@ export const BlogsListConfig = {
   label: "Blogs List",
   group: "Custom",
   category: "core",
-  pageTypes: ["listing"],
-  dataProvider: ({ block }: { block: ChaiBlock }) => {
-    const { blogCount = 3 } = block;
+  dataProvider: () => {
     return {
       blogs: [
         {
           albumId: 1,
           id: 4,
           title: "culpa odio esse rerum omnis laboriosam voluptate repudiandae",
-          url: "https://picsum.photos/200/300",
-          thumbnailUrl: "https://picsum.photos/200/300",
+          url: "https://picsum.photos/200/301",
+          thumbnailUrl: "https://picsum.photos/200/301",
         },
         {
           albumId: 1,
           id: 5,
           title: "natus nisi omnis corporis facere molestiae rerum in",
-          url: "https://picsum.photos/200/300",
-          thumbnailUrl: "https://picsum.photos/200/300",
+          url: "https://picsum.photos/200/302",
+          thumbnailUrl: "https://picsum.photos/200/302",
         },
         {
           albumId: 1,
           id: 6,
           title: "accusamus ea aliquid et amet sequi nemo",
-          url: "https://picsum.photos/200/300",
-          thumbnailUrl: "https://picsum.photos/200/300",
+          url: "https://picsum.photos/200/303",
+          thumbnailUrl: "https://picsum.photos/200/303",
         },
-      ].slice(0, blogCount),
+      ],
     };
   },
   ...registerChaiBlockSchema({

@@ -9,7 +9,7 @@ import plugin from "tailwindcss/plugin";
 import { CustomThemeConfig } from "tailwindcss/types/config";
 
 const config: Config = {
-  darkMode: ["class", "class"],
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./blocks/**/*.{js,ts,jsx,tsx,mdx}",

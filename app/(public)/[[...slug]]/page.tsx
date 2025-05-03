@@ -85,6 +85,9 @@ export default async function Page({
         fallbackLang={fallbackLang}
         lang={isEmpty(chaiPage.lang) ? fallbackLang : chaiPage.lang}
         pageProps={pageProps}
+        dataProviderMetadataCallback={(args) => {
+          console.log(args);
+        }}
       />
     </>
   );
