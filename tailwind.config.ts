@@ -15,9 +15,9 @@ const config: Config = {
     "./blocks/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@chaibuilder/sdk/dist/**/*.{js,cjs}",
+    "./node_modules/@chaibuilder/sdk/dist/web-blocks/*.{js,cjs}",
   ],
-  safelist: ["w-[inherit]", "h-[inherit]"],
+  safelist: ["w-[inherit]", "h-[inherit]", "bg-orange-600"],
   theme: {
     extend: {
       ...(getChaiBuilderTheme() as Partial<CustomThemeConfig>),
