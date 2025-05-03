@@ -5,7 +5,7 @@ import { encodedApiKey } from "@/utils/api-key";
 import { Site } from "@/utils/types";
 import { revalidatePath } from "next/cache";
 import { getUser } from "./get-user-action";
-
+import { HOME_PAGE_BLOCKS } from "./home-page";
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY as string;
 
 const DEFAULT_THEME = {
@@ -53,7 +53,7 @@ export async function createSite(formData: Partial<Site>) {
     const { data: appData, error: appError } = await supabaseServer
       .from("apps")
       .insert(newApp)
-      .select("id, user, name, languages, fallbackLang")
+      .select("id, user, name, theme, languages, fallbackLang")
       .single();
     if (appError) throw appError;
 
@@ -62,6 +62,8 @@ export async function createSite(formData: Partial<Site>) {
       .from("apps_online")
       .insert(appData);
     if (onlineError) throw onlineError;
+
+    await createHomePage(appData.id);
 
     // Creating and adding api key
     const apiKey = encodedApiKey(appData.id, ENCRYPTION_KEY);
@@ -87,6 +89,7 @@ export async function createSite(formData: Partial<Site>) {
       status: "active",
     });
 
+    revalidatePath("/sites");
     return { success: true, data: appData };
   } catch (error: any) {
     return { success: false, error: error?.message || "An error occurred" };
@@ -108,6 +111,55 @@ export async function createApiKey(appId: string) {
     return {
       success: false,
       error: error?.message || "Failed to create API key",
+    };
+  }
+}
+
+export async function createHomePage(appId: string) {
+  try {
+    const { data, error } = await supabaseServer
+      .from("app_pages")
+      .insert({
+        name: "Homepage",
+        slug: "/",
+        app: appId,
+        pageType: "page",
+        seo: {
+          title: "Homepage",
+          jsonLD: "",
+          noIndex: false,
+          ogImage: "",
+          ogTitle: "",
+          noFollow: "",
+          description: "",
+          searchTitle: "",
+          cononicalUrl: "",
+          ogDescription: "",
+          searchDescription: "",
+        },
+        blocks: HOME_PAGE_BLOCKS,
+        online: true,
+      })
+      .select("*")
+      .single();
+
+    const { data: onlineData, error: onlineError } = await supabaseServer
+      .from("app_pages_online")
+      .insert({
+        ...data,
+        partialBlocks: null,
+        links: null,
+      })
+      .select("*")
+      .single();
+
+    if (onlineError) throw onlineError;
+
+    return { success: true, data };
+  } catch (error: any) {
+    return {
+      success: false,
+      error: error?.message || "Failed to create home page",
     };
   }
 }

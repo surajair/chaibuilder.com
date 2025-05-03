@@ -9,6 +9,7 @@ const nextConfig = {
       { hostname: "cdn.rareblocks.xyz" },
       { hostname: "picsum.photos" },
       { hostname: "via.placeholder.com" },
+      { hostname: "chaibuilder.com" },
     ],
   },
 };

@@ -37,7 +37,7 @@ export default async function ChaibuilderWebsites() {
       <main className="container flex-1 py-8">
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-xl sm:text-3xl font-bold">Your Websites</h1>
-          <CreateSite isSiteLimitReached={sites.length > 1} />
+          <CreateSite isSiteLimitReached={sites.length > 9999} />
         </div>
 
         {sites.length === 0 ? (
