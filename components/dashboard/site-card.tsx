@@ -39,7 +39,7 @@ export default function SiteCard({
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   return (
-    <Card className="relative flex flex-col justify-between w-full group dark:bg-gray-800 dark:border-gray-700">
+    <Card className="relative flex flex-col justify-between w-full group dark:bg-gray-800 dark:border-gray-700 overflow-hidden hover:border-gray-300">
       {isNew(site) && (
         <div className="bg-green-600 px-3 py-1.5 text-white absolute top-0 left-0 text-xs rounded-br-lg z-10">
           New
@@ -67,7 +67,8 @@ export default function SiteCard({
             variant="outline"
             size="sm"
             className="w-full"
-            onClick={() => setShowDetailsModal(true)}>
+            onClick={() => setShowDetailsModal(true)}
+          >
             View details
           </Button>
         )}

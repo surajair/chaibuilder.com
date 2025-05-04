@@ -18,7 +18,8 @@ export async function getSites(userId: string) {
     `
     )
     .eq("user", userId)
-    .is("deletedAt", null);
+    .is("deletedAt", null)
+    .order("createdAt", { ascending: false });
 
   if (error) throw error;
 
