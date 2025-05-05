@@ -6,7 +6,7 @@ const nextConfig = {
       { hostname: "ucarecdn.com" },
       { hostname: "placehold.co" },
       { hostname: "img.shields.io" },
-      { hostname: "cdn.rareblocks.xyz" },
+      { hostname: "via.placeholder.com" },
       { hostname: "picsum.photos" },
       { hostname: "fakeimg.pl" },
       { hostname: "fldwljgzcktqnysdkxnn.supabase.co" },
