@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
     const authorization = req.headers.get("authorization");
     const authToken = authorization ? authorization.split(" ")[1] : "";
     const response = await chaiBuilderPages.handle(requestBody, authToken);
-    console.log("requestBody", requestBody, response);
     if (has(response, "error")) {
       return NextResponse.json(response, { status: response.status });
     }
