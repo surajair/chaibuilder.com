@@ -14,7 +14,7 @@
     "check-env": "node scripts/check-env.cjs"
   },
   "dependencies": {
-    "@chaibuilder/pages": "^0.4.15",
+    "@chaibuilder/pages": "^0.4.17",
     "@chaibuilder/sdk": "^2.2.13",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-collapsible": "^1.1.3",
