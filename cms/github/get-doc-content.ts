@@ -6,6 +6,7 @@ interface DocContent {
   title: string;
   content: string;
   editLinkMarkup: string;
+  publishedDate?: string;
 }
 
 /**
