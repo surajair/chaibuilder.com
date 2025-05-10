@@ -1,4 +1,4 @@
-import { getDocContent } from "@/cms/notion/get-doc-content";
+import { getDocContent } from "@/cms/github/get-doc-content";
 import { registerChaiPageType } from "@chaibuilder/pages/server";
 
 registerChaiPageType("legal", {

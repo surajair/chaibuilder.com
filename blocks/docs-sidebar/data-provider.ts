@@ -1,4 +1,4 @@
-import { getDocSidebarLinks } from "@/cms/notion/get-docs-links";
+import { getDocSidebarLinks } from "@/cms/github/get-docs-links";
 import { ChaiBlock } from "@chaibuilder/pages/runtime";
 
 export const docsSidebarDataProvider = async ({
