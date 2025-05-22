@@ -71,7 +71,11 @@ export default async function Page({
   const pageStyles = await getChaiPageStyles(chaiPage.blocks as ChaiBlock[]);
   const fallbackLang = chaiBuilderPages.getFallbackLang();
 
-  const pageData = await getChaiPageData(chaiPage.pageType, pageProps);
+  const pageData = await getChaiPageData(
+    chaiPage.blocks as unknown as ChaiBlock[],
+    chaiPage.pageType,
+    pageProps
+  );
 
   return (
     <>
