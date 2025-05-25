@@ -117,7 +117,8 @@ function CreateSiteModal({
                 target="_blank"
                 rel="noopener noreferrer"
                 className="underline text-blue-500 hover:text-blue-400"
-                href="https://discord.gg/czkgwX2rnD">
+                href="https://discord.gg/czkgwX2rnD"
+              >
                 Discord
               </a>{" "}
               for further assistance.
@@ -159,13 +160,12 @@ function CreateSiteModal({
                     setFormData({
                       ...formData,
                       fallbackLang: value,
-                      languages: formData.languages.includes(value)
-                        ? formData.languages
-                        : [...formData.languages, value],
+                      languages: formData.languages.filter((l) => l !== value),
                     })
                   }
                   required
-                  disabled={loading}>
+                  disabled={loading}
+                >
                   <SelectTrigger id="fallback-lang" className="h-10">
                     <SelectValue placeholder="Select a language" />
                   </SelectTrigger>
@@ -199,7 +199,8 @@ function CreateSiteModal({
                         disabled={
                           lang.code === formData.fallbackLang || loading
                         }
-                        className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700" : "hover:bg-gray-100 duration-300"}`}>
+                        className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700" : "hover:bg-gray-100 duration-300"}`}
+                      >
                         {lang.name}
                       </Button>
                     );
@@ -213,13 +214,15 @@ function CreateSiteModal({
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                disabled={loading}>
+                disabled={loading}
+              >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 className="bg-gray-900 hover:bg-gray-700"
-                disabled={loading || !formData.name || !formData.fallbackLang}>
+                disabled={loading || !formData.name || !formData.fallbackLang}
+              >
                 {loading ? (
                   <>
                     <Loader />
@@ -252,7 +255,8 @@ export function CreateSite({
             <Button
               variant="default"
               onClick={() => setShowCreateModal(true)}
-              className="bg-black hover:bg-black/80">
+              className="bg-black hover:bg-black/80"
+            >
               <Plus className="mr-2 h-4 w-4" /> Add New Site
             </Button>
           </TooltipTrigger>
