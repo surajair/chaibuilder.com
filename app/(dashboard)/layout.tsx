@@ -67,18 +67,22 @@ export default async function DashboardLayout({
         />
       </head>
       <body className="font-body antialiased">
-        <header className="border-b bg-white">
-          <div className="container flex h-16 items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Logo shouldRedirect={false} />
-              <span className="ml-2 text-xl font-bold tracking-wide uppercase">
-                Chai Builder
-              </span>
+        <div className="flex h-screen flex-col">
+          <header className="border-b bg-white">
+            <div className="container flex h-16 items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Logo shouldRedirect={false} />
+                <span className="ml-2 text-xl font-bold tracking-wide uppercase">
+                  Chai Builder
+                </span>
+              </div>
+              <UserProfile user={user} />
             </div>
-            <UserProfile user={user} />
+          </header>
+          <div className="flex-1 overflow-y-auto">
+            <div className="container py-8">{children}</div>
           </div>
-        </header>
-        <div className="container flex-1 py-8">{children}</div>
+        </div>
         <Toaster richColors />
         <Clarity />
         <Script
