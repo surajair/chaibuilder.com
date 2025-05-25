@@ -2,12 +2,46 @@
 import { registerBlocks } from "@/blocks";
 import { bluePreset, greenPreset, orangePreset } from "@/chai/theme-presets";
 import { registerFonts } from "@/fonts";
-import ChaiBuilderPages from "@chaibuilder/pages";
+import ChaiBuilderPages, {
+  ChaiLibraryBlock,
+  registerChaiLibrary,
+} from "@chaibuilder/pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Logo } from "./logo";
 
 registerBlocks();
 registerFonts();
+
+registerChaiLibrary("meraki-ui", {
+  name: "Meraki UI",
+  description: "Meraki UI",
+  getBlocksList: async () => {
+    try {
+      const response = await fetch(
+        "https://chai-ui-blocks.vercel.app/blocks.json"
+      );
+      const blocks = await response.json();
+      return blocks.map((b: any) => ({
+        ...b,
+        preview: "https://chai-ui-blocks.vercel.app" + b.preview,
+      }));
+    } catch {
+      return [];
+    }
+  },
+  getBlock: async ({
+    block,
+  }: {
+    block: ChaiLibraryBlock<{ path?: string; uuid: string }>;
+  }) => {
+    const response = await fetch(
+      "https://chai-ui-blocks.vercel.app" +
+        (!block.path ? "/" + block.uuid + ".html" : "/blocks/" + block.path)
+    );
+    const html = await response.text();
+    return html.replace(/---([\s\S]*?)---/g, "");
+  },
+});
 
 const queryClient = new QueryClient({
   defaultOptions: {
