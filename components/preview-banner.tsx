@@ -1,8 +1,8 @@
 export default function PreviewBanner({ slug }: { slug: string }) {
   return (
     <div id="chai-preview-banner" className="sticky top-0 z-50 bg-orange-600">
-      <div className="max-w-[85rem] px-4 py-1 sm:px-6 lg:px-8 mx-auto">
-        <div className="flex items-center">
+      <div className="w-full py-1 px-2 mx-auto">
+        <div className="flex items-center justify-between">
           <p className="text-white text-sm">
             You are viewing page in preview mode
           </p>

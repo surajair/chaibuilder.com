@@ -1,4 +1,4 @@
-import { getDocContent } from "@/cms/notion/get-doc-content";
+import { getDocContent } from "@/cms/github/get-doc-content";
 import { registerChaiPageType } from "@chaibuilder/pages/server";
 
 registerChaiPageType("docs", {
@@ -9,14 +9,9 @@ registerChaiPageType("docs", {
   dataProvider: async ({ pageProps, inBuilder }) => {
     const slug = pageProps.slug;
     const document = await getDocContent(
-      inBuilder ? "open-source-website-builder" : slug.replace("/docs/", ""),
+      inBuilder ? "docs/overview/about-chai-builder" : slug,
       "Documentation"
     );
-    return {
-      page: {
-        title: document?.title,
-        content: document?.content,
-      },
-    };
+    return { page: document };
   },
 });

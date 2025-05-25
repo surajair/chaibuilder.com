@@ -49,8 +49,12 @@ export const getChaiSiteSettings = cache(async () => {
 });
 
 export const getChaiPageData = cache(
-  async (pageType: string, props: ChaiPageProps) => {
-    const pageData = await chaiBuilderPages.getPageData(pageType, props);
+  async (blocks: ChaiBlock[], pageType: string, props: ChaiPageProps) => {
+    const pageData = await chaiBuilderPages.getPageData(
+      blocks,
+      pageType,
+      props
+    );
     return pageData;
   }
 );
@@ -63,7 +67,7 @@ export const getChaiPageSeoMetadata = cache(async (props: ChaiPageProps) => {
   let seoJson = JSON.stringify(seoData);
   const hasDynamicValues = seoJson.match(/\{\{.*?\}\}/g);
   if (hasDynamicValues) {
-    const pageSeoFields = await getChaiPageData(pageData.pageType, props);
+    const pageSeoFields = await getChaiPageData([], pageData.pageType, props);
 
     if (!isEmpty(pageSeoFields)) {
       // Recursively get all possible paths from the pageSeoFields object

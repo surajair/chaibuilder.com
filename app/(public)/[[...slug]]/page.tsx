@@ -15,7 +15,7 @@ import { ChaiBlock } from "@chaibuilder/pages/builder";
 import { RenderChaiBlocks } from "@chaibuilder/pages/render";
 import { ChaiPageProps } from "@chaibuilder/pages/runtime";
 import { loadWebBlocks } from "@chaibuilder/pages/web-blocks";
-import { get } from "lodash";
+import { get, noop } from "lodash";
 import isEmpty from "lodash/isEmpty";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
@@ -71,7 +71,11 @@ export default async function Page({
   const pageStyles = await getChaiPageStyles(chaiPage.blocks as ChaiBlock[]);
   const fallbackLang = chaiBuilderPages.getFallbackLang();
 
-  const pageData = await getChaiPageData(chaiPage.pageType, pageProps);
+  const pageData = await getChaiPageData(
+    chaiPage.blocks as unknown as ChaiBlock[],
+    chaiPage.pageType,
+    pageProps
+  );
 
   return (
     <>
@@ -86,6 +90,7 @@ export default async function Page({
         fallbackLang={fallbackLang}
         lang={isEmpty(chaiPage.lang) ? fallbackLang : chaiPage.lang}
         pageProps={pageProps}
+        dataProviderMetadataCallback={noop}
       />
     </>
   );

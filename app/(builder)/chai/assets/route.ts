@@ -7,7 +7,15 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   const requestBody = await req.json();
   try {
+    // Check for `authorization` header
     const authorization = req.headers.get("authorization");
+    if (!authorization) {
+      return NextResponse.json(
+        { error: "Missing Authorization header" },
+        { status: 401 }
+      );
+    }
+
     const authToken = authorization ? authorization.split(" ")[1] : "";
     const response = await chaiBuilderPages.handle(requestBody, authToken);
     if (has(response, "error")) {
@@ -15,7 +23,6 @@ export async function POST(req: NextRequest) {
     }
     return NextResponse.json(response);
   } catch (error) {
-    console.log("error", error);
     // * On error, throw if firebase auth error, else 500
     if (error instanceof Error) {
       return NextResponse.json(

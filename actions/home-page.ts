@@ -149,7 +149,7 @@ export const HOME_PAGE_BLOCKS = [
     _id: "qoucAg",
     styles: "#styles:,",
     image:
-      "https://ucarecdn.com/a82e256c-1cf2-4755-b65c-5d85e7652daa/-/preview/400x400",
+      "https://fldwljgzcktqnysdkxnn.supabase.co/storage/v1/object/public/dam-assets/07f9192d-3b5d-4187-b13a-f05caee11176/gVH7O-Ir_400x400.png",
     alt: "",
     lazyLoading: true,
     width: "50",

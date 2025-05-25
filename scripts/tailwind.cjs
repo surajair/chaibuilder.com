@@ -1,7 +1,7 @@
 const { exec } = require("child_process");
 
 const tailwindConfigPath = "./tailwind.config.ts"; // Adjust if your config is in a different location
-const outputCssPath = "./app/(public)/public.css"; // Tailwind input CSS file
+const inputCssPath = "./app/(public)/public.css"; // Tailwind input CSS file
 const publicCssPath = "./public/chaistyles.css"; // Final output location
 
 const generateTailwindCss = (devMode = false) => {
@@ -10,7 +10,7 @@ const generateTailwindCss = (devMode = false) => {
   const watchFlag = devMode ? "--watch" : "";
   const minifyFlag = devMode ? "" : "--minify";
 
-  const command = `npx tailwindcss -c ${tailwindConfigPath} -i "${outputCssPath}" -o "${publicCssPath}" ${watchFlag} ${minifyFlag}`;
+  const command = `npx tailwindcss -c ${tailwindConfigPath} -i "${inputCssPath}" -o "${publicCssPath}" ${watchFlag} ${minifyFlag}`;
 
   console.log(`Running: ${command}`);
 

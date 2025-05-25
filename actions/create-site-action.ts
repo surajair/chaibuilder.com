@@ -63,7 +63,7 @@ export async function createSite(formData: Partial<Site>) {
       .insert(appData);
     if (onlineError) throw onlineError;
 
-    await createHomePage(appData.id, formData.name);
+    await createHomePage(appData.id, formData.name as string);
 
     // Creating and adding api key
     const apiKey = encodedApiKey(appData.id, ENCRYPTION_KEY);
