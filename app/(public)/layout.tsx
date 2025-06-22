@@ -35,7 +35,7 @@ export default async function RootLayout({
   const customFontFace = getThemeCustomFontFace([bodyFont, headingFont]);
 
   return (
-    <html lang="en" className={`smooth-scroll`} suppressHydrationWarning>
+    <html className={`smooth-scroll`} suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         {fontUrls.map((fontUrl: string) => (

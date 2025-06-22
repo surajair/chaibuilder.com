@@ -9,6 +9,7 @@ const nextConfig = {
       { hostname: "cdn.rareblocks.xyz" },
       { hostname: "picsum.photos" },
       { hostname: "fakeimg.pl" },
+      { hostname: "via.placeholder.com" },
       { hostname: "fldwljgzcktqnysdkxnn.supabase.co" },
     ],
   },
