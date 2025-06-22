@@ -32,10 +32,12 @@ export const getChaiBuilderPage = cache(async (slug: string) => {
   const tagPageId = response.id;
   return nextCache(
     async () => {
-      const responseData = await chaiBuilderPages.getFullPage(response.id);
+      const responseData = await chaiBuilderPages.getFullPage(
+        response.languagePageId
+      );
       return responseData;
     },
-    ["page-" + response.lang, response.id],
+    ["page-" + response.lang, response.languagePageId],
     { tags: ["page-" + tagPageId] }
   )();
 });
