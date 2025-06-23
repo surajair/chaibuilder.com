@@ -149,7 +149,8 @@ export function SiteDetailsModal({
                         size="icon"
                         className="absolute right-0 top-0 h-full px-3"
                         onClick={() => setShowApiKey(!showApiKey)}
-                        disabled={isSaving}>
+                        disabled={isSaving}
+                      >
                         {showApiKey ? (
                           <EyeOff className="h-4 w-4" />
                         ) : (
@@ -170,14 +171,16 @@ export function SiteDetailsModal({
                           localApiKey || site.apiKey
                         );
                         toast.success("API key copied");
-                      }}>
+                      }}
+                    >
                       <CopyIcon className="h-4 w-4" />
                       <span className="sr-only">Copy API key</span>
                     </Button>
                     <Button
                       variant="outline"
                       disabled={isSaving}
-                      onClick={() => setShowRevokeConfirm(true)}>
+                      onClick={() => setShowRevokeConfirm(true)}
+                    >
                       Revoke
                     </Button>
                   </div>
@@ -192,7 +195,8 @@ export function SiteDetailsModal({
                   <Button
                     onClick={handleCreateApiKey}
                     disabled={isSaving}
-                    className="bg-gray-900 hover:bg-gray-700 min-w-32">
+                    className="bg-gray-900 hover:bg-gray-700 min-w-32"
+                  >
                     {isSaving ? (
                       <Loader fullscreen={false} />
                     ) : (
@@ -248,7 +252,8 @@ export function SiteDetailsModal({
                       size="sm"
                       onClick={() => toggleLanguage(lang.code)}
                       disabled={isSaving || lang.code === site.fallbackLang}
-                      className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700 text-white" : "hover:bg-gray-100 duration-300"}`}>
+                      className={`h-8 text-xs ${isSelected ? "bg-gray-700 hover:bg-gray-700 text-white" : "hover:bg-gray-100 duration-300"}`}
+                    >
                       {lang.name}
                     </Button>
                   );
@@ -263,13 +268,15 @@ export function SiteDetailsModal({
               disabled={isSaving}
               onClick={() => {
                 onOpenChange(false);
-              }}>
+              }}
+            >
               Cancel
             </Button>
             <Button
               onClick={handleSave}
               disabled={isSaving}
-              className="bg-gray-900 hover:bg-gray-700 flex items-center gap-x-1.5 min-w-24">
+              className="bg-gray-900 hover:bg-gray-700 flex items-center gap-x-1.5 min-w-24"
+            >
               {isSaving ? (
                 <>
                   <Loader fullscreen={false} />
