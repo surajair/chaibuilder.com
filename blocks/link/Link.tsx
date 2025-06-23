@@ -21,8 +21,7 @@ export const LinkBlock = async (props: ChaiBlockComponentProps<LinkProps>) => {
   const isPageTypeLink = link?.type === "pageType" && link?.href !== "";
   let href = link?.href;
   if (isPageTypeLink) {
-    const parts = href.split(":"); // pageType href is of format "pageType:${pageTypeKey}:${id}"
-    href = await chaiBuilderPages.resolveLink(parts[1], parts[2]);
+    href = await chaiBuilderPages.resolvePageLink(href, props.lang);
   }
   if (children) {
     return (

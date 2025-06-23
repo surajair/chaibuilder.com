@@ -9,6 +9,7 @@ const nextConfig = {
       { hostname: "via.placeholder.com" },
       { hostname: "picsum.photos" },
       { hostname: "fakeimg.pl" },
+      { hostname: "via.placeholder.com" },
       { hostname: "fldwljgzcktqnysdkxnn.supabase.co" },
     ],
   },
