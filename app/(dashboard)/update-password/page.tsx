@@ -24,13 +24,14 @@ export default async function UpdatePasswordPage({
   }[type];
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex flex-col">
       <div className="container flex h-16 items-center justify-between"></div>
       <div className="flex flex-col items-center justify-center">
         <div className="max-w-lg min-w-96  rounded-lg p-8">
           <Link
             href="/sites"
-            className="text-sm text-fuchsia-500 hover:text-fuchsia-700 flex items-center gap-2">
+            className="text-sm text-fuchsia-500 hover:text-fuchsia-700 flex items-center gap-2"
+          >
             <ArrowLeftIcon className="w-4 h-4" /> Back to sites
           </Link>
           <div className="py-8">
