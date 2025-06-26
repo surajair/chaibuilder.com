@@ -54,12 +54,12 @@ export function ConfirmDialog({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {requireProjectName && (
-          <div className="mb-4">
+          <div className="mb-4 flex flex-col gap-2">
             <label
               htmlFor="projectName"
               className="block text-sm font-medium text-gray-700"
             >
-              Enter project name
+              Type &quot;<strong>{projectName}</strong>&quot; to confirm
             </label>
             <Input
               id="projectName"
