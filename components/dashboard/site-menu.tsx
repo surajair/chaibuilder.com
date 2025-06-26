@@ -87,6 +87,8 @@ export const SiteMenu = ({ site }: { site: Site }) => {
           title="Delete Site"
           description={`Are you sure you want to delete "${site.name}"? This action cannot be undone.`}
           onConfirm={handleDelete}
+          projectName={site.name}
+          requireProjectName={true}
         />
       )}
     </>
