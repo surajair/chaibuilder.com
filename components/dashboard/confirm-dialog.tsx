@@ -11,6 +11,7 @@ import {
   DialogTitle,
 } from "@chaibuilder/sdk/ui";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 import { useState } from "react";
 import Loader from "./loader";
 
@@ -19,6 +20,8 @@ interface ConfirmDialogProps {
   title: string;
   description: string;
   onConfirm: () => void;
+  projectName?: string;
+  requireProjectName?: boolean;
 }
 
 export function ConfirmDialog({
@@ -26,8 +29,11 @@ export function ConfirmDialog({
   title,
   description,
   onConfirm,
+  projectName,
+  requireProjectName,
 }: ConfirmDialogProps) {
   const [loading, setLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const onClickConfirm = async () => {
     setLoading(true);
@@ -47,11 +53,31 @@ export function ConfirmDialog({
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
+        {requireProjectName && (
+          <div className="mb-4">
+            <label
+              htmlFor="projectName"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Enter project name
+            </label>
+            <Input
+              id="projectName"
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
+          </div>
+        )}
         <DialogFooter>
           <Button onClick={(e) => handleStateChange(false)} variant="outline">
             Cancel
           </Button>
-          <Button onClick={onClickConfirm} className="bg-red-600 hover:bg-red-">
+          <Button
+            onClick={onClickConfirm}
+            className="bg-red-600 hover:bg-red-700"
+            disabled={requireProjectName && inputValue !== projectName}
+          >
             Confirm
           </Button>
         </DialogFooter>
