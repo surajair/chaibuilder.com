@@ -61,7 +61,7 @@ export default function SiteCard({
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col items-center justify-center"></CardContent>
-      <CardFooter className="flex gap-2 justify-start pt-0">
+      <CardFooter className="flex gap-2 flex-col  justify-start ">
         {site.apiKey && (
           <Button
             variant="outline"
@@ -72,11 +72,18 @@ export default function SiteCard({
             View details
           </Button>
         )}
-        <Link href="/docs/dev/creating-new-site#next-steps" target="_blank">
-          <Button variant="secondary" size="sm" className="w-full">
-            Get started
-          </Button>
-        </Link>
+        <div className="flex   gap-2 justify-between w-full">
+          <Link href="/docs/developers/getting-started/deploy-to-vercel" target="_blank">
+            <Button variant="secondary" size="sm" className="w-full">
+              👉 Deploy to Vercel
+            </Button>
+          </Link>
+          <Link href="/docs/developers/getting-started/setup-locally" target="_blank">
+            <Button variant="secondary" size="sm" className="w-full">
+              🛠️ Set Up Locally
+            </Button>
+          </Link>
+        </div>
       </CardFooter>
       {showDetailsModal && (
         <SiteDetailsModal site={site} onOpenChange={setShowDetailsModal} />
