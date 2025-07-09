@@ -1,11 +1,17 @@
-export default function PreviewBanner({ slug }: { slug: string }) {
+export default function PreviewBanner({ slug, revision }: { slug: string, revision?: { number: number, publishedBy: string, time: string } }) {
   return (
     <div id="chai-preview-banner" className="sticky top-0 z-50 bg-orange-600">
       <div className="w-full py-1 px-2 mx-auto">
         <div className="flex items-center justify-between">
-          <p className="text-white text-sm">
-            You are viewing page in preview mode
-          </p>
+          {revision ? (
+            <p className="text-white text-sm">
+              Revision #{revision.number} published by {revision.publishedBy} at {revision.time}
+            </p>
+          ) : (
+            <p className="text-white text-sm">
+              You are viewing page in preview mode
+            </p>
+          )}
 
           <div className="ps-3 ms-auto">
             <a
