@@ -153,5 +153,14 @@ export const getChaiPageStyles = async (blocks: ChaiBlock[]) => {
   const filteredStyles = await filterDuplicateStyles(minifiedStyles);
   return filteredStyles;
 };
+export const getChaiBuilderPartialPage = cache(
+  async (id: string, lang: string) => {
+    return nextCache(
+      async () => await chaiBuilderPages.getFullPage(id),
+      ['page-' + id, lang],
+      { tags: ['page-' + id] }
+    )()
+  }
+)
 
 export { chaiBuilderPages };
