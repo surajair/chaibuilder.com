@@ -23,10 +23,6 @@ registerServerBlocks()
 
 export const dynamic = 'force-static'
 
-interface ChaiPageData extends Record<string, unknown> {
-  $contextData?: Record<string, unknown>
-  $metadata?: Record<string, string>
-}
 
 export const generateMetadata = async () => {
   return {
@@ -88,7 +84,7 @@ export default async function Page({
     pageBaseSlug: chaiPage.slug,
   }
 
-  const pageData: ChaiPageData = await getChaiPageData({
+  const pageData = await getChaiPageData({
     blocks: chaiPage.blocks,
     pageType: chaiPage.pageType,
     pageProps,
