@@ -78,7 +78,7 @@ export default async function Page({
 
   const pageStyles = await getChaiPageStyles(chaiPage.blocks as ChaiBlock[])
   const pageProps: ChaiPageProps = {
-    slug: `/partials/${nextParams.partials.join('/')}`,
+    slug: `/partial/${nextParams.partials.join('/')}`,
     pageType: chaiPage.pageType,
     fallbackLang,
     lastSaved: chaiPage.lastSaved,
