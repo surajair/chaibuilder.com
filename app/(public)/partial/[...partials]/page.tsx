@@ -98,7 +98,7 @@ export default async function Page({
         dangerouslySetInnerHTML={{ __html: pageStyles }}
       />
       {isEnabled && (
-        <PreviewBanner slug={`/chai?page=${nextParams.partials.join('/')}`} />
+        <PreviewBanner slug={`/partial/${nextParams.partials.join('/')}`} />
       )}
       <RenderChaiBlocks
         externalData={pageData}
