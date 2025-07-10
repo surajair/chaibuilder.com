@@ -70,20 +70,21 @@ export default async function Page({
   let id = "";
   let lang = fallbackLang;
   let label = "";
-  const typeMatch = pathSegment.match(/^(revision|draft|live):([^:]+)(?::([^:]+))?/);
-  
+  const typeMatch = pathSegment.match(
+    /^(revision|draft|live):([^:]+)(?::([^:]+))?/
+  );
+
   if (typeMatch) {
     type = typeMatch[1] as "draft" | "live" | "revision";
     id = typeMatch[2];
-    label = (typeMatch[3]).split("&")[0] || "";
+    if (type == "revision") {
+      label = typeMatch[3].split("&")[0] || " ";
+    }
   } else {
     id = pathSegment;
   }
   if (search.lang) {
     lang = search.lang;
-  }
-  if (search.label) {
-    label = search.label;
   }
   const chaiPage = await getChaiBuilderRevisionPage({
     id,
@@ -94,10 +95,9 @@ export default async function Page({
   if ("error" in chaiPage && chaiPage.error === "NOT_FOUND") {
     return notFound();
   }
-
   const pageStyles = await getChaiPageStyles(chaiPage.blocks as ChaiBlock[]);
   const pageProps: ChaiPageProps = {
-    slug: `/revision/${nextParams.revisions.join("/")}`,
+    slug: `/revision/${chaiPage.slug}`,
     pageType: chaiPage.pageType,
     fallbackLang,
     lastSaved: chaiPage.lastSaved,
@@ -106,14 +106,13 @@ export default async function Page({
     languagePageId: chaiPage.languagePageId,
     pageBaseSlug: chaiPage.slug,
   };
-
   return (
     <div lang={lang}>
       <style
         id="chaibuilder-styles"
         dangerouslySetInnerHTML={{ __html: pageStyles }}
       />
-      <RevisionBanner type={type} label={label} time={chaiPage.lastSaved}/>
+      <RevisionBanner type={type} label={label} time={chaiPage.lastSaved} />
       <RenderChaiBlocks
         externalData={chaiPage}
         blocks={chaiPage.blocks as unknown as ChaiBlock[]}
