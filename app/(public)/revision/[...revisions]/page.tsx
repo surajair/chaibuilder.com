@@ -6,13 +6,14 @@ import {
   getChaiPageStyles,
   getChaiSiteSettings,
 } from "@/chai";
-import PreviewBanner from "@/components/preview-banner";
+
+import RevisionBanner from "@/components/revision-banner";
 import "@/page-types";
 import type { ChaiBlock } from "@chaibuilder/pages";
 import { RenderChaiBlocks } from "@chaibuilder/pages/render";
 import { ChaiPageProps } from "@chaibuilder/pages/runtime";
 import { loadWebBlocks } from "@chaibuilder/pages/web-blocks";
-import { first, get } from "lodash";
+import { get } from "lodash";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 
@@ -69,10 +70,12 @@ export default async function Page({
   let id = "";
   let lang = fallbackLang;
   let label = "";
-  const typeMatch = pathSegment.match(/^(revision|draft|live):([^:]+)/);
+  const typeMatch = pathSegment.match(/^(revision|draft|live):([^:]+)(?::([^:]+))?/);
+  
   if (typeMatch) {
     type = typeMatch[1] as "draft" | "live" | "revision";
     id = typeMatch[2];
+    label = (typeMatch[3]).split("&")[0] || "";
   } else {
     id = pathSegment;
   }
@@ -110,17 +113,7 @@ export default async function Page({
         id="chaibuilder-styles"
         dangerouslySetInnerHTML={{ __html: pageStyles }}
       />
-      {isEnabled && (
-        <PreviewBanner
-          revision={{
-            label: label,
-            publishedBy: chaiPage.publishedBy || "",
-            time: chaiPage.lastSaved,
-            type: type,
-          }}
-          slug={`/revision/${nextParams.revisions.join("/")}`}
-        />
-      )}
+      <RevisionBanner type={type} label={label} time={chaiPage.lastSaved}/>
       <RenderChaiBlocks
         externalData={chaiPage}
         blocks={chaiPage.blocks as unknown as ChaiBlock[]}
