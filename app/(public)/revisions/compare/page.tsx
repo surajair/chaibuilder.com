@@ -2,10 +2,13 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
+import { RightFrame } from "./components/right-iframe";
+import { LeftFrame } from "./components/left-ifram";
 
 interface RevisionInfo {
   id: string;
-  number: number;
+  type?: string;
+  number?: number;
   publishedBy: string;
   publishedAt: string;
   isLive?: boolean;
@@ -19,187 +22,75 @@ const ComparisonPage = () => {
   const [version1Data, setVersion1Data] = useState<RevisionInfo | null>(null);
   const [version2Data, setVersion2Data] = useState<RevisionInfo | null>(null);
   const [loading, setLoading] = useState(true);
-  const [availableRevisions, setAvailableRevisions] = useState<RevisionInfo[]>(
-    []
-  );
+  const getVersionInfo = (versionString: string): RevisionInfo => {
+    if (!versionString) return {
+      id: '',
+      number: 0,
+      publishedBy: 'Unknown',
+      publishedAt: new Date().toISOString(),
+    };
 
-  // Function to fetch available revisions
-  const fetchAvailableRevisions = useCallback(async () => {
-    try {
-      // This is a placeholder - replace with actual API call
-      const mockRevisions: RevisionInfo[] = [
-        {
-          id: "c8a27531-b488-4ad7-a89d-24522113a0d9",
-          number: 1,
-          publishedBy: "John Doe",
-          publishedAt: "2023-06-15 14:30:00",
-        },
-        {
-          id: "84b6305f-4163-4b33-9f53-459e684e9382",
-          number: 2,
-          publishedBy: "Jane Smith",
-          publishedAt: "2023-06-16 09:45:00",
-        },
-        {
-          id: "1cfad81f-fe22-4b57-89d3-ec3900baf825",
-          number: 3,
-          publishedBy: "Alex Johnson",
-          publishedAt: "2023-06-17 16:20:00",
-        },
-        {
-          id: "eab77147-e7ec-4342-8362-5cd0c870c08f",
-          number: 4,
-          publishedBy: "Sarah Williams",
-          publishedAt: "2023-06-18 11:10:00",
-        },
-      ];
+    const match = versionString.match(/(revision|draft|live):([^:?]+)/);
+    if (!match) return {
+      id: versionString,
+      number: 0,
+      publishedBy: 'Unknown',
+      publishedAt: new Date().toISOString(),
+    };
 
-      // Add live version
-      mockRevisions.push({
-        id: "live",
-        number: 0,
-        publishedBy: "System",
-        publishedAt: "2023-06-19 10:00:00",
-        isLive: true,
-      });
+    const [_, type, id] = match;
+    const labelMatch = versionString.match(/label=([^&]+)/);
+    const label = labelMatch ? labelMatch[1] : '1';
 
-      // Add draft version
-      mockRevisions.push({
-        id: "draft",
-        number: 0,
-        publishedBy: "System",
-        publishedAt: "2023-06-19 10:00:00",
-        isDraft: true,
-      });
-
-      setAvailableRevisions(mockRevisions);
-    } catch (error) {
-      console.error("Error fetching revisions:", error);
-    }
-  }, []);
-
-  // Function to parse version string
-  const parseVersionString = useCallback(
-    (versionString: string): { type: string; id: string; label?: string } => {
-      if (!versionString) return { type: "", id: "" };
-
-      if (versionString.startsWith("draft:")) {
-        return { type: "draft", id: versionString.replace("draft:", "") };
-      }
-
-      if (versionString.startsWith("live:")) {
-        return { type: "live", id: versionString.replace("live:", "") };
-      }
-
-      if (versionString.startsWith("revision:")) {
-        const parts = versionString.replace("revision:", "").split(":");
+    switch (type) {
+      case 'live':
         return {
-          type: "revision",
-          id: parts[0],
-          label: parts.length > 1 ? parts[1] : "1",
+          id,
+          number: 0,
+          publishedBy: 'System',
+          publishedAt: new Date().toISOString(),
+          isLive: true,
         };
-      }
+      case 'draft':
+        return {
+          id,
+          number: 0,
+          publishedBy: 'Current Draft',
+          publishedAt: new Date().toISOString(),
+          isDraft: true,
+        };
+      case 'revision':
+      default:
+        return {
+          id,
+          number: parseInt(label) || 1,
+          publishedBy: `Revision ${label}`,
+          publishedAt: new Date().toISOString(),
+        };
+    }
+  };
 
-      return { type: "", id: "" };
-    },
-    []
-  );
-
-  // Function to fetch revision data
-  const fetchRevisionData = useCallback(
-    async (versionString: string, versionKey: "version1" | "version2") => {
-      if (!versionString) return;
-
-      setLoading(true);
-
-      try {
-        const { type, id, label } = parseVersionString(versionString);
-        let revisionData: RevisionInfo;
-
-        if (type === "live") {
-          revisionData = {
-            id,
-            number: 0,
-            publishedBy: "System",
-            publishedAt: "2023-06-19 10:00:00",
-            isLive: true,
-          };
-        } else if (type === "draft") {
-          revisionData = {
-            id,
-            number: 0,
-            publishedBy: "System",
-            publishedAt: "2023-06-19 10:00:00",
-            isDraft: true,
-          };
-        } else if (type === "revision") {
-          // Find in available revisions or fetch from API
-          const found = availableRevisions.find((rev) => rev.id === id);
-          if (found) {
-            revisionData = {
-              ...found,
-              number: parseInt(label || "1"),
-            };
-          } else {
-            // Mock data if not found
-            revisionData = {
-              id,
-              number: parseInt(label || "1"),
-              publishedBy: "Unknown User",
-              publishedAt: new Date().toISOString(),
-            };
-          }
-        } else {
-          // Default case
-          revisionData = {
-            id: versionString,
-            number: 0,
-            publishedBy: "Unknown",
-            publishedAt: new Date().toISOString(),
-          };
-        }
-
-        if (versionKey === "version1") {
-          setVersion1Data(revisionData);
-        } else {
-          setVersion2Data(revisionData);
-        }
-      } catch (error) {
-        console.error(`Error fetching version ${versionString}:`, error);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [availableRevisions, parseVersionString]
-  );
-
-  // Generate URL for iframe based on version string
-  const getVersionUrl = useCallback(
-    (versionString: string): string => {
-      if (!versionString) return "";
-
-      const { type, id, label } = parseVersionString(versionString);
-
-      if (type === "live") {
-        // For demo purposes, use revision route with label=live
-        // In production, this would point to the actual live page
-        return `/partial/${id}?label=live`;
-      }
-
-      if (type === "draft") {
-        // For demo purposes, use revision route with label=draft
-        // In production, this would point to the actual draft preview
-        return `/partial/${id}?label=draft`;
-      }
-
-      if (type === "revision") {
-        return `/partial/${id}${label ? `?label=${label}` : ""}`;
-      }
-
-      return "";
-    },
-    [parseVersionString]
-  );
+  const getVersionUrl = (versionString: string): string => {
+    if (!versionString) return '';
+    
+    if (versionString.startsWith('http') || versionString.startsWith('/')) {
+      return versionString;
+    }
+    
+    // Otherwise, construct the URL
+    const lang = new URLSearchParams(window.location.search).get('lang') || 'en';
+    const baseUrl = '/revision';
+    
+    // Check if it's already in the correct format
+    if (versionString.startsWith('revision:') || 
+        versionString.startsWith('draft:') || 
+        versionString.startsWith('live:')) {
+      return `${baseUrl}/${versionString}${versionString.includes('?') ? '&' : '?'}lang=${lang}`;
+    }
+    
+    // Default to revision if no type specified
+    return `${baseUrl}/revision:${versionString}?lang=${lang}`;
+  };
 
   // Parse URL parameters
   useEffect(() => {
@@ -208,64 +99,102 @@ const ComparisonPage = () => {
 
     setVersion1(version1Param);
     setVersion2(version2Param);
-
-    // Fetch available revisions for dropdown selection
-    fetchAvailableRevisions();
-  }, [searchParams, fetchAvailableRevisions]);
-
-  // Fetch revision data when versions change
-  useEffect(() => {
-    if (version1) {
-      fetchRevisionData(version1, "version1");
+    
+    // Set version data directly from URL parameters
+    if (version1Param) {
+      setVersion1Data(getVersionInfo(version1Param));
     }
-    if (version2) {
-      fetchRevisionData(version2, "version2");
+    if (version2Param) {
+      setVersion2Data(getVersionInfo(version2Param));
     }
-  }, [version1, version2, fetchRevisionData]);
+    
+    setLoading(false);
+  }, [searchParams]);
 
   // Get display label for version
-  const getVersionLabel = useCallback(
-    (versionString: string): string => {
-      const { type, id, label } = parseVersionString(versionString);
-
-      if (type === "live") {
-        return "Live";
-      }
-
-      if (type === "draft") {
-        return "Draft";
-      }
-
-      if (type === "revision") {
-        return `Revision ${label || "1"}`;
-      }
-
-      return versionString || "Select version";
-    },
-    [parseVersionString]
-  );
+  const getVersionLabel = (versionString: string): string => {
+    if (!versionString) return "Select version";
+    
+    if (versionString.includes('live:')) return "Live";
+    if (versionString.includes('draft:')) return "Draft";
+    
+    const revisionMatch = versionString.match(/revision:[^:]+:(\d+)/);
+    if (revisionMatch) {
+      return `Revision ${revisionMatch[1]}`;
+    }
+    
+    return versionString;
+  };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Split view container with full-length dividing line */}
-      <div className="flex h-[calc(100vh-80px)] relative">
-        {/* Left side iframe */}
+    <div className="flex flex-col h-screen">
+      {/* Header Section */}
+      <div className="bg-white border-b border-gray-200 p-4">
+        <div className="flex items-center justify-between">
+          {/* Left Version Info */}
+          <div className="flex-1">
+            <div className="flex items-center space-x-2">
+              <h2 className="text-lg font-medium text-gray-900">Version 1</h2>
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                {version1Data?.type || 'draft'}
+              </span>
+            </div>
+            {version1Data && (
+              <p className="mt-1 text-sm text-gray-500">
+                Published by {version1Data.publishedBy} at {new Date(version1Data.publishedAt).toLocaleString()}
+              </p>
+            )}
+          </div>
+
+          {/* Center Language Selector */}
+          <div className="flex flex-col items-center space-y-2">
+            <div className="relative">
+              <select 
+                className="block w-full  py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-[10px]"
+                value={searchParams.get('lang') || 'en'}
+                onChange={(e) => {
+                  const newParams = new URLSearchParams(searchParams);
+                  newParams.set('lang', e.target.value);
+                  window.location.search = newParams.toString();
+                }}
+              >
+                <option value="en">English</option>
+                <option value="es">Español</option>
+                <option value="fr">Français</option>
+                <option value="de">Deutsch</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Right Version Info */}
+          <div className="flex-1 text-right">
+            <div className="flex items-center justify-end space-x-2">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                {version2Data?.type || 'revision'}
+              </span>
+              <h2 className="text-lg font-medium text-gray-900">Version 2</h2>
+            </div>
+            {version2Data && (
+              <p className="mt-1 text-sm text-gray-500">
+                Published by {version2Data.publishedBy} at {new Date(version2Data.publishedAt).toLocaleString()}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Iframe Container */}
+      <div className="flex flex-1 overflow-hidden">
         <LeftFrame
           loading={loading}
           version={version1}
-          versionData={version1Data}
           getVersionUrl={getVersionUrl}
           getVersionLabel={getVersionLabel}
         />
-
-        {/* Full-length dividing line */}
-        <div className="absolute top-0 bottom-0 left-1/2 w-[3px] h-screen z-50 bg-gray-300 transform -translate-x-1/2"></div>
-
-        {/* Right side iframe */}
+        <div className="w-px bg-gray-200"></div>
         <RightFrame
           loading={loading}
           version={version2}
-          versionData={version2Data}
           getVersionUrl={getVersionUrl}
           getVersionLabel={getVersionLabel}
         />
@@ -274,122 +203,11 @@ const ComparisonPage = () => {
   );
 };
 
-// Simple component for left iframe
-interface FrameProps {
+export interface FrameProps {
   loading: boolean;
   version: string;
-  versionData: RevisionInfo | null;
   getVersionUrl: (version: string) => string;
   getVersionLabel: (version: string) => string;
 }
-
-const LeftFrame: React.FC<FrameProps> = ({
-  loading,
-  version,
-  versionData,
-  getVersionUrl,
-  getVersionLabel,
-}) => {
-  return (
-    <div className="w-1/2 h-full flex flex-col">
-      {/* Version info header */}
-      <div className="bg-gray-50 p-3 border-b">
-        <div className="text-sm font-medium text-gray-700">
-          {getVersionLabel(version)}
-        </div>
-        {versionData && (
-          <div className="mt-1 text-xs text-gray-500">
-            {versionData.isLive ? (
-              <p>Live Site</p>
-            ) : versionData.isDraft ? (
-              <p>Draft Version</p>
-            ) : (
-              <p>
-                Published by {versionData.publishedBy} on{" "}
-                {versionData.publishedAt}
-              </p>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Frame content */}
-      <div className="flex-grow">
-        {loading ? (
-          <div className="h-full flex items-center justify-center">
-            <p className="text-gray-500">Loading...</p>
-          </div>
-        ) : version ? (
-          <iframe
-            src={getVersionUrl(version)}
-            className="w-full h-full"
-            title={`Version ${getVersionLabel(version)}`}
-            // @ts-ignore - crossOrigin is valid but TypeScript doesn't recognize it
-            crossOrigin="anonymous"
-          />
-        ) : (
-          <div className="h-full flex items-center justify-center">
-            <p className="text-gray-500">No version selected</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-// Simple component for right iframe
-const RightFrame: React.FC<FrameProps> = ({
-  loading,
-  version,
-  versionData,
-  getVersionUrl,
-  getVersionLabel,
-}) => {
-  return (
-    <div className="w-1/2 h-full flex flex-col">
-      {/* Version info header */}
-      <div className="bg-gray-50 p-3 border-b text-right">
-        <div className="text-sm font-medium text-gray-700">
-          {getVersionLabel(version)}
-        </div>
-        {versionData && (
-          <div className="mt-1 text-xs text-gray-500">
-            {versionData.isLive ? (
-              <p>Live Site</p>
-            ) : versionData.isDraft ? (
-              <p>Draft Version</p>
-            ) : (
-              <p>
-                Published by {versionData.publishedBy} on{" "}
-                {versionData.publishedAt}
-              </p>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Frame content */}
-      <div className="flex-grow">
-        {loading ? (
-          <div className="h-full flex items-center justify-center">
-            <p className="text-gray-500">Loading...</p>
-          </div>
-        ) : version ? (
-          <iframe
-            src={getVersionUrl(version)}
-            className="w-full h-full"
-            title={`Version ${getVersionLabel(version)}`}
-            // @ts-ignore - crossOrigin is valid but TypeScript doesn't recognize it
-            crossOrigin="anonymous"
-          />
-        ) : (
-          <div className="h-full flex items-center justify-center">
-            <p className="text-gray-500">No version selected</p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
 
 export default ComparisonPage;

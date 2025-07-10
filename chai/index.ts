@@ -157,10 +157,28 @@ export const getChaiBuilderPartialPage = cache(
   async (id: string, lang: string) => {
     return nextCache(
       async () => await chaiBuilderPages.getFullPage(id),
-      ['page-' + id, lang],
-      { tags: ['page-' + id] }
-    )()
+      ["page-" + id, lang],
+      { tags: ["page-" + id] }
+    )();
   }
-)
+);
+
+export const getChaiBuilderRevisionPage = cache(
+  async ({
+    id,
+    type,
+    lang,
+  }: {
+    id: string;
+    type: "draft" | "live" | "revision";
+    lang: string;
+  }) => {
+    return await chaiBuilderPages.getRevisionPage({
+      id,
+      type,
+      lang,
+    });
+  }
+);
 
 export { chaiBuilderPages };
