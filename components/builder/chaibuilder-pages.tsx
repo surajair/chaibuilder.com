@@ -8,6 +8,7 @@ import ChaiBuilderPages, {
 } from "@chaibuilder/pages";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Logo } from "./logo";
+import { startsWith } from "lodash";
 
 registerBlocks();
 registerFonts();
@@ -61,7 +62,12 @@ export default function ChaiBuilderPagesWrapper() {
           { green: greenPreset as any },
           { blue: bluePreset as any },
         ]}
-        getPreviewUrl={(slug: string) => `/chai/api/preview?slug=${slug}`}
+        getPreviewUrl={(slug: string) => {
+          return `/chai/api/preview?slug=${startsWith(slug, '/') ? slug : '/partial/' + slug}`
+        }}
+        getLiveUrl={(slug: string) => {
+          return `/chai/api/preview?disable=true&slug=${startsWith(slug, '/') ? slug : '/partial/' + slug}`
+        }}
         autoSaveSupport={false}
         logo={Logo}
       />
