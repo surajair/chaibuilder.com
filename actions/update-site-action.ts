@@ -8,10 +8,12 @@ export async function updateSite(
   updates: {
     name?: string;
     description?: string;
+    languages?: string[];
     settings?: Record<string, any>;
   }
 ) {
   try {
+    // Update the apps table
     const { data, error } = await supabaseServer
       .from("apps")
       .update(updates)
@@ -20,6 +22,14 @@ export async function updateSite(
       .single();
 
     if (error) throw error;
+
+    // Also update the apps_online table with the same data
+    const { error: onlineError } = await supabaseServer
+      .from("apps_online")
+      .update(updates)
+      .eq("id", siteId);
+
+    if (onlineError) throw onlineError;
 
     revalidatePath("/sites");
     return { success: true, data };
