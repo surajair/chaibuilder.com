@@ -3,10 +3,10 @@ import {
   getChaiBuilderRevisionPage,
   getChaiSiteSettings,
 } from "@/chai";
-import { notFound } from "next/navigation";
-import { LanguageSelector } from "./components/language-selector";
 import { get } from "lodash";
+import { notFound } from "next/navigation";
 import { IframeRevision } from "./components/iframe-revision";
+import { LanguageSelector } from "./components/language-selector";
 
 interface VersionInfo {
   type: "draft" | "live" | "revision";
@@ -80,7 +80,7 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
   return (
     <div className="min-h-screen bg-gray-50 ">
       {/* Version Selector */}
-      <div className=" bg-white p-4  ">
+      <div className=" bg-white p-4  border-b shadow">
         <div className="flex items-center justify-between gap-4">
           <div className="flex-1">
             <div className="flex items-center gap-2">
