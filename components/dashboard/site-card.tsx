@@ -42,24 +42,34 @@ const CommandComponent = ({ site }: { site: Site }) => {
       toast.success('Copied to clipboard', { position: 'top-center' });
       const timeoutId = setTimeout(() => {
         setCopied(false);
-      }, 2000);
+      }, 4000);
       return () => clearTimeout(timeoutId);
     } catch (error) {
       toast.error('Failed to copy to clipboard');
     }
   };
 
+  const copyButtonClass = copied 
+    ? 'bg-green-200/50 border-green-500 text-green-700' 
+    : 'bg-blue-200/90 border-blue-500 text-blue-900 hover:bg-blue-300/70';
+
   return (
-    <div onClick={handleCopy} className="bg-blue-100/40 h-9 w-full overflow-hidden py-1 pl-4 rounded-md flex items-center justify-between">
+    <div className="bg-blue-100/40 h-9 w-full overflow-hidden py-1 pl-4 rounded-md flex items-center justify-between">
       <span
         className="font-mono text-sm w-full whitespace-nowrap truncate overflow-hidden text-blue-600"
         style={{ userSelect: "none" }}
       >
         npx @chaibuilder/create {kebabCase(site.name)} -key={'<API_KEY>'}
       </span>
-      <button className={`px-3 py-1 mr-2 h-max rounded-full flex items-center text-xs gap-x-1 ${copied ? 'bg-green-200/50 border-green-500 text-green-700' : 'bg-blue-200/90 border-blue-500 text-blue-900 hover:bg-blue-300/70'}`}>
-        {copied ? <Check className="h-3 w-3 " /> : <Copy className="h-3 w-3" />}
-        <span className={copied ? "" : "w-0 opacity-0 overflow-hidden group-hover:w-auto group-hover:opacity-100 duration-300"}>{copied ? 'Copied' : 'Copy'}</span>
+      <button 
+        onClick={handleCopy}
+        className={`px-3 py-1 mr-2 h-max rounded-full flex items-center text-xs gap-x-1 ${copyButtonClass}`}
+        aria-label={copied ? 'Command copied to clipboard' : 'Copy command to clipboard'}
+      >
+        {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+        <span className={copied ? "" : "w-0 opacity-0 overflow-hidden group-hover:w-auto group-hover:opacity-100 duration-300"}>
+          {copied ? 'Copied' : 'Copy'}
+        </span>
       </button>
     </div>
   );
