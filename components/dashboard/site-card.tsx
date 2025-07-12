@@ -34,14 +34,19 @@ function formatDate(dateString: string) {
 const CommandComponent = ({ site }: { site: Site }) => {
   const [copied, setCopied] = useState(false);
 
-  const handleCopy = (e: React.MouseEvent) => {
+  const handleCopy = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    navigator.clipboard.writeText(`npx @chaibuilder/create ${kebabCase(site.name)} -key=${site.apiKey}`);
-    setCopied(true);
-    toast.success('Copied to clipboard', { position: 'top-center' });
-    setTimeout(() => {
-      setCopied(false);
-    }, 2000);
+    try {
+      await navigator.clipboard.writeText(`npx @chaibuilder/create ${kebabCase(site.name)} -key=${site.apiKey}`);
+      setCopied(true);
+      toast.success('Copied to clipboard', { position: 'top-center' });
+      const timeoutId = setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+      return () => clearTimeout(timeoutId);
+    } catch (error) {
+      toast.error('Failed to copy to clipboard');
+    }
   };
 
   return (
