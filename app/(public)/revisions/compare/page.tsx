@@ -15,13 +15,13 @@ interface VersionInfo {
   lastSaved?: string;
 }
 
-interface ComparePageProps {
-  searchParams: {
+type ComparePageProps = {
+  searchParams: Promise<{
     version1?: string;
     version2?: string;
     lang?: string;
-  };
-}
+  }>;
+};
 
 const getVersionInfo = async (
   versionString: string,
