@@ -49,20 +49,19 @@ const CommandComponent = ({ site }: { site: Site }) => {
     }
   };
 
-  const copyButtonClass = copied 
-    ? 'bg-green-200/50 border-green-500 text-green-700' 
+  const copyButtonClass = copied
+    ? 'bg-green-200/50 border-green-500 text-green-700'
     : 'bg-blue-200/90 border-blue-500 text-blue-900 hover:bg-blue-300/70';
 
   return (
-    <div className="bg-blue-100/40 h-9 w-full overflow-hidden py-1 pl-4 rounded-md flex items-center justify-between">
+    <div onClick={handleCopy} className="bg-blue-100/40 h-9 w-full overflow-hidden py-1 pl-4 rounded-md flex items-center justify-between">
       <span
         className="font-mono text-sm w-full whitespace-nowrap truncate overflow-hidden text-blue-600"
         style={{ userSelect: "none" }}
       >
         npx @chaibuilder/create {kebabCase(site.name)} -key={'<API_KEY>'}
       </span>
-      <button 
-        onClick={handleCopy}
+      <button
         className={`px-3 py-1 mr-2 h-max rounded-full flex items-center text-xs gap-x-1 ${copyButtonClass}`}
         aria-label={copied ? 'Command copied to clipboard' : 'Copy command to clipboard'}
       >
