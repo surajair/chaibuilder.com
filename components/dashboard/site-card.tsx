@@ -10,9 +10,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Site } from "@/utils/types";
+import { kebabCase } from "lodash";
+import { Check, Copy, Laptop, Rocket } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { Laptop, Rocket } from "lucide-react";
+import { toast } from "sonner";
 
 function isNew(site: Site) {
   return (
@@ -28,6 +30,49 @@ function formatDate(dateString: string) {
     year: "numeric",
   });
 }
+
+const CommandComponent = ({ site }: { site: Site }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(`npx @chaibuilder/create ${kebabCase(site.name)} -key=${site.apiKey}`);
+      setCopied(true);
+      toast.success('Copied to clipboard', { position: 'top-center' });
+      const timeoutId = setTimeout(() => {
+        setCopied(false);
+      }, 4000);
+      return () => clearTimeout(timeoutId);
+    } catch (error) {
+      toast.error('Failed to copy to clipboard');
+    }
+  };
+
+  const copyButtonClass = copied
+    ? 'bg-green-200/50 border-green-500 text-green-700'
+    : 'bg-blue-200/90 border-blue-500 text-blue-900 hover:bg-blue-300/70';
+
+  return (
+    <div onClick={handleCopy} className="bg-blue-100/40 h-9 w-full overflow-hidden py-1 pl-4 rounded-md flex items-center justify-between">
+      <span
+        className="font-mono text-sm w-full whitespace-nowrap truncate overflow-hidden text-blue-600"
+        style={{ userSelect: "none" }}
+      >
+        npx @chaibuilder/create {kebabCase(site.name)} -key={'<API_KEY>'}
+      </span>
+      <button
+        className={`px-3 py-1 mr-2 h-max rounded-full flex items-center text-xs gap-x-1 ${copyButtonClass}`}
+        aria-label={copied ? 'Command copied to clipboard' : 'Copy command to clipboard'}
+      >
+        {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+        <span className={copied ? "" : "w-0 opacity-0 overflow-hidden group-hover:w-auto group-hover:opacity-100 duration-300"}>
+          {copied ? 'Copied' : 'Copy'}
+        </span>
+      </button>
+    </div>
+  );
+};
 
 export default function SiteCard({
   site,
@@ -75,13 +120,14 @@ export default function SiteCard({
         </CardHeader>
         <CardContent className="flex-1 flex flex-col items-center justify-center p-2"></CardContent>
         <CardFooter className="flex flex-col gap-2 justify-start pt-0 scale-95">
-          <div className="flex gap-2 w-full">
-            {site.apiKey && (
-              <Button variant="outline" size="sm" className="w-full">
-                View details
-              </Button>
-            )}
-          </div>
+          <small className="text-gray-400 font-medium">
+            Run this command in your terminal to setup locally
+          </small>
+          <CommandComponent site={site} />
+
+          <small className="text-gray-400 font-medium">
+            OR follow the instructions from our documentation
+          </small>
           <div className="flex gap-2 w-full">
             <Link
               href="/docs/developers/getting-started/setup-locally"
