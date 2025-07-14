@@ -25,8 +25,6 @@ This is a starter project for Chai builder + NextJS.
 - AI content generation ( with multilingual support )
 - AI style editing
 - Dark mode support
-- Custom authentication ( Implement your own auth provider )
-- Custom DAM ( Implement your own or use A DAM solution )
 
 ## Installation:
 
