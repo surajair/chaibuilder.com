@@ -7,11 +7,8 @@ registerChaiPageType("legal", {
   dynamicSegments: "/[a-z0-9]+(?:-[a-z0-9]+)*(?:/[a-z0-9]+(?:-[a-z0-9]+)*)*$", // regex for slug. starts with / and should contain one or more segments with lowercase letters, numbers and hyphens
   dynamicSlug: "{{slug}}",
   dataProvider: async ({ pageProps, inBuilder }) => {
-    const slug = pageProps.slug;
-    const document = await getDocContent(
-      inBuilder ? "privacy-policy" : slug.substring(1),
-      "Legal"
-    );
+    const slug = pageProps.pageType + pageProps.slug;
+    const document = await getDocContent(slug, "Legal");
     return {
       page: {
         lastUpdated: document?.publishedDate
