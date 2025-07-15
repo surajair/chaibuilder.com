@@ -7,10 +7,11 @@ import { UserProfile } from "@/components/dashboard/user-profile";
 import { registerFonts } from "@/fonts";
 import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { get } from "lodash";
 import { Metadata } from "next";
-import { GoogleTagManager } from '@next/third-parties/google';
 import { Toaster } from "sonner";
+import { SalesIQ } from "../SalesIQ";
 
 registerFonts();
 
@@ -85,7 +86,10 @@ export default async function DashboardLayout({
         </div>
         <Toaster richColors />
         <Clarity />
-        {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        )}
+        <SalesIQ />
       </body>
     </html>
   );

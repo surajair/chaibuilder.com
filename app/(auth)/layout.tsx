@@ -3,15 +3,16 @@ import "@/app/(public)/public.css";
 import { getChaiSiteSettings } from "@/chai";
 import { Logo } from "@/components/builder/logo";
 import { Clarity } from "@/components/clarity";
+import { registerFonts } from "@/fonts";
 import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { get } from "lodash";
 import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { GoogleTagManager } from '@next/third-parties/google';
 import { Toaster } from "sonner";
-import { registerFonts } from "@/fonts";
+import { SalesIQ } from "../SalesIQ";
 
 registerFonts();
 
@@ -39,8 +40,7 @@ const WithAuthLayout = ({ children }: { children: React.ReactNode }) => {
                 id="grid"
                 width="40"
                 height="40"
-                patternUnits="userSpaceOnUse"
-              >
+                patternUnits="userSpaceOnUse">
                 <path
                   d="M 40 0 L 0 0 0 40"
                   fill="none"
@@ -80,8 +80,7 @@ const WithAuthLayout = ({ children }: { children: React.ReactNode }) => {
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-start space-x-3 hover:shadow-xl duration-300"
-              >
+                className="bg-white/10 backdrop-blur-sm rounded-lg p-4 flex items-start space-x-3 hover:shadow-xl duration-300">
                 <div className="mt-0.5 text-white">{feature.icon}</div>
                 <div>
                   <h3 className="text-white font-medium">{feature.title}</h3>
@@ -106,16 +105,14 @@ const WithAuthLayout = ({ children }: { children: React.ReactNode }) => {
             By signing in, you agree to our
             <Link
               href="/terms-and-conditions"
-              className="text-purple-600 hover:text-purple-800 font-medium"
-            >
+              className="text-purple-600 hover:text-purple-800 font-medium">
               {" "}
               Terms of Service
             </Link>{" "}
             and
             <Link
               href="/privacy-policy"
-              className="text-purple-600 hover:text-purple-800 font-medium"
-            >
+              className="text-purple-600 hover:text-purple-800 font-medium">
               {" "}
               Privacy Policy
             </Link>
@@ -124,8 +121,7 @@ const WithAuthLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="mt-8 text-center">
             <Link
               href="/docs"
-              className="text-sm text-gray-600 hover:text-purple-600"
-            >
+              className="text-sm text-gray-600 hover:text-purple-600">
               Learn more about Chai Builder
             </Link>
           </div>
@@ -198,7 +194,10 @@ export default async function AuthLayout({
         <Toaster richColors />
         <WithAuthLayout>{children}</WithAuthLayout>
         <Clarity />
-        {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        )}
+        <SalesIQ />
       </body>
     </html>
   );
@@ -213,8 +212,7 @@ const features = [
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -233,8 +231,7 @@ const features = [
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -253,8 +250,7 @@ const features = [
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -273,8 +269,7 @@ const features = [
         fill="none"
         stroke="currentColor"
         viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"

@@ -6,9 +6,10 @@ import "@/data";
 import { registerFonts } from "@/fonts";
 import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
 import { getChaiThemeCssVariables } from "@chaibuilder/pages/render";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { get } from "lodash";
 import { draftMode } from "next/headers";
-import { GoogleTagManager } from '@next/third-parties/google';
+import { SalesIQ } from "../SalesIQ";
 
 registerFonts();
 
@@ -77,7 +78,10 @@ export default async function RootLayout({
           {children}
         </ThemeProvider>
         <Clarity />
-        {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
+        {process.env.NEXT_PUBLIC_GTM_ID && (
+          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        )}
+        <SalesIQ />
       </body>
     </html>
   );
