@@ -9,7 +9,7 @@ import { get } from "lodash";
 import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import Script from "next/script";
+import { GoogleTagManager } from '@next/third-parties/google';
 import { Toaster } from "sonner";
 import { registerFonts } from "@/fonts";
 
@@ -198,18 +198,7 @@ export default async function AuthLayout({
         <Toaster richColors />
         <WithAuthLayout>{children}</WithAuthLayout>
         <Clarity />
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-          `}
-        </Script>
+        {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
       </body>
     </html>
   );
