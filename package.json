@@ -18,8 +18,8 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@chaibuilder/pages": "~0.7.6",
-    "@chaibuilder/sdk": "~2.3.3",
+    "@chaibuilder/pages": "~0.7.7",
+    "@chaibuilder/sdk": "~2.3.5",
     "@next/third-parties": "^15.4.1",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-collapsible": "^1.1.3",
