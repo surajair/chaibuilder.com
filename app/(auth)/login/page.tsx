@@ -25,9 +25,9 @@ export default async function LoginPage() {
         </p>
       </div>
 
-      {/* <div className="my-6 text-center text-xs text-gray-500"> OR</div> */}
+      <div className="my-6 text-center text-xs text-gray-500"> OR</div>
 
-      {/* <LoginButton /> */}
+      <LoginButton />
     </>
   );
 }
