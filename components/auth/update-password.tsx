@@ -56,7 +56,7 @@ export default function UpdatePassword({
       router.push("/sites");
     } catch (error) {
       setError(
-        error instanceof Error ? error.message : "Failed to update password"
+        error instanceof Error && error.message ? "Please enter new valid password " : "Failed to update password"
       );
     } finally {
       setIsLoading(false);
