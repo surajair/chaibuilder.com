@@ -24,7 +24,7 @@ export default function LoginForm() {
       toast.success("Login successful", { position: "top-right" });
       router.push("/sites");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Failed to login", {
+      toast.error(error instanceof Error && error.message ? "Invalid login credentials" : "Failed to login", {
         position: "top-right",
       });
       setIsLoading(false);
