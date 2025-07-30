@@ -84,7 +84,7 @@ export default function UpdatePassword({
   return (
     <>
       {error && (
-        <Alert variant="destructive" className="text-red-500 text-center">
+        <Alert variant="destructive" className="text-red-500 text-center  mb-4">
           {error}
         </Alert>
       )}
