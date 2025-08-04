@@ -73,11 +73,6 @@ function CreateSiteModal({
           });
           return {
             message: "Website created successfully",
-            action: {
-              label: "Deploy to Vercel",
-              onClick: () =>
-                window.open("/docs/dev/deploy-to-vercel", "_blank"),
-            },
           };
         },
         error: () => "Failed to create website",
