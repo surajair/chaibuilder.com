@@ -53,7 +53,7 @@ export default async function ChaibuilderWebsites() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6 w-full sm:grid-cols-2 lg:grid-cols-3 overflow-y-auto">
+          <div className="grid gap-6 w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 overflow-y-auto">
             {sites.map((site, index) => (
               <SiteCard key={site.id} site={site} index={index} />
             ))}
