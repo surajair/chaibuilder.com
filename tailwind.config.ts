@@ -1,4 +1,4 @@
-import { getChaiBuilderTheme } from "@chaibuilder/pages/tailwind";
+import { getChaiBuilderTheme } from "chai-next/utils";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";
 import forms from "@tailwindcss/forms";

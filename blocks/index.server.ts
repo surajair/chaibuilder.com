@@ -1,19 +1,4 @@
-import {
-  registerChaiServerBlock,
-  setChaiServerBlockDataProvider,
-} from "@chaibuilder/pages/runtime";
-
-import { blogsGridDataProvider } from "./blogs-grid/data-provider";
-import { ImageBlock, ImageConfig } from "./image/Image";
-import { LinkBlock, LinkConfig } from "./link/Link";
-
+'use server';
 export const registerServerBlocks = () => {
-  if (typeof window !== "undefined") {
-    throw new Error("Index.server.ts is a server-only file");
-  }
-  registerChaiServerBlock(ImageBlock, ImageConfig);
-  registerChaiServerBlock(LinkBlock, LinkConfig);
-
-  //set Data Provider for RSC blocks
-  setChaiServerBlockDataProvider("BlogsList", blogsGridDataProvider);
+  //TODO: Implement server block registration logic
 };

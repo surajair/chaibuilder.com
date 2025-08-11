@@ -1,4 +1,4 @@
-import { registerChaiGlobalDataProvider } from "@chaibuilder/pages/server";
+import { registerChaiGlobalDataProvider } from "chai-next/server";
 import { cache } from "react";
 
 const globalDataProvider = cache(async ({ lang }: { lang: string }) => {

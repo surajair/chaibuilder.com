@@ -1,4 +1,4 @@
-@config "./chaibuilder.tailwind.ts";
+@config "../../../builder.tailwind.ts";
 
 @tailwind base;
 @tailwind components;

@@ -3,9 +3,8 @@
   "version": "0.1.4",
   "private": true,
   "scripts": {
-    "dev": "pnpm install && node scripts/check-env.cjs && concurrently \"node scripts/tailwind.cjs --dev\" \"next dev --turbopack\"",
-    "prebuild": "node scripts/tailwind.cjs",
-    "build": "next build --turbopack",
+    "dev": "concurrently \"npx chai-tailwind --watch\" \"next dev --port 3001 --turbopack\"",
+    "build": "npx chai-tailwind && next build",
     "dev-no-check": "pnpm install && next dev --turbopack",
     "build-no-check": "pnpm install && pnpm run prebuild && next build --turbopack",
     "start": "next start",
@@ -14,8 +13,7 @@
     "check-env": "node scripts/check-env.cjs"
   },
   "dependencies": {
-    "@chaibuilder/pages": "~0.7.6",
-    "@chaibuilder/sdk": "~2.3.3",
+    "chai-next": "0.0.1-beta.6",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-collapsible": "^1.1.3",
     "@radix-ui/react-dialog": "^1.1.6",

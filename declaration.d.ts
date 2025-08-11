@@ -1,6 +1,6 @@
-import "@chaibuilder/pages/runtime";
+import "chai-next";
 
-declare module "@chaibuilder/pages/runtime" {
+declare module "chai-next" {
   interface ChaiPageProps {
     slug: string;
     pageType: string;
