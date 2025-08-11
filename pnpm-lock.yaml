@@ -61,8 +61,8 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0
       chai-next:
-        specifier: 0.0.1-beta.6
-        version: 0.0.1-beta.6(c23pukkgu7kjuuompsiun4dez4)
+        specifier: 0.0.1-beta.7
+        version: 0.0.1-beta.7(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(next@15.4.1(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-konva@19.0.3(@types/react@19.0.8)(konva@9.3.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.7.2)(webpack@5.101.0)(zod@3.24.1)
       cmdk:
         specifier: 1.0.0
         version: 1.0.0(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -215,12 +215,12 @@ packages:
     resolution: {integrity: sha512-FjoyLe754PMiYsFaN5C94ttGiOmBNYTf6pLr4xXHAT5uctHb092PBszndLDR5XA/jghQvn4n7JMHl7dmTgbm9w==}
     engines: {node: '>=6.9.0'}
 
-  '@chaibuilder/pages@0.7.6':
-    resolution: {integrity: sha512-HZY/VXlIaSC8y72DRJWr4AMk+to9LTmWbZCbcI9q/H4SOCJ1SwNMylD4oMJAE6SIFja6Kfk5PV9how2SKKz8Sg==}
+  '@chaibuilder/pages@0.9.7':
+    resolution: {integrity: sha512-oR9nMrUWkL3yakwckl7EXX+DJV4k1M8XJ4pBoKNYzCB43/oWpLMsZ0kykgmd90lXb+bkjNrJQLbiF/Tce6+Akw==}
     engines: {node: '>=20.10.0 <21.0.0', pnpm: '>=8.0.0 <10.0.0'}
     peerDependencies:
       '@chaibuilder/runtime': 2.2.0
-      '@chaibuilder/sdk': 2.3.3
+      '@chaibuilder/sdk': 2.4.5
       '@types/react': 19.0.8
       '@types/react-dom': 19.0.3
       react: ^18.0 || ^19.0 || ^19.1
@@ -244,8 +244,8 @@ packages:
       '@types/react-dom':
         optional: true
 
-  '@chaibuilder/sdk@2.3.3':
-    resolution: {integrity: sha512-pEzEOdnzLFujGHy6Vl68S4VebIiVk0zzApQ1TvITfbXWLFQUSkLBL83SpTaJaRJ53rdHKnsev2X7dNz6yYnwdg==}
+  '@chaibuilder/sdk@2.4.5':
+    resolution: {integrity: sha512-4YhkQj92oAmZutR6+bJXVHhYCEzZaN3WclbAf57YVELxebHB3FUaevHhCXWePwbWJ0YsH9aBAajJGkSa4KaKaQ==}
     engines: {node: ^20.18.0}
     peerDependencies:
       '@chaibuilder/runtime': 2.2.0
@@ -2270,6 +2270,9 @@ packages:
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
 
+  blueimp-canvas-to-blob@3.29.0:
+    resolution: {integrity: sha512-0pcSSGxC0QxT+yVkivxIqW0Y4VlO2XSDPofBAqoJ1qJxgH9eiUDLv50Rixij2cDuEfx4M6DpD9UGZpRhT5Q8qg==}
+
   boolbase@1.0.0:
     resolution: {integrity: sha512-JZOSA7Mo9sNGB8+UjSgzdLtokWAky1zbztM3WRLCbZ70/3cTANmQmOdR7y2g+J0e2WXywy1yS468tY+IruqEww==}
 
@@ -2337,22 +2340,13 @@ packages:
     resolution: {integrity: sha512-tTj3CqqukVJ9NgSahykNwtGda7V33VLObwrHfzT0vqJXu7J4d4C/7kQQW3fOEGDfZZoILPut5H00gOjyttPGyg==}
     engines: {node: ^18.12.0 || >= 20.9.0}
 
-  chai-next@0.0.1-beta.6:
-    resolution: {integrity: sha512-dzAar9OaRDAzdJXjBiufIEgk20GxDJmUdNRspLNsd/xA1xsQZpQEzzjwvtwSOH7VxEGa18XOnGO7jy5d68e6mQ==}
+  chai-next@0.0.1-beta.7:
+    resolution: {integrity: sha512-ZKDOiG9Xc8FATa1eTVICZgL6dw3kyDG2I+AaO6hhg1ixC/9llR/NefQW0TyhQ6G3bdckj69T31OR2m+i4dPUGg==}
     hasBin: true
     peerDependencies:
-      '@chaibuilder/pages': 0.9.7
-      '@chaibuilder/sdk': 2.4.5
-      '@tailwindcss/aspect-ratio': ^0.4.2
-      '@tailwindcss/container-queries': ^0.1.1
-      '@tailwindcss/forms': ^0.5.10
-      '@tailwindcss/typography': ^0.5.16
-      lodash: 4.17.20
       next: ^15.4.5
-      postcss: 8.5.6
       react: ^19
       react-dom: ^19
-      tailwindcss-animate: ^1.0.7
 
   chalk@1.1.3:
     resolution: {integrity: sha512-U3lRVLMSlsCfjqYPbLyVv11M9CPW4I728d6TCKMAOJueEeB9/8o+eSsMnxPJD+Q+K909sdESg7C+tIkoH6on1A==}
@@ -2385,6 +2379,9 @@ packages:
 
   class-variance-authority@0.7.1:
     resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
+
+  classnames@2.5.1:
+    resolution: {integrity: sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==}
 
   client-only@0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
@@ -2451,6 +2448,9 @@ packages:
   common-tags@1.8.2:
     resolution: {integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==}
     engines: {node: '>=4.0.0'}
+
+  compressorjs@1.2.1:
+    resolution: {integrity: sha512-+geIjeRnPhQ+LLvvA7wxBQE5ddeLU7pJ3FsKFWirDw6veY3s9iLxAQEw7lXGHnhCJvBujEQWuNnGzZcvCvdkLQ==}
 
   compute-gcd@1.2.1:
     resolution: {integrity: sha512-TwMbxBNz0l71+8Sc4czv13h4kEqnchV9igQZBi6QUaz09dnz13juGnnaWWJTRsP3brxOoxeB4SA2WELLw1hCtg==}
@@ -2534,6 +2534,10 @@ packages:
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
 
+  culori@4.0.2:
+    resolution: {integrity: sha512-1+BhOB8ahCn4O0cep0Sh2l9KCOfOdY+BXJnKMHFFzDEouSr/el18QwXEMRlOj9UY5nCeA8UN3a/82rUWRBeyBw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
   damerau-levenshtein@1.0.8:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
 
@@ -2613,6 +2617,9 @@ packages:
 
   didyoumean@1.2.2:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
+
+  diff-match-patch@1.0.5:
+    resolution: {integrity: sha512-IayShXAgj/QMXgB0IWmKx+rOPuGMhqm5w6jvFxmVenXKIzRqTAAsbBPT3kWQeGANj3jGgvcvv4yK6SxqYmikgw==}
 
   dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -2975,6 +2982,20 @@ packages:
       react-dom:
         optional: true
 
+  framer-motion@12.23.12:
+    resolution: {integrity: sha512-6e78rdVtnBvlEVgu6eFEAgG9v3wLnYEboM8I5O5EXvfKC8gxGQB8wXJdhkMy10iVcn05jl6CNw7/HTsTCfwcWg==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
   fs-constants@1.0.0:
     resolution: {integrity: sha512-y6OAwoSIf7FyjMIv94u+b5rdheZEjzR63GTyZJm5qh4Bi+2YgwLCcI/fPFZkL5PSixOt6ZNKm+w+Hfp/Bciwow==}
 
@@ -3029,6 +3050,9 @@ packages:
 
   get-tsconfig@4.8.1:
     resolution: {integrity: sha512-k9PN+cFBmaLWtVz29SkUoqU5O0slLuHJXt/2P+tMVFT+phsSGXGkp9t3rQIqdz0e+06EHNGs3oM6ZX1s2zHxRg==}
+
+  gitdiff-parser@0.3.1:
+    resolution: {integrity: sha512-YQJnY8aew65id8okGxKCksH3efDCJ9HzV7M9rsvd65habf39Pkh4cgYJ27AaoDMqo1X98pgNJhNMrm/kpV7UVQ==}
 
   github-from-package@0.0.0:
     resolution: {integrity: sha512-SyHy3T1v2NUXn29OsWdxmK6RwHD+vkj3v8en8AOBZ1wBQ/hCAQ5bAQTD02kW4W9tUp/3Qh6J8r9EvntiyCmOOw==}
@@ -3177,6 +3201,10 @@ packages:
   is-binary-path@2.1.0:
     resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==}
     engines: {node: '>=8'}
+
+  is-blob@2.1.0:
+    resolution: {integrity: sha512-SZ/fTft5eUhQM6oF/ZaASFDEdbFVe89Imltn9uZr03wdKMcWNVYSMjQPFtg05QuNkt5l5c135ElvXEQG0rk4tw==}
+    engines: {node: '>=6'}
 
   is-boolean-object@1.1.2:
     resolution: {integrity: sha512-gDYaKHJmnj4aWxyj6YHyXVpdQawtVLHU5cb+eztPGczf6cjuTdwve5ZIEfgXqH4e57An1D1AKf8CZ3kYrQRqYA==}
@@ -3437,6 +3465,9 @@ packages:
   lodash.uniq@4.5.0:
     resolution: {integrity: sha512-xfBaXQd9ryd9dlSDvnvI0lvxfLJlYAZzXomUYzLKtUeOQvOP5piqAWuGtrhWeqaXK9hhoM/iyJc5AV+XfsX3HQ==}
 
+  lodash@4.17.20:
+    resolution: {integrity: sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==}
+
   lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
 
@@ -3550,8 +3581,14 @@ packages:
   motion-dom@12.0.0:
     resolution: {integrity: sha512-CvYd15OeIR6kHgMdonCc1ihsaUG4MYh/wrkz8gZ3hBX/uamyZCXN9S9qJoYF03GqfTt7thTV/dxnHYX4+55vDg==}
 
+  motion-dom@12.23.12:
+    resolution: {integrity: sha512-RcR4fvMCTESQBD/uKQe49D5RUeDOokkGRmz4ceaJKDBgHYtZtntC/s2vLvY38gqGaytinij/yi3hMcWVcEF5Kw==}
+
   motion-utils@12.0.0:
     resolution: {integrity: sha512-MNFiBKbbqnmvOjkPyOKgHUp3Q6oiokLkI1bEwm5QA28cxMZrv0CbbBGDNmhF6DIXsi1pCQBSs0dX8xjeER1tmA==}
+
+  motion-utils@12.23.6:
+    resolution: {integrity: sha512-eAWoPgr4eFEOFfg2WjIsMoqJTW6Z8MTUCgn/GZ3VRpClWBdnbjryiA3ZSNLyxCTmCQx4RmYX6jX1iWHbenUPNQ==}
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -3960,6 +3997,10 @@ packages:
     resolution: {integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==}
     engines: {node: ^10 || ^12 || >=14}
 
+  postcss@8.5.6:
+    resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
+    engines: {node: ^10 || ^12 || >=14}
+
   prebuild-install@7.1.3:
     resolution: {integrity: sha512-8Mf2cbV7x1cXPUILADGI3wuhfqWvtiLA1iclTDbFRZkgRQS0NqsPZphna9V+HyTEadheuPmjaJMsbzKQFOzLug==}
     engines: {node: '>=10'}
@@ -4132,6 +4173,11 @@ packages:
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
+
+  react-diff-view@3.3.2:
+    resolution: {integrity: sha512-wPVq4ktTcGOHbhnWKU/gHLtd3N2Xd+OZ/XQWcKA06dsxlSsESePAumQILwHtiak2nMCMiWcIfBpqZ5OiharUPA==}
+    peerDependencies:
+      react: '>=16.14.0'
 
   react-dnd-html5-backend@14.1.0:
     resolution: {integrity: sha512-6ONeqEC3XKVf4eVmMTe0oPds+c5B9Foyj8p/ZKLb7kL2qh9COYxiBHv3szd6gztqi/efkmriywLUVlPotqoJyw==}
@@ -4436,6 +4482,9 @@ packages:
 
   shallow-equal@1.2.1:
     resolution: {integrity: sha512-S4vJDjHHMBaiZuT9NPb616CSmLf618jawtv3sufLl6ivK8WocjAo58cXwbRV1cgqxH0Qbv+iUt6m05eqEa2IRA==}
+
+  shallow-equal@3.1.0:
+    resolution: {integrity: sha512-pfVOw8QZIXpMbhBWvzBISicvToTiM5WBF1EeAUZDDSb5Dt29yl4AYbyywbJFSEsRUMr7gJaxqCdr4L3tQf9wVg==}
 
   shallowequal@1.1.0:
     resolution: {integrity: sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==}
@@ -4859,6 +4908,9 @@ packages:
   w3c-keyname@2.2.8:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}
 
+  warning@4.0.3:
+    resolution: {integrity: sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==}
+
   watchpack@2.4.4:
     resolution: {integrity: sha512-c5EGNOiyxxV5qmTtAB7rbiXxi1ooX1pQKMLX/MIabJjRA0SJBQOjKF+KSVfHkr9U1cADPon0mRiVe/riyaiDUA==}
     engines: {node: '>=10.13.0'}
@@ -4977,19 +5029,20 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
-  '@chaibuilder/pages@0.7.6(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chaibuilder/sdk@2.3.3(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.13)(typescript@5.7.2)(zod@3.24.1))(@emotion/is-prop-valid@1.2.2)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(postcss@8.4.49)(react-dom@19.1.0(react@19.1.0))(react-konva@19.0.3(@types/react@19.0.8)(konva@9.3.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@3.4.13)':
+  '@chaibuilder/pages@0.9.7(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chaibuilder/sdk@2.4.5(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)(typescript@5.7.2)(zod@3.24.1))(@emotion/is-prop-valid@1.2.2)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(postcss@8.5.6)(react-dom@19.1.0(react@19.1.0))(react-konva@19.0.3(@types/react@19.0.8)(konva@9.3.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@3.4.17)':
     dependencies:
       '@chaibuilder/runtime': 2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@chaibuilder/sdk': 2.3.3(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.13)(typescript@5.7.2)(zod@3.24.1)
+      '@chaibuilder/sdk': 2.4.5(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.13)(typescript@5.7.2)(zod@3.24.1)
       '@mhsdesign/jit-browser-tailwindcss': 0.4.2
-      '@tailwindcss/aspect-ratio': 0.4.2(tailwindcss@3.4.13)
-      '@tailwindcss/forms': 0.5.10(tailwindcss@3.4.13)
-      '@tailwindcss/typography': 0.5.16(tailwindcss@3.4.13)
+      '@tailwindcss/aspect-ratio': 0.4.2(tailwindcss@3.4.17)
+      '@tailwindcss/forms': 0.5.10(tailwindcss@3.4.17)
+      '@tailwindcss/typography': 0.5.16(tailwindcss@3.4.17)
       '@tanstack/react-query': 5.64.2(react@19.1.0)
       '@types/express-fileupload': 1.5.1
       canvas: 3.1.0
       canvas-confetti: 1.9.3
-      cssnano: 7.0.6(postcss@8.4.49)
+      compressorjs: 1.2.1
+      cssnano: 7.0.6(postcss@8.5.6)
       date-fns: 4.1.0
       express-fileupload: 1.5.1
       framer-motion: 12.0.5(@emotion/is-prop-valid@1.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -4999,13 +5052,14 @@ snapshots:
       lucide-react: 0.474.0(react@19.1.0)
       path: 0.12.7
       react: 19.1.0
+      react-diff-view: 3.3.2(react@19.1.0)
       react-dom: 19.1.0(react@19.1.0)
       react-dropzone: 14.3.8(react@19.1.0)
       react-filerobot-image-editor: 4.9.1(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react-konva@19.0.3(@types/react@19.0.8)(konva@9.3.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
       sonner: 2.0.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       tailwind-merge: 2.6.0
-      tailwindcss-animate: 1.0.7(tailwindcss@3.4.13)
-      tailwindcss-palette-generator: 0.10.0(tailwindcss@3.4.13)
+      tailwindcss-animate: 1.0.7(tailwindcss@3.4.17)
+      tailwindcss-palette-generator: 0.10.0(tailwindcss@3.4.17)
       zod: 3.24.1
     optionalDependencies:
       '@types/react': 19.0.8
@@ -5030,7 +5084,7 @@ snapshots:
       '@types/react': 19.0.8
       '@types/react-dom': 19.0.3(@types/react@19.0.8)
 
-  '@chaibuilder/sdk@2.3.3(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.13)(typescript@5.7.2)(zod@3.24.1)':
+  '@chaibuilder/sdk@2.4.5(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.13)(typescript@5.7.2)(zod@3.24.1)':
     dependencies:
       '@ai-sdk/react': 1.2.5(react@19.1.0)(zod@3.24.1)
       '@chaibuilder/runtime': 2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -5064,11 +5118,11 @@ snapshots:
       '@rjsf/core': 5.24.2(@rjsf/utils@5.24.2(react@19.1.0))(react@19.1.0)
       '@rjsf/utils': 5.24.2(react@19.1.0)
       '@rjsf/validator-ajv8': 5.24.2(@rjsf/utils@5.24.2(react@19.1.0))
-      '@tailwindcss/aspect-ratio': 0.4.2(tailwindcss@3.4.13)
-      '@tailwindcss/container-queries': 0.1.1(tailwindcss@3.4.13)
-      '@tailwindcss/forms': 0.5.10(tailwindcss@3.4.13)
-      '@tailwindcss/line-clamp': 0.4.4(tailwindcss@3.4.13)
-      '@tailwindcss/typography': 0.5.16(tailwindcss@3.4.13)
+      '@tailwindcss/aspect-ratio': 0.4.2(tailwindcss@3.4.17)
+      '@tailwindcss/container-queries': 0.1.1(tailwindcss@3.4.17)
+      '@tailwindcss/forms': 0.5.10(tailwindcss@3.4.17)
+      '@tailwindcss/line-clamp': 0.4.4(tailwindcss@3.4.17)
+      '@tailwindcss/typography': 0.5.16(tailwindcss@3.4.17)
       '@tiptap/extension-bubble-menu': 2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@tiptap/pm@2.11.5)
       '@tiptap/extension-bullet-list': 2.12.0(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))
       '@tiptap/extension-link': 2.11.5(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@tiptap/pm@2.11.5)
@@ -5082,8 +5136,9 @@ snapshots:
       class-variance-authority: 0.6.1
       clsx: 2.1.1
       cmdk: 0.2.0(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      culori: 4.0.2
       flagged: 3.0.0(react@19.1.0)
-      framer-motion: 12.0.5(@emotion/is-prop-valid@1.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      framer-motion: 12.23.12(@emotion/is-prop-valid@1.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       fuse.js: 7.0.0
       himalaya: 1.1.0
       i18next: 24.2.1(typescript@5.7.2)
@@ -5091,7 +5146,6 @@ snapshots:
       lodash: 4.17.21
       lodash-es: 4.17.21
       lucide-react: 0.474.0(react@19.1.0)
-      next-themes: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       re-resizable: 6.10.3(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-arborist: 3.4.0(@types/node@20.17.12)(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
@@ -5349,9 +5403,9 @@ snapshots:
       color-name: 1.1.4
       didyoumean: 1.2.2
       dlv: 1.1.3
-      postcss: 8.4.49
-      postcss-js: 4.0.1(postcss@8.4.49)
-      postcss-nested: 5.0.6(postcss@8.4.49)
+      postcss: 8.5.6
+      postcss-js: 4.0.1(postcss@8.5.6)
+      postcss-nested: 5.0.6(postcss@8.5.6)
       postcss-selector-parser: 6.1.2
       postcss-value-parser: 4.2.0
       quick-lru: 5.1.1
@@ -6527,23 +6581,31 @@ snapshots:
     dependencies:
       tailwindcss: 3.4.13
 
+  '@tailwindcss/aspect-ratio@0.4.2(tailwindcss@3.4.17)':
+    dependencies:
+      tailwindcss: 3.4.17
+
   '@tailwindcss/container-queries@0.1.1(tailwindcss@3.4.13)':
     dependencies:
       tailwindcss: 3.4.13
 
-  '@tailwindcss/forms@0.5.10(tailwindcss@3.4.13)':
+  '@tailwindcss/container-queries@0.1.1(tailwindcss@3.4.17)':
+    dependencies:
+      tailwindcss: 3.4.17
+
+  '@tailwindcss/forms@0.5.10(tailwindcss@3.4.17)':
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.4.13
+      tailwindcss: 3.4.17
 
   '@tailwindcss/forms@0.5.9(tailwindcss@3.4.13)':
     dependencies:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.4.13
 
-  '@tailwindcss/line-clamp@0.4.4(tailwindcss@3.4.13)':
+  '@tailwindcss/line-clamp@0.4.4(tailwindcss@3.4.17)':
     dependencies:
-      tailwindcss: 3.4.13
+      tailwindcss: 3.4.17
 
   '@tailwindcss/typography@0.5.15(tailwindcss@3.4.13)':
     dependencies:
@@ -6553,13 +6615,13 @@ snapshots:
       postcss-selector-parser: 6.0.10
       tailwindcss: 3.4.13
 
-  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.13)':
+  '@tailwindcss/typography@0.5.16(tailwindcss@3.4.17)':
     dependencies:
       lodash.castarray: 4.4.0
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.13
+      tailwindcss: 3.4.17
 
   '@tanstack/query-core@5.62.8': {}
 
@@ -7274,6 +7336,8 @@ snapshots:
       inherits: 2.0.4
       readable-stream: 3.6.2
 
+  blueimp-canvas-to-blob@3.29.0: {}
+
   boolbase@1.0.0: {}
 
   boolify@1.0.1: {}
@@ -7348,26 +7412,40 @@ snapshots:
       node-addon-api: 7.1.1
       prebuild-install: 7.1.3
 
-  chai-next@0.0.1-beta.6(c23pukkgu7kjuuompsiun4dez4):
+  chai-next@0.0.1-beta.7(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(next@15.4.1(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react-konva@19.0.3(@types/react@19.0.8)(konva@9.3.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(typescript@5.7.2)(webpack@5.101.0)(zod@3.24.1):
     dependencies:
-      '@chaibuilder/pages': 0.7.6(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chaibuilder/sdk@2.3.3(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.13)(typescript@5.7.2)(zod@3.24.1))(@emotion/is-prop-valid@1.2.2)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(postcss@8.4.49)(react-dom@19.1.0(react@19.1.0))(react-konva@19.0.3(@types/react@19.0.8)(konva@9.3.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@3.4.13)
-      '@chaibuilder/sdk': 2.3.3(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.13)(typescript@5.7.2)(zod@3.24.1)
-      '@tailwindcss/aspect-ratio': 0.4.2(tailwindcss@3.4.13)
-      '@tailwindcss/container-queries': 0.1.1(tailwindcss@3.4.13)
-      '@tailwindcss/forms': 0.5.9(tailwindcss@3.4.13)
-      '@tailwindcss/typography': 0.5.15(tailwindcss@3.4.13)
+      '@chaibuilder/pages': 0.9.7(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@chaibuilder/sdk@2.4.5(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)(typescript@5.7.2)(zod@3.24.1))(@emotion/is-prop-valid@1.2.2)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(postcss@8.5.6)(react-dom@19.1.0(react@19.1.0))(react-konva@19.0.3(@types/react@19.0.8)(konva@9.3.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(tailwindcss@3.4.17)
+      '@chaibuilder/sdk': 2.4.5(@chaibuilder/runtime@2.1.2(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@emotion/is-prop-valid@1.2.2)(@tiptap/core@2.11.5(@tiptap/pm@2.11.5))(@types/node@20.17.12)(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(jotai@2.12.1(@types/react@19.0.8)(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.13)(typescript@5.7.2)(zod@3.24.1)
+      '@tailwindcss/aspect-ratio': 0.4.2(tailwindcss@3.4.17)
+      '@tailwindcss/container-queries': 0.1.1(tailwindcss@3.4.17)
+      '@tailwindcss/forms': 0.5.10(tailwindcss@3.4.17)
+      '@tailwindcss/typography': 0.5.16(tailwindcss@3.4.17)
       chalk: 5.5.0
-      lodash: 4.17.21
+      lodash: 4.17.20
       next: 15.4.1(@opentelemetry/api@1.9.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      postcss: 8.4.49
+      postcss: 8.5.6
       raw-loader: 4.0.2(webpack@5.101.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
       tailwindcss: 3.4.17
-      tailwindcss-animate: 1.0.7(tailwindcss@3.4.13)
+      tailwindcss-animate: 1.0.7(tailwindcss@3.4.17)
     transitivePeerDependencies:
+      - '@chaibuilder/runtime'
+      - '@emotion/is-prop-valid'
+      - '@tiptap/core'
+      - '@types/hoist-non-react-statics'
+      - '@types/node'
+      - '@types/react'
+      - '@types/react-dom'
+      - jotai
+      - js-cookie
+      - react-konva
+      - react-native
+      - styled-components
       - ts-node
+      - typescript
       - webpack
+      - zod
 
   chalk@1.1.3:
     dependencies:
@@ -7409,6 +7487,8 @@ snapshots:
   class-variance-authority@0.7.1:
     dependencies:
       clsx: 2.1.1
+
+  classnames@2.5.1: {}
 
   client-only@0.0.1: {}
 
@@ -7475,6 +7555,11 @@ snapshots:
 
   common-tags@1.8.2: {}
 
+  compressorjs@1.2.1:
+    dependencies:
+      blueimp-canvas-to-blob: 3.29.0
+      is-blob: 2.1.0
+
   compute-gcd@1.2.1:
     dependencies:
       validate.io-array: 1.0.6
@@ -7512,9 +7597,9 @@ snapshots:
 
   css-color-keywords@1.0.0: {}
 
-  css-declaration-sorter@7.2.0(postcss@8.4.49):
+  css-declaration-sorter@7.2.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
 
   css-select@5.1.0:
     dependencies:
@@ -7544,55 +7629,57 @@ snapshots:
 
   cssesc@3.0.0: {}
 
-  cssnano-preset-default@7.0.6(postcss@8.4.49):
+  cssnano-preset-default@7.0.6(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.0
-      css-declaration-sorter: 7.2.0(postcss@8.4.49)
-      cssnano-utils: 5.0.0(postcss@8.4.49)
-      postcss: 8.4.49
-      postcss-calc: 10.0.2(postcss@8.4.49)
-      postcss-colormin: 7.0.2(postcss@8.4.49)
-      postcss-convert-values: 7.0.4(postcss@8.4.49)
-      postcss-discard-comments: 7.0.3(postcss@8.4.49)
-      postcss-discard-duplicates: 7.0.1(postcss@8.4.49)
-      postcss-discard-empty: 7.0.0(postcss@8.4.49)
-      postcss-discard-overridden: 7.0.0(postcss@8.4.49)
-      postcss-merge-longhand: 7.0.4(postcss@8.4.49)
-      postcss-merge-rules: 7.0.4(postcss@8.4.49)
-      postcss-minify-font-values: 7.0.0(postcss@8.4.49)
-      postcss-minify-gradients: 7.0.0(postcss@8.4.49)
-      postcss-minify-params: 7.0.2(postcss@8.4.49)
-      postcss-minify-selectors: 7.0.4(postcss@8.4.49)
-      postcss-normalize-charset: 7.0.0(postcss@8.4.49)
-      postcss-normalize-display-values: 7.0.0(postcss@8.4.49)
-      postcss-normalize-positions: 7.0.0(postcss@8.4.49)
-      postcss-normalize-repeat-style: 7.0.0(postcss@8.4.49)
-      postcss-normalize-string: 7.0.0(postcss@8.4.49)
-      postcss-normalize-timing-functions: 7.0.0(postcss@8.4.49)
-      postcss-normalize-unicode: 7.0.2(postcss@8.4.49)
-      postcss-normalize-url: 7.0.0(postcss@8.4.49)
-      postcss-normalize-whitespace: 7.0.0(postcss@8.4.49)
-      postcss-ordered-values: 7.0.1(postcss@8.4.49)
-      postcss-reduce-initial: 7.0.2(postcss@8.4.49)
-      postcss-reduce-transforms: 7.0.0(postcss@8.4.49)
-      postcss-svgo: 7.0.1(postcss@8.4.49)
-      postcss-unique-selectors: 7.0.3(postcss@8.4.49)
+      css-declaration-sorter: 7.2.0(postcss@8.5.6)
+      cssnano-utils: 5.0.0(postcss@8.5.6)
+      postcss: 8.5.6
+      postcss-calc: 10.0.2(postcss@8.5.6)
+      postcss-colormin: 7.0.2(postcss@8.5.6)
+      postcss-convert-values: 7.0.4(postcss@8.5.6)
+      postcss-discard-comments: 7.0.3(postcss@8.5.6)
+      postcss-discard-duplicates: 7.0.1(postcss@8.5.6)
+      postcss-discard-empty: 7.0.0(postcss@8.5.6)
+      postcss-discard-overridden: 7.0.0(postcss@8.5.6)
+      postcss-merge-longhand: 7.0.4(postcss@8.5.6)
+      postcss-merge-rules: 7.0.4(postcss@8.5.6)
+      postcss-minify-font-values: 7.0.0(postcss@8.5.6)
+      postcss-minify-gradients: 7.0.0(postcss@8.5.6)
+      postcss-minify-params: 7.0.2(postcss@8.5.6)
+      postcss-minify-selectors: 7.0.4(postcss@8.5.6)
+      postcss-normalize-charset: 7.0.0(postcss@8.5.6)
+      postcss-normalize-display-values: 7.0.0(postcss@8.5.6)
+      postcss-normalize-positions: 7.0.0(postcss@8.5.6)
+      postcss-normalize-repeat-style: 7.0.0(postcss@8.5.6)
+      postcss-normalize-string: 7.0.0(postcss@8.5.6)
+      postcss-normalize-timing-functions: 7.0.0(postcss@8.5.6)
+      postcss-normalize-unicode: 7.0.2(postcss@8.5.6)
+      postcss-normalize-url: 7.0.0(postcss@8.5.6)
+      postcss-normalize-whitespace: 7.0.0(postcss@8.5.6)
+      postcss-ordered-values: 7.0.1(postcss@8.5.6)
+      postcss-reduce-initial: 7.0.2(postcss@8.5.6)
+      postcss-reduce-transforms: 7.0.0(postcss@8.5.6)
+      postcss-svgo: 7.0.1(postcss@8.5.6)
+      postcss-unique-selectors: 7.0.3(postcss@8.5.6)
 
-  cssnano-utils@5.0.0(postcss@8.4.49):
+  cssnano-utils@5.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
 
-  cssnano@7.0.6(postcss@8.4.49):
+  cssnano@7.0.6(postcss@8.5.6):
     dependencies:
-      cssnano-preset-default: 7.0.6(postcss@8.4.49)
+      cssnano-preset-default: 7.0.6(postcss@8.5.6)
       lilconfig: 3.1.3
-      postcss: 8.4.49
+      postcss: 8.5.6
 
   csso@5.0.5:
     dependencies:
       css-tree: 2.2.1
 
   csstype@3.1.3: {}
+
+  culori@4.0.2: {}
 
   damerau-levenshtein@1.0.8: {}
 
@@ -7677,6 +7764,8 @@ snapshots:
   detect-node-es@1.1.0: {}
 
   didyoumean@1.2.2: {}
+
+  diff-match-patch@1.0.5: {}
 
   dir-glob@3.0.1:
     dependencies:
@@ -8178,6 +8267,16 @@ snapshots:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
+  framer-motion@12.23.12(@emotion/is-prop-valid@1.2.2)(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      motion-dom: 12.23.12
+      motion-utils: 12.23.6
+      tslib: 2.8.1
+    optionalDependencies:
+      '@emotion/is-prop-valid': 1.2.2
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+
   fs-constants@1.0.0: {}
 
   fs-extra@11.3.0:
@@ -8229,6 +8328,8 @@ snapshots:
   get-tsconfig@4.8.1:
     dependencies:
       resolve-pkg-maps: 1.0.0
+
+  gitdiff-parser@0.3.1: {}
 
   github-from-package@0.0.0: {}
 
@@ -8380,6 +8481,8 @@ snapshots:
   is-binary-path@2.1.0:
     dependencies:
       binary-extensions: 2.3.0
+
+  is-blob@2.1.0: {}
 
   is-boolean-object@1.1.2:
     dependencies:
@@ -8610,6 +8713,8 @@ snapshots:
 
   lodash.uniq@4.5.0: {}
 
+  lodash@4.17.20: {}
+
   lodash@4.17.21: {}
 
   loglevel-colored-level-prefix@1.0.0:
@@ -8703,7 +8808,13 @@ snapshots:
     dependencies:
       motion-utils: 12.0.0
 
+  motion-dom@12.23.12:
+    dependencies:
+      motion-utils: 12.23.6
+
   motion-utils@12.0.0: {}
+
+  motion-utils@12.23.6: {}
 
   ms@2.1.3: {}
 
@@ -8876,46 +8987,53 @@ snapshots:
 
   possible-typed-array-names@1.0.0: {}
 
-  postcss-calc@10.0.2(postcss@8.4.49):
+  postcss-calc@10.0.2(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-selector-parser: 6.1.2
       postcss-value-parser: 4.2.0
 
-  postcss-colormin@7.0.2(postcss@8.4.49):
+  postcss-colormin@7.0.2(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.0
       caniuse-api: 3.0.0
       colord: 2.9.3
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-convert-values@7.0.4(postcss@8.4.49):
+  postcss-convert-values@7.0.4(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.0
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-discard-comments@7.0.3(postcss@8.4.49):
+  postcss-discard-comments@7.0.3(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-selector-parser: 6.1.2
 
-  postcss-discard-duplicates@7.0.1(postcss@8.4.49):
+  postcss-discard-duplicates@7.0.1(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
 
-  postcss-discard-empty@7.0.0(postcss@8.4.49):
+  postcss-discard-empty@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
 
-  postcss-discard-overridden@7.0.0(postcss@8.4.49):
+  postcss-discard-overridden@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
 
   postcss-import@15.1.0(postcss@8.4.49):
     dependencies:
       postcss: 8.4.49
+      postcss-value-parser: 4.2.0
+      read-cache: 1.0.0
+      resolve: 1.22.8
+
+  postcss-import@15.1.0(postcss@8.5.6):
+    dependencies:
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
@@ -8925,6 +9043,11 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.4.49
 
+  postcss-js@4.0.1(postcss@8.5.6):
+    dependencies:
+      camelcase-css: 2.0.1
+      postcss: 8.5.6
+
   postcss-load-config@4.0.2(postcss@8.4.49):
     dependencies:
       lilconfig: 3.1.2
@@ -8932,43 +9055,50 @@ snapshots:
     optionalDependencies:
       postcss: 8.4.49
 
-  postcss-merge-longhand@7.0.4(postcss@8.4.49):
+  postcss-load-config@4.0.2(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
-      postcss-value-parser: 4.2.0
-      stylehacks: 7.0.4(postcss@8.4.49)
+      lilconfig: 3.1.2
+      yaml: 2.5.1
+    optionalDependencies:
+      postcss: 8.5.6
 
-  postcss-merge-rules@7.0.4(postcss@8.4.49):
+  postcss-merge-longhand@7.0.4(postcss@8.5.6):
+    dependencies:
+      postcss: 8.5.6
+      postcss-value-parser: 4.2.0
+      stylehacks: 7.0.4(postcss@8.5.6)
+
+  postcss-merge-rules@7.0.4(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.0
       caniuse-api: 3.0.0
-      cssnano-utils: 5.0.0(postcss@8.4.49)
-      postcss: 8.4.49
+      cssnano-utils: 5.0.0(postcss@8.5.6)
+      postcss: 8.5.6
       postcss-selector-parser: 6.1.2
 
-  postcss-minify-font-values@7.0.0(postcss@8.4.49):
+  postcss-minify-font-values@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-minify-gradients@7.0.0(postcss@8.4.49):
+  postcss-minify-gradients@7.0.0(postcss@8.5.6):
     dependencies:
       colord: 2.9.3
-      cssnano-utils: 5.0.0(postcss@8.4.49)
-      postcss: 8.4.49
+      cssnano-utils: 5.0.0(postcss@8.5.6)
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-minify-params@7.0.2(postcss@8.4.49):
+  postcss-minify-params@7.0.2(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.0
-      cssnano-utils: 5.0.0(postcss@8.4.49)
-      postcss: 8.4.49
+      cssnano-utils: 5.0.0(postcss@8.5.6)
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-minify-selectors@7.0.4(postcss@8.4.49):
+  postcss-minify-selectors@7.0.4(postcss@8.5.6):
     dependencies:
       cssesc: 3.0.0
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-selector-parser: 6.1.2
 
   postcss-nested@5.0.6(postcss@8.4.49):
@@ -8976,71 +9106,81 @@ snapshots:
       postcss: 8.4.49
       postcss-selector-parser: 6.1.2
 
+  postcss-nested@5.0.6(postcss@8.5.6):
+    dependencies:
+      postcss: 8.5.6
+      postcss-selector-parser: 6.1.2
+
   postcss-nested@6.2.0(postcss@8.4.49):
     dependencies:
       postcss: 8.4.49
       postcss-selector-parser: 6.1.2
 
-  postcss-normalize-charset@7.0.0(postcss@8.4.49):
+  postcss-nested@6.2.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
+      postcss-selector-parser: 6.1.2
 
-  postcss-normalize-display-values@7.0.0(postcss@8.4.49):
+  postcss-normalize-charset@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
+
+  postcss-normalize-display-values@7.0.0(postcss@8.5.6):
+    dependencies:
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-positions@7.0.0(postcss@8.4.49):
+  postcss-normalize-positions@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-repeat-style@7.0.0(postcss@8.4.49):
+  postcss-normalize-repeat-style@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-string@7.0.0(postcss@8.4.49):
+  postcss-normalize-string@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-timing-functions@7.0.0(postcss@8.4.49):
+  postcss-normalize-timing-functions@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-unicode@7.0.2(postcss@8.4.49):
+  postcss-normalize-unicode@7.0.2(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.0
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-url@7.0.0(postcss@8.4.49):
+  postcss-normalize-url@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-normalize-whitespace@7.0.0(postcss@8.4.49):
+  postcss-normalize-whitespace@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-ordered-values@7.0.1(postcss@8.4.49):
+  postcss-ordered-values@7.0.1(postcss@8.5.6):
     dependencies:
-      cssnano-utils: 5.0.0(postcss@8.4.49)
-      postcss: 8.4.49
+      cssnano-utils: 5.0.0(postcss@8.5.6)
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
-  postcss-reduce-initial@7.0.2(postcss@8.4.49):
+  postcss-reduce-initial@7.0.2(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.0
       caniuse-api: 3.0.0
-      postcss: 8.4.49
+      postcss: 8.5.6
 
-  postcss-reduce-transforms@7.0.0(postcss@8.4.49):
+  postcss-reduce-transforms@7.0.0(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
 
   postcss-selector-parser@6.0.10:
@@ -9053,15 +9193,15 @@ snapshots:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-svgo@7.0.1(postcss@8.4.49):
+  postcss-svgo@7.0.1(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-value-parser: 4.2.0
       svgo: 3.3.2
 
-  postcss-unique-selectors@7.0.3(postcss@8.4.49):
+  postcss-unique-selectors@7.0.3(postcss@8.5.6):
     dependencies:
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-selector-parser: 6.1.2
 
   postcss-value-parser@4.2.0: {}
@@ -9075,6 +9215,12 @@ snapshots:
   postcss@8.4.49:
     dependencies:
       nanoid: 3.3.7
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
+
+  postcss@8.5.6:
+    dependencies:
+      nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -9334,6 +9480,16 @@ snapshots:
     dependencies:
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
+
+  react-diff-view@3.3.2(react@19.1.0):
+    dependencies:
+      classnames: 2.5.1
+      diff-match-patch: 1.0.5
+      gitdiff-parser: 0.3.1
+      lodash: 4.17.21
+      react: 19.1.0
+      shallow-equal: 3.1.0
+      warning: 4.0.3
 
   react-dnd-html5-backend@14.1.0:
     dependencies:
@@ -9645,6 +9801,8 @@ snapshots:
 
   shallow-equal@1.2.1: {}
 
+  shallow-equal@3.1.0: {}
+
   shallowequal@1.1.0: {}
 
   sharp@0.34.3:
@@ -9826,10 +9984,10 @@ snapshots:
       client-only: 0.0.1
       react: 19.1.0
 
-  stylehacks@7.0.4(postcss@8.4.49):
+  stylehacks@7.0.4(postcss@8.5.6):
     dependencies:
       browserslist: 4.24.0
-      postcss: 8.4.49
+      postcss: 8.5.6
       postcss-selector-parser: 6.1.2
 
   stylis@4.3.2: {}
@@ -9885,10 +10043,14 @@ snapshots:
     dependencies:
       tailwindcss: 3.4.13
 
-  tailwindcss-palette-generator@0.10.0(tailwindcss@3.4.13):
+  tailwindcss-animate@1.0.7(tailwindcss@3.4.17):
+    dependencies:
+      tailwindcss: 3.4.17
+
+  tailwindcss-palette-generator@0.10.0(tailwindcss@3.4.17):
     dependencies:
       chroma-js: 3.1.2
-      tailwindcss: 3.4.13
+      tailwindcss: 3.4.17
 
   tailwindcss@3.4.13:
     dependencies:
@@ -9933,11 +10095,11 @@ snapshots:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.4.49
-      postcss-import: 15.1.0(postcss@8.4.49)
-      postcss-js: 4.0.1(postcss@8.4.49)
-      postcss-load-config: 4.0.2(postcss@8.4.49)
-      postcss-nested: 6.2.0(postcss@8.4.49)
+      postcss: 8.5.6
+      postcss-import: 15.1.0(postcss@8.5.6)
+      postcss-js: 4.0.1(postcss@8.5.6)
+      postcss-load-config: 4.0.2(postcss@8.5.6)
+      postcss-nested: 6.2.0(postcss@8.5.6)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.8
       sucrase: 3.35.0
@@ -10157,6 +10319,10 @@ snapshots:
       - supports-color
 
   w3c-keyname@2.2.8: {}
+
+  warning@4.0.3:
+    dependencies:
+      loose-envify: 1.4.0
 
   watchpack@2.4.4:
     dependencies:
