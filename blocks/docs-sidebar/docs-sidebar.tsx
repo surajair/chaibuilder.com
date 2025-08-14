@@ -1,8 +1,7 @@
-import { cn } from "@/lib/utils";
 import {
   ChaiBlockComponentProps,
   registerChaiBlockSchema,
-} from "@chaibuilder/pages/runtime";
+} from "chai-next/blocks";
 import { DocLink, NavItem } from "./nav-item";
 
 export type DocsSidebarProps = {
@@ -13,7 +12,7 @@ export type DocsSidebarProps = {
 const DocsSidebar = (props: ChaiBlockComponentProps<DocsSidebarProps>) => {
   const { blockProps } = props;
   return (
-    <div {...blockProps} className={cn("w-full")}>
+    <div {...blockProps} className={"w-full"}>
       {props.title && (
         <h4 className="text-sm pl-2 border-b mb-1 border-border pb-2 mr-6 font-medium text-muted-foreground">
           {props.title}

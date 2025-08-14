@@ -1,11 +1,8 @@
 import { getSession } from "@/actions/get-user-action";
 import "@/app/(public)/public.css";
-import { getChaiSiteSettings } from "@/chai";
-import { Logo } from "@/components/builder/logo";
+import { Logo } from "@/components/logo";
 import { Clarity } from "@/components/clarity";
 import { registerFonts } from "@/fonts";
-import { getFontHref, getThemeCustomFontFace } from "@/utils/styles-helper";
-import { getChaiThemeCssVariables } from "@chaibuilder/sdk/render";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { get } from "lodash";
 import { Metadata } from "next";
@@ -13,6 +10,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Toaster } from "sonner";
 import { SalesIQ } from "../SalesIQ";
+import { FontsAndStyles } from "chai-next/blocks/rsc";
 
 registerFonts();
 
@@ -55,7 +53,7 @@ const WithAuthLayout = ({ children }: { children: React.ReactNode }) => {
 
         {/* Logo and brand */}
         <div className="relative z-10 flex items-center space-x-4 mb-12">
-          <div className="border-2 border-2 rounded">
+          <div className="border-2 rounded">
             <Logo shouldRedirect={false} />
           </div>
           <h1 className="text-white text-3xl font-bold uppercase leading-tight tracking-wide">
@@ -148,47 +146,10 @@ export default async function AuthLayout({
   const session = await getSession();
   if (session) redirect("/sites");
 
-  const siteSettings = await getChaiSiteSettings();
-  if ("error" in siteSettings) {
-    console.error(siteSettings.error);
-  }
-  const theme = get(siteSettings, "theme", {});
-  const themeCssVariables = getChaiThemeCssVariables(theme);
-  const bodyFont = get(theme, "fontFamily.body", "Inter");
-  const headingFont = get(theme, "fontFamily.heading", "Inter");
-  const fontUrls = getFontHref([bodyFont, headingFont]);
-  const customFontFace = getThemeCustomFontFace([bodyFont, headingFont]);
-
   return (
     <html dir="ltr" className="smooth-scroll">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        {fontUrls.map((fontUrl: string) => (
-          <link
-            key={fontUrl}
-            rel="preload"
-            href={fontUrl}
-            as="style"
-            crossOrigin=""
-          />
-        ))}
-
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
-        <style
-          id="theme-colors"
-          dangerouslySetInnerHTML={{ __html: themeCssVariables }}
-        />
-        {fontUrls.map((fontUrl: string) => (
-          <link key={fontUrl} rel="stylesheet" href={fontUrl} />
-        ))}
-        <style
-          id="custom-font-face"
-          dangerouslySetInnerHTML={{ __html: customFontFace }}
-        />
+        <FontsAndStyles />
       </head>
       <body className="font-body antialiased">
         <Toaster richColors />
