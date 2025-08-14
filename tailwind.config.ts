@@ -1,4 +1,4 @@
-import { getChaiBuilderTheme } from "@chaibuilder/pages/tailwind";
+import { getChaiBuilderTheme } from "chai-next/utils";
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import containerQueries from "@tailwindcss/container-queries";
 import forms from "@tailwindcss/forms";
@@ -15,7 +15,7 @@ const config: Config = {
     "./blocks/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@chaibuilder/sdk/dist/web-blocks/*.{js,cjs}",
+    "./node_modules/chai-next/dist/blocks/**/*.{js,cjs}"
   ],
   safelist: ["w-[inherit]", "h-[inherit]"],
   theme: {
