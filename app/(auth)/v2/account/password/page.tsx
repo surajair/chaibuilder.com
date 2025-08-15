@@ -203,7 +203,7 @@ export default function PasswordPage() {
             <Alert>
               <Smartphone className="h-4 w-4" />
               <AlertDescription>
-                Two-factor authentication is enabled. You'll need your authenticator app to sign in.
+                Two-factor authentication is enabled. You&lsquo;ll need your authenticator app to sign in.
               </AlertDescription>
             </Alert>
           )}

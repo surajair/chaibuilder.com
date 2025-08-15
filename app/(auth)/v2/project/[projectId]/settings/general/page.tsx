@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useActionState } from "react"
 import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,6 +29,24 @@ export default function GeneralSettingsPage() {
   const [additionalLanguages, setAdditionalLanguages] = useState<string[]>([])
   const [deleteConfirmation, setDeleteConfirmation] = useState("")
 
+  // Form action for updating project settings
+  const [updateState, updateAction, updatePending] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const result = await updateProjectSettings(formData)
+      return result
+    },
+    { success: false }
+  )
+
+  // Form action for deleting project
+  const [deleteState, deleteAction, deletePending] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const result = await deleteProject(formData)
+      return result
+    },
+    { success: false }
+  )
+
   const availableLanguages = [
     { value: "es", label: "Spanish" },
     { value: "fr", label: "French" },
@@ -52,7 +70,7 @@ export default function GeneralSettingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-serif font-bold text-foreground">General Settings</h1>
-        <p className="text-muted-foreground mt-2">Manage your project's basic configuration and settings.</p>
+        <p className="text-muted-foreground mt-2">Manage your project&lsquo;s basic configuration and settings.</p>
         <p className="text-xs text-muted-foreground mt-1">Project ID: {projectId}</p>
       </div>
 
@@ -62,7 +80,7 @@ export default function GeneralSettingsPage() {
           <CardDescription>Update your project name and language settings</CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={updateProjectSettings} className="space-y-4">
+          <form action={updateAction} className="space-y-4">
             <input type="hidden" name="projectId" value={projectId} />
             <div className="space-y-2">
               <Label htmlFor="project-name">Project Name</Label>
@@ -106,8 +124,8 @@ export default function GeneralSettingsPage() {
               <p className="text-xs text-muted-foreground">Selected: {additionalLanguages.length}/2</p>
             </div>
 
-            <Button type="submit" className="w-full sm:w-auto">
-              Save Changes
+            <Button type="submit" disabled={updatePending} className="w-full sm:w-auto">
+              {updatePending ? "Saving..." : "Save Changes"}
             </Button>
           </form>
         </CardContent>
@@ -131,10 +149,10 @@ export default function GeneralSettingsPage() {
                   servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
-              <form action={deleteProject}>
+              <form action={deleteAction}>
                 <input type="hidden" name="projectId" value={projectId} />
                 <div className="space-y-2">
-                  <Label htmlFor="delete-confirm">Type "DELETE" to confirm</Label>
+                  <Label htmlFor="delete-confirm">Type &lsquo;DELETE&lsquo; to confirm</Label>
                   <Input
                     id="delete-confirm"
                     value={deleteConfirmation}
@@ -146,10 +164,10 @@ export default function GeneralSettingsPage() {
                   <AlertDialogCancel onClick={() => setDeleteConfirmation("")}>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     type="submit"
-                    disabled={deleteConfirmation !== "DELETE"}
+                    disabled={deleteConfirmation !== "DELETE" || deletePending}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                   >
-                    Delete Project
+                    {deletePending ? "Deleting..." : "Delete Project"}
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </form>

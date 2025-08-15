@@ -7,7 +7,7 @@ export default function UsageSettingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-serif font-bold text-foreground">Usage Analytics</h1>
-        <p className="text-muted-foreground mt-2">Monitor your project's resource usage and performance metrics.</p>
+        <p className="text-muted-foreground mt-2">Monitor your project&lsquo;s resource usage and performance metrics.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

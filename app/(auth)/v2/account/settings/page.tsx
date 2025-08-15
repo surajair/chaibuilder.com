@@ -117,7 +117,7 @@ export default function AccountSettingsPage() {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <Label>Show Activity Status</Label>
-              <p className="text-sm text-gray-600">Let others see when you're online</p>
+              <p className="text-sm text-gray-600">Let others see when you&lsquo;re online</p>
             </div>
             <Switch
               checked={privacy.activityStatus}

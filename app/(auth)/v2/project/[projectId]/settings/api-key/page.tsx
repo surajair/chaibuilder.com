@@ -1,6 +1,6 @@
-"use client"
+  "use client"
 
-import { useState } from "react"
+import { useState, useActionState } from "react"
 import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -20,12 +20,24 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Copy, RotateCcw } from "lucide-react"
 import { updateApiKey } from "../actions"
+import Form from "next/form"
 
 export default function ApiKeySettingsPage() {
   const params = useParams()
   const projectId = params.projectId as string
   const [apiKey, setApiKey] = useState(`sk_${projectId}_1234567890abcdef...`)
   const [copied, setCopied] = useState(false)
+  
+  const [state, formAction, pending] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const result = await updateApiKey(formData)
+      if (result.success && result.newApiKey) {
+        setApiKey(result.newApiKey)
+      }
+      return result
+    },
+    { success: false }
+  )
 
   const handleCopyKey = async () => {
     await navigator.clipboard.writeText(apiKey)
@@ -37,7 +49,7 @@ export default function ApiKeySettingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-serif font-bold text-foreground">API Key</h1>
-        <p className="text-muted-foreground mt-2">Manage your project's API key for external integrations.</p>
+        <p className="text-muted-foreground mt-2">Manage your project&lsquo;s API key for external integrations.</p>
       </div>
 
       <Card>
@@ -79,16 +91,17 @@ export default function ApiKeySettingsPage() {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <form action={updateApiKey}>
+                  <Form action={formAction}>
                     <input type="hidden" name="projectId" value={projectId} />
                     <input type="hidden" name="action" value="revoke" />
                     <AlertDialogAction
                       type="submit"
+                      disabled={pending}
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                     >
-                      Revoke & Generate New
+                      {pending ? "Revoking..." : "Revoke & Generate New"}
                     </AlertDialogAction>
-                  </form>
+                  </Form>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>

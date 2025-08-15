@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Save, Eye, X, Bold, Italic, List, ListOrdered, Quote, Undo, Redo } from "lucide-react"
 import Link from "next/link"
 import { useEditor, EditorContent } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
+// import StarterKit from "@tiptap/starter-kit"
 
 export default function NewBlogPage() {
   const params = useParams()
@@ -33,7 +33,7 @@ export default function NewBlogPage() {
   const [isSaving, setIsSaving] = useState(false)
 
   const editor = useEditor({
-    extensions: [StarterKit],
+    // extensions: [StarterKit],
     content: formData.content,
     onUpdate: ({ editor }) => {
       setFormData((prev) => ({ ...prev, content: editor.getHTML() }))
@@ -122,7 +122,7 @@ export default function NewBlogPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => editor?.chain().focus().toggleBold().run()}
+                      // onClick={() => editor?.chain().focus().toggleBold().run()}
                       className={editor?.isActive("bold") ? "bg-muted" : ""}
                     >
                       <Bold className="h-4 w-4" />
@@ -131,7 +131,7 @@ export default function NewBlogPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => editor?.chain().focus().toggleItalic().run()}
+                      // onClick={() => editor?.chain().focus().toggleItalic().run()}
                       className={editor?.isActive("italic") ? "bg-muted" : ""}
                     >
                       <Italic className="h-4 w-4" />
@@ -140,7 +140,7 @@ export default function NewBlogPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => editor?.chain().focus().toggleBulletList().run()}
+                      // onClick={() => editor?.chain().focus().toggleBulletList().run()}
                       className={editor?.isActive("bulletList") ? "bg-muted" : ""}
                     >
                       <List className="h-4 w-4" />
@@ -149,7 +149,7 @@ export default function NewBlogPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+                      // onClick={() => editor?.chain().focus().toggleOrderedList().run()}
                       className={editor?.isActive("orderedList") ? "bg-muted" : ""}
                     >
                       <ListOrdered className="h-4 w-4" />
@@ -158,7 +158,7 @@ export default function NewBlogPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+                      // onClick={() => editor?.chain().focus().toggleBlockquote().run()}
                       className={editor?.isActive("blockquote") ? "bg-muted" : ""}
                     >
                       <Quote className="h-4 w-4" />
@@ -168,7 +168,7 @@ export default function NewBlogPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => editor?.chain().focus().undo().run()}
+                      // onClick={() => editor?.chain().focus().undo().run()}
                     >
                       <Undo className="h-4 w-4" />
                     </Button>
@@ -176,7 +176,7 @@ export default function NewBlogPage() {
                       type="button"
                       variant="ghost"
                       size="sm"
-                      onClick={() => editor?.chain().focus().redo().run()}
+                      // onClick={() => editor?.chain().focus().redo().run()}
                     >
                       <Redo className="h-4 w-4" />
                     </Button>

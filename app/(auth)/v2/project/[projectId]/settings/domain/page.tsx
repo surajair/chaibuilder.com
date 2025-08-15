@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useActionState } from "react"
 import { useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -29,6 +29,27 @@ export default function DomainSettingsPage() {
   const [isConfigured, setIsConfigured] = useState(true) // Toggle this to show configuration steps
   const [showConfigSteps, setShowConfigSteps] = useState(false)
 
+  // Form action for adding custom domain
+  const [addDomainState, addDomainAction, addDomainPending] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const result = await addCustomDomain(formData)
+      if (result.success) {
+        setCustomDomain("")
+      }
+      return result
+    },
+    { success: false, domain: "" }
+  )
+
+  // Form action for deleting domain
+  const [deleteDomainState, deleteDomainAction, deleteDomainPending] = useActionState(
+    async (prevState: any, formData: FormData) => {
+      const result = await deleteDomain(formData)
+      return result
+    },
+    { success: false }
+  )
+
   const mockDomains = [
     { domain: "www.example.com", status: "active", configured: true },
     { domain: "blog.example.com", status: "pending", configured: false },
@@ -38,13 +59,13 @@ export default function DomainSettingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-serif font-bold text-foreground">Domain Settings</h1>
-        <p className="text-muted-foreground mt-2">Manage your project's domain configuration.</p>
+        <p className="text-muted-foreground mt-2">Manage your project&lsquo;s domain configuration.</p>
       </div>
 
       <Card>
         <CardHeader>
           <CardTitle>Default Domain</CardTitle>
-          <CardDescription>Your project's default domain provided by our platform</CardDescription>
+          <CardDescription>Your project&lsquo;s default domain provided by our platform</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
@@ -63,7 +84,7 @@ export default function DomainSettingsPage() {
           <CardDescription>Connect your own domain to this project</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <form action={addCustomDomain} className="space-y-2">
+          <form action={addDomainAction} className="space-y-2">
             <input type="hidden" name="projectId" value={projectId} />
             <Label htmlFor="custom-domain">Domain Name</Label>
             <div className="flex gap-2">
@@ -75,7 +96,9 @@ export default function DomainSettingsPage() {
                 placeholder="example.com"
                 className="font-mono"
               />
-              <Button type="submit">Add Domain</Button>
+              <Button type="submit" disabled={addDomainPending}>
+                {addDomainPending ? "Adding..." : "Add Domain"}
+              </Button>
             </div>
           </form>
 
@@ -110,20 +133,21 @@ export default function DomainSettingsPage() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Domain</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to remove "{domainItem.domain}" from this project? This action cannot be
+                          Are you sure you want to remove &lsquo;{domainItem.domain}&rsquo; from this project? This action cannot be
                           undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <form action={deleteDomain}>
+                        <form action={deleteDomainAction}>
                           <input type="hidden" name="projectId" value={projectId} />
                           <input type="hidden" name="domain" value={domainItem.domain} />
                           <AlertDialogAction
                             type="submit"
+                            disabled={deleteDomainPending}
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                           >
-                            Delete Domain
+                            {deleteDomainPending ? "Deleting..." : "Delete Domain"}
                           </AlertDialogAction>
                         </form>
                       </AlertDialogFooter>
@@ -187,7 +211,7 @@ export default function DomainSettingsPage() {
                     <div>
                       <p className="font-medium text-blue-900">SSL Certificate</p>
                       <p className="text-sm text-blue-700">
-                        We'll automatically provision an SSL certificate once DNS is configured.
+                        We&lsquo;ll automatically provision an SSL certificate once DNS is configured.
                       </p>
                     </div>
                   </div>

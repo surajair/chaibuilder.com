@@ -324,7 +324,7 @@ export default function UsersPage() {
         <Card>
           <CardHeader>
             <CardTitle>Pending Invitations ({pendingInvites.length})</CardTitle>
-            <CardDescription>Invitations that haven't been accepted yet</CardDescription>
+            <CardDescription>Invitations that haven&lsquo;t been accepted yet</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
