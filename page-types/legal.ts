@@ -1,5 +1,5 @@
 import { getDocContent } from "@/cms/github/get-doc-content";
-import { registerChaiPageType } from "@chaibuilder/pages/server";
+import { registerChaiPageType } from "chai-next/server";
 
 registerChaiPageType("legal", {
   name: "Legal",
