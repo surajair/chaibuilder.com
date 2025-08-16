@@ -15,7 +15,7 @@
   "dependencies": {
     "@next/third-parties": "^15.4.6",
     "@supabase/ssr": "^0.6.1",
-    "chai-next": "0.0.2-beta",
+    "chai-next": "0.0.3-beta",
     "next": "15.4.1",
     "react": "19.1.0",
     "react-dom": "19.1.0"
