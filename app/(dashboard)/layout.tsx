@@ -5,11 +5,13 @@ import { Clarity } from "@/components/clarity";
 import { UserProfile } from "@/components/dashboard/user-profile";
 import { registerFonts } from "@/fonts";
 import { GoogleTagManager } from "@next/third-parties/google";
-import { get } from "lodash";
 import { Metadata } from "next";
 import { Toaster } from "sonner";
 import { SalesIQ } from "../SalesIQ";
 import { FontsAndStyles } from "chai-next/blocks/rsc";
+import ChaiBuilder from "chai-next/server";
+
+ChaiBuilder.init(process.env.CHAIBUILDER_API_KEY!);
 
 registerFonts();
 
