@@ -1,5 +1,6 @@
 "use client";
 
+import { createApiKey } from "@/actions/create-site-action";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,7 +21,6 @@ import { Check, Copy, Eye, EyeOff, Key, RotateCcw } from "lucide-react";
 import Form from "next/form";
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
-import { createApiKey } from "@/actions/create-site-action";
 
 interface ApiKeySectionProps {
   websiteId: string;
@@ -81,7 +81,12 @@ function ApiKeySection({ websiteId, siteData, initialApiKey }: ApiKeySectionProp
           <div className="space-y-2">
             <Label>API Key</Label>
             <div className="flex gap-2">
-              <Input value={apiKey} readOnly type={showApiKey ? "text" : "password"} className="font-mono text-sm" />
+              <Input
+                value={showApiKey ? apiKey : "****************************************"}
+                readOnly
+                type={showApiKey ? "text" : "password"}
+                className="font-mono text-sm"
+              />
               <Button
                 variant="outline"
                 size="icon"
