@@ -31,11 +31,9 @@ export default async function RootLayout({
   const user = await getUser();
 
   return (
-    <html lang="en" className={`${playfair.variable} ${sourceSans.variable}`}>
-      <body className="font-sans antialiased">
-        <TopNavigation user={user} />
-        <main className="h-full py-8">{children}</main>
-      </body>
-    </html>
+    <body lang="en" className={`font-sans antialiased ${playfair.variable} ${sourceSans.variable}`}>
+      <TopNavigation user={user} />
+      <main className="h-full py-8">{children}</main>
+    </body>
   );
 }

@@ -28,7 +28,7 @@ export default async function HomePage() {
           <h1 className="text-4xl font-bold mb-2">Your Websites</h1>
           <p className="text-muted-foreground">Manage your websites and create amazing content</p>
         </div>
-        <Link href="/websites/new-site">
+        <Link href="/websites/add-new">
           <Button size="lg" className="gap-2">
             <Plus className="h-5 w-5" />
             Add New Website
@@ -81,7 +81,7 @@ export default async function HomePage() {
             <Globe className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">No projects yet</h3>
             <p className="text-muted-foreground mb-6">Create your first website to get started</p>
-            <Link href="/websites/new-site">
+            <Link href="/websites/add-new">
               <Button size="lg" className="gap-2">
                 <Plus className="h-5 w-5" />
                 Create Your First Site
