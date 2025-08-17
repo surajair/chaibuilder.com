@@ -1,12 +1,5 @@
-"use client"
+"use client";
 
-import { useState, useActionState } from "react"
-import { useParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Checkbox } from "@/components/ui/checkbox"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,35 +10,42 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { updateProjectSettings, deleteProject } from "../actions"
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useParams } from "next/navigation";
+import { useActionState, useState } from "react";
+import { deleteProject, updateProjectSettings } from "../actions";
 
 export default function GeneralSettingsPage() {
-  const params = useParams()
-  const projectId = params.projectId as string
+  const params = useParams();
+  const websiteId = params.websiteId as string;
 
-  const [projectName, setProjectName] = useState("My Awesome Website")
-  const defaultLanguage = "en" // Cannot be changed
-  const [additionalLanguages, setAdditionalLanguages] = useState<string[]>([])
-  const [deleteConfirmation, setDeleteConfirmation] = useState("")
+  const [projectName, setProjectName] = useState("My Awesome Website");
+  const defaultLanguage = "en"; // Cannot be changed
+  const [additionalLanguages, setAdditionalLanguages] = useState<string[]>([]);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
 
   // Form action for updating project settings
   const [updateState, updateAction, updatePending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await updateProjectSettings(formData)
-      return result
+      const result = await updateProjectSettings(formData);
+      return result;
     },
-    { success: false }
-  )
+    { success: false },
+  );
 
   // Form action for deleting project
   const [deleteState, deleteAction, deletePending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await deleteProject(formData)
-      return result
+      const result = await deleteProject(formData);
+      return result;
     },
-    { success: false }
-  )
+    { success: false },
+  );
 
   const availableLanguages = [
     { value: "es", label: "Spanish" },
@@ -56,22 +56,22 @@ export default function GeneralSettingsPage() {
     { value: "ja", label: "Japanese" },
     { value: "ko", label: "Korean" },
     { value: "zh", label: "Chinese" },
-  ]
+  ];
 
   const handleLanguageToggle = (languageValue: string, checked: boolean) => {
     if (checked && additionalLanguages.length < 2) {
-      setAdditionalLanguages([...additionalLanguages, languageValue])
+      setAdditionalLanguages([...additionalLanguages, languageValue]);
     } else if (!checked) {
-      setAdditionalLanguages(additionalLanguages.filter((lang) => lang !== languageValue))
+      setAdditionalLanguages(additionalLanguages.filter((lang) => lang !== languageValue));
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-serif font-bold text-foreground">General Settings</h1>
         <p className="text-muted-foreground mt-2">Manage your project&lsquo;s basic configuration and settings.</p>
-        <p className="text-xs text-muted-foreground mt-1">Project ID: {projectId}</p>
+        <p className="text-xs text-muted-foreground mt-1">Project ID: {websiteId}</p>
       </div>
 
       <Card>
@@ -81,7 +81,7 @@ export default function GeneralSettingsPage() {
         </CardHeader>
         <CardContent>
           <form action={updateAction} className="space-y-4">
-            <input type="hidden" name="projectId" value={projectId} />
+            <input type="hidden" name="websiteId" value={websiteId} />
             <div className="space-y-2">
               <Label htmlFor="project-name">Project Name</Label>
               <Input
@@ -150,7 +150,7 @@ export default function GeneralSettingsPage() {
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <form action={deleteAction}>
-                <input type="hidden" name="projectId" value={projectId} />
+                <input type="hidden" name="websiteId" value={websiteId} />
                 <div className="space-y-2">
                   <Label htmlFor="delete-confirm">Type &lsquo;DELETE&lsquo; to confirm</Label>
                   <Input
@@ -165,8 +165,7 @@ export default function GeneralSettingsPage() {
                   <AlertDialogAction
                     type="submit"
                     disabled={deleteConfirmation !== "DELETE" || deletePending}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                     {deletePending ? "Deleting..." : "Delete Project"}
                   </AlertDialogAction>
                 </AlertDialogFooter>
@@ -176,5 +175,5 @@ export default function GeneralSettingsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

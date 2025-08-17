@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useEffect } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function SettingsPage() {
-  const router = useRouter()
-  const params = useParams()
-  const projectId = params.projectId as string
+  const router = useRouter();
+  const params = useParams();
+  const websiteId = params.websiteId as string;
 
   useEffect(() => {
-    router.replace(`/project/${projectId}/settings/general`)
-  }, [router, projectId])
+    router.replace(`/project/${websiteId}/settings/general`);
+  }, [router, websiteId]);
 
-  return null
+  return null;
 }

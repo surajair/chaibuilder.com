@@ -1,14 +1,19 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Plus, Search, Edit, Trash2, Calendar, User } from "lucide-react"
-import Link from "next/link"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Calendar, Edit, Plus, Search, Trash2, User } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
 const mockBlogs = [
   {
@@ -38,14 +43,14 @@ const mockBlogs = [
     category: "Tips",
     tags: ["content", "writing"],
   },
-]
+];
 
 export default function BlogsPage() {
-  const params = useParams()
-  const projectId = params.projectId as string
-  const [searchTerm, setSearchTerm] = useState("")
+  const params = useParams();
+  const websiteId = params.websiteId as string;
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredBlogs = mockBlogs.filter((blog) => blog.title.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredBlogs = mockBlogs.filter((blog) => blog.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="space-y-6">
@@ -54,7 +59,7 @@ export default function BlogsPage() {
           <h1 className="text-3xl font-bold">Blogs</h1>
           <p className="text-muted-foreground mt-2">Manage your blog articles</p>
         </div>
-        <Link href={`/project/${projectId}/blogs/new`}>
+        <Link href={`/project/${websiteId}/blogs/new`}>
           <Button>
             <Plus className="h-4 w-4 mr-2" />
             New Blog
@@ -101,7 +106,7 @@ export default function BlogsPage() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
-                      <Link href={`/project/${projectId}/blogs/${blog.id}/edit`}>
+                      <Link href={`/project/${websiteId}/blogs/${blog.id}/edit`}>
                         <Edit className="h-4 w-4 mr-2" />
                         Edit
                       </Link>
@@ -137,7 +142,7 @@ export default function BlogsPage() {
             <p className="text-muted-foreground mb-4">
               {searchTerm ? "Try adjusting your search terms." : "Get started by creating your first blog."}
             </p>
-            <Link href={`/project/${projectId}/blogs/new`}>
+            <Link href={`/project/${websiteId}/blogs/new`}>
               <Button>
                 <Plus className="h-4 w-4 mr-2" />
                 Create Blog
@@ -147,5 +152,5 @@ export default function BlogsPage() {
         </Card>
       )}
     </div>
-  )
+  );
 }

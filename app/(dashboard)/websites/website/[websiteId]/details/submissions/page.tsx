@@ -1,10 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -12,9 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { FileText, ChevronLeft, ChevronRight, Download } from "lucide-react"
-import { exportSubmissionsCSV } from "../actions"
+} from "@/components/ui/dialog";
+import { ChevronLeft, ChevronRight, Download, FileText } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+import { exportSubmissionsCSV } from "../actions";
 
 const mockSubmissions = [
   {
@@ -57,38 +57,38 @@ const mockSubmissions = [
     status: "new",
     data: { email: "charlie@example.com", preferences: "Monthly updates" },
   },
-]
+];
 
 export default function SubmissionsSettingsPage() {
-  const params = useParams()
-  const projectId = params.projectId as string
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isExporting, setIsExporting] = useState(false)
-  const itemsPerPage = 3
-  const totalPages = Math.ceil(mockSubmissions.length / itemsPerPage)
+  const params = useParams();
+  const websiteId = params.websiteId as string;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isExporting, setIsExporting] = useState(false);
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(mockSubmissions.length / itemsPerPage);
 
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentSubmissions = mockSubmissions.slice(startIndex, startIndex + itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentSubmissions = mockSubmissions.slice(startIndex, startIndex + itemsPerPage);
 
   const handleExportCSV = async () => {
-    setIsExporting(true)
+    setIsExporting(true);
     try {
-      const csvData = await exportSubmissionsCSV(projectId)
-      const blob = new Blob([csvData], { type: "text/csv" })
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = `submissions-${projectId}-${new Date().toISOString().split("T")[0]}.csv`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(url)
+      const csvData = await exportSubmissionsCSV(websiteId);
+      const blob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `submissions-${websiteId}-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Failed to export CSV:", error)
+      console.error("Failed to export CSV:", error);
     } finally {
-      setIsExporting(false)
+      setIsExporting(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -172,8 +172,7 @@ export default function SubmissionsSettingsPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                disabled={currentPage === 1}
-              >
+                disabled={currentPage === 1}>
                 <ChevronLeft className="h-4 w-4" />
                 Previous
               </Button>
@@ -184,8 +183,7 @@ export default function SubmissionsSettingsPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                disabled={currentPage === totalPages}
-              >
+                disabled={currentPage === totalPages}>
                 Next
                 <ChevronRight className="h-4 w-4" />
               </Button>
@@ -194,5 +192,5 @@ export default function SubmissionsSettingsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

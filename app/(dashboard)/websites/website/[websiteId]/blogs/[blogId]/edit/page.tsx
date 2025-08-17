@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Save, X } from "lucide-react"
-import Link from "next/link"
-import { useEditor, EditorContent } from "@tiptap/react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { EditorContent, useEditor } from "@tiptap/react";
+import { ArrowLeft, Save, X } from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 // import StarterKit from "@tiptap/starter-kit"
-import { Bold, Italic, List, ListOrdered, Quote, Undo, Redo } from "lucide-react"
-  
+import { Bold, Italic, List, ListOrdered, Quote, Redo, Undo } from "lucide-react";
+
 // Mock data - in real app this would come from API
 const mockBlog = {
   id: 1,
@@ -25,80 +25,80 @@ const mockBlog = {
   status: "published",
   category: "Tutorial",
   tags: ["beginner", "guide"],
-}
+};
 
-const mockCategories = ["Tutorial", "Guide", "Tips", "News", "Updates"]
-const mockTags = ["beginner", "guide", "advanced", "features", "content", "writing", "tips"]
+const mockCategories = ["Tutorial", "Guide", "Tips", "News", "Updates"];
+const mockTags = ["beginner", "guide", "advanced", "features", "content", "writing", "tips"];
 
 export default function EditBlogPage() {
-  const params = useParams()
-  const router = useRouter()
-  const projectId = params.projectId as string
-  const blogId = params.blogId as string
+  const params = useParams();
+  const router = useRouter();
+  const websiteId = params.websiteId as string;
+  const blogId = params.blogId as string;
 
-  const [title, setTitle] = useState("")
-  const [slug, setSlug] = useState("")
-  const [content, setContent] = useState("")
-  const [author, setAuthor] = useState("")
-  const [status, setStatus] = useState("draft")
-  const [category, setCategory] = useState("")
-  const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [newCategory, setNewCategory] = useState("")
-  const [newTag, setNewTag] = useState("")
+  const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
+  const [content, setContent] = useState("");
+  const [author, setAuthor] = useState("");
+  const [status, setStatus] = useState("draft");
+  const [category, setCategory] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [newCategory, setNewCategory] = useState("");
+  const [newTag, setNewTag] = useState("");
 
   const editor = useEditor({
     // extensions: [StarterKit],
     content: content,
     onUpdate: ({ editor }) => {
-      setContent(editor.getHTML())
+      setContent(editor.getHTML());
     },
-  })
+  });
 
   // Load blog data on mount
   useEffect(() => {
     // In real app, fetch blog data by ID
-    setTitle(mockBlog.title)
-    setSlug(mockBlog.slug)
-    setContent(mockBlog.content)
-    setAuthor(mockBlog.author)
-    setStatus(mockBlog.status)
-    setCategory(mockBlog.category)
-    setSelectedTags(mockBlog.tags)
+    setTitle(mockBlog.title);
+    setSlug(mockBlog.slug);
+    setContent(mockBlog.content);
+    setAuthor(mockBlog.author);
+    setStatus(mockBlog.status);
+    setCategory(mockBlog.category);
+    setSelectedTags(mockBlog.tags);
 
     // Update editor content
     if (editor) {
-      editor.commands.setContent(mockBlog.content)
+      editor.commands.setContent(mockBlog.content);
     }
-  }, [blogId, editor])
+  }, [blogId, editor]);
 
   const handleAddCategory = () => {
     if (newCategory.trim()) {
-      setCategory(newCategory.trim())
-      setNewCategory("")
+      setCategory(newCategory.trim());
+      setNewCategory("");
     }
-  }
+  };
 
   const handleAddTag = () => {
     if (newTag.trim() && !selectedTags.includes(newTag.trim())) {
-      setSelectedTags([...selectedTags, newTag.trim()])
-      setNewTag("")
+      setSelectedTags([...selectedTags, newTag.trim()]);
+      setNewTag("");
     }
-  }
+  };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setSelectedTags(selectedTags.filter((tag) => tag !== tagToRemove))
-  }
+    setSelectedTags(selectedTags.filter((tag) => tag !== tagToRemove));
+  };
 
   const handleSave = () => {
     // In real app, this would update the blog via API
-    console.log("Updating blog:", { title, slug, content, author, status, category, selectedTags })
-    router.push(`/project/${projectId}/blogs`)
-  }
+    console.log("Updating blog:", { title, slug, content, author, status, category, selectedTags });
+    router.push(`/project/${websiteId}/blogs`);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <Link href={`/project/${projectId}/blogs`}>
+        <Link href={`/project/${websiteId}/blogs`}>
           <Button variant="ghost" size="sm">
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Blogs
@@ -143,8 +143,7 @@ export default function EditBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleBold().run()}
-                      className={editor?.isActive("bold") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("bold") ? "bg-muted" : ""}>
                       <Bold className="h-4 w-4" />
                     </Button>
                     <Button
@@ -152,8 +151,7 @@ export default function EditBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleItalic().run()}
-                      className={editor?.isActive("italic") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("italic") ? "bg-muted" : ""}>
                       <Italic className="h-4 w-4" />
                     </Button>
                     <Button
@@ -161,8 +159,7 @@ export default function EditBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleBulletList().run()}
-                      className={editor?.isActive("bulletList") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("bulletList") ? "bg-muted" : ""}>
                       <List className="h-4 w-4" />
                     </Button>
                     <Button
@@ -170,8 +167,7 @@ export default function EditBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleOrderedList().run()}
-                      className={editor?.isActive("orderedList") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("orderedList") ? "bg-muted" : ""}>
                       <ListOrdered className="h-4 w-4" />
                     </Button>
                     <Button
@@ -179,8 +175,7 @@ export default function EditBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleBlockquote().run()}
-                      className={editor?.isActive("blockquote") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("blockquote") ? "bg-muted" : ""}>
                       <Quote className="h-4 w-4" />
                     </Button>
                     <div className="w-px h-6 bg-border mx-1" />
@@ -306,8 +301,7 @@ export default function EditBlogPage() {
                             key={tag}
                             variant="outline"
                             className="cursor-pointer text-xs"
-                            onClick={() => setSelectedTags([...selectedTags, tag])}
-                          >
+                            onClick={() => setSelectedTags([...selectedTags, tag])}>
                             {tag}
                           </Badge>
                         ))}
@@ -324,7 +318,7 @@ export default function EditBlogPage() {
               <Save className="h-4 w-4 mr-2" />
               Update Blog
             </Button>
-            <Link href={`/project/${projectId}/blogs`} className="block">
+            <Link href={`/project/${websiteId}/blogs`} className="block">
               <Button variant="outline" className="w-full bg-transparent">
                 Cancel
               </Button>
@@ -333,5 +327,5 @@ export default function EditBlogPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

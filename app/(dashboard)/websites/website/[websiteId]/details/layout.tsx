@@ -16,7 +16,7 @@ const sidebarItems = [
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
   const params = useParams();
   const pathname = usePathname();
-  const projectId = params.projectId as string;
+  const websiteId = params.websiteId as string;
 
   return (
     <div className="flex h-full bg-background">
@@ -30,7 +30,7 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
         <nav className="px-3">
           {sidebarItems.map((item) => {
             const Icon = item.icon;
-            const href = `/websites/website/${projectId}/details/${item.id}`;
+            const href = `/websites/website/${websiteId}/details/${item.id}`;
             const isActive = pathname === href;
 
             return (

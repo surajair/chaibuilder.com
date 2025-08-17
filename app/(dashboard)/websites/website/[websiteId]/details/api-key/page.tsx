@@ -1,12 +1,5 @@
-  "use client"
+"use client";
 
-import { useState, useActionState } from "react"
-import { useParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,33 +10,40 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Copy, RotateCcw } from "lucide-react"
-import { updateApiKey } from "../actions"
-import Form from "next/form"
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import { Copy, RotateCcw } from "lucide-react";
+import Form from "next/form";
+import { useParams } from "next/navigation";
+import { useActionState, useState } from "react";
+import { updateApiKey } from "../actions";
 
 export default function ApiKeySettingsPage() {
-  const params = useParams()
-  const projectId = params.projectId as string
-  const [apiKey, setApiKey] = useState(`sk_${projectId}_1234567890abcdef...`)
-  const [copied, setCopied] = useState(false)
-  
+  const params = useParams();
+  const websiteId = params.websiteId as string;
+  const [apiKey, setApiKey] = useState(`sk_${websiteId}_1234567890abcdef...`);
+  const [copied, setCopied] = useState(false);
+
   const [state, formAction, pending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await updateApiKey(formData)
+      const result = await updateApiKey(formData);
       if (result.success && result.newApiKey) {
-        setApiKey(result.newApiKey)
+        setApiKey(result.newApiKey);
       }
-      return result
+      return result;
     },
-    { success: false }
-  )
+    { success: false },
+  );
 
   const handleCopyKey = async () => {
-    await navigator.clipboard.writeText(apiKey)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
+    await navigator.clipboard.writeText(apiKey);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="space-y-6">
@@ -92,13 +92,12 @@ export default function ApiKeySettingsPage() {
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <Form action={formAction}>
-                    <input type="hidden" name="projectId" value={projectId} />
+                    <input type="hidden" name="websiteId" value={websiteId} />
                     <input type="hidden" name="action" value="revoke" />
                     <AlertDialogAction
                       type="submit"
                       disabled={pending}
-                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                    >
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                       {pending ? "Revoking..." : "Revoke & Generate New"}
                     </AlertDialogAction>
                   </Form>
@@ -109,5 +108,5 @@ export default function ApiKeySettingsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

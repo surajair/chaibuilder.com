@@ -16,7 +16,7 @@ import { ChevronLeft, ChevronRight, Download, FileText, Search } from "lucide-re
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
-const exportSubmissionsCSV = (projectId: string) => {};
+const exportSubmissionsCSV = (websiteId: string) => {};
 
 const mockSubmissions = [
   {
@@ -71,7 +71,7 @@ const mockSubmissions = [
 
 export default function SubmissionsPage() {
   const params = useParams();
-  const projectId = params.projectId as string;
+  const websiteId = params.websiteId as string;
   const [currentPage, setCurrentPage] = useState(1);
   const [isExporting, setIsExporting] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -92,12 +92,12 @@ export default function SubmissionsPage() {
   const handleExportCSV = async () => {
     setIsExporting(true);
     try {
-      const csvData = await exportSubmissionsCSV(projectId);
+      const csvData = await exportSubmissionsCSV(websiteId);
       const blob = new Blob([csvData as any], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `submissions-${projectId}-${new Date().toISOString().split("T")[0]}.csv`;
+      a.download = `submissions-${websiteId}-${new Date().toISOString().split("T")[0]}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

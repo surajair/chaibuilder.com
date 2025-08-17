@@ -1,12 +1,5 @@
-"use client"
+"use client";
 
-import { useState, useActionState } from "react"
-import { useParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,43 +10,50 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Globe, ExternalLink, CheckCircle, AlertCircle, Trash2, Settings, Copy } from "lucide-react"
-import { addCustomDomain, deleteDomain } from "../actions"
+} from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { AlertCircle, CheckCircle, Copy, ExternalLink, Globe, Settings, Trash2 } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useActionState, useState } from "react";
+import { addCustomDomain, deleteDomain } from "../actions";
 
 export default function DomainSettingsPage() {
-  const params = useParams()
-  const projectId = params.projectId as string
+  const params = useParams();
+  const websiteId = params.websiteId as string;
 
-  const [customDomain, setCustomDomain] = useState("")
-  const [isConfigured, setIsConfigured] = useState(true) // Toggle this to show configuration steps
-  const [showConfigSteps, setShowConfigSteps] = useState(false)
+  const [customDomain, setCustomDomain] = useState("");
+  const [isConfigured, setIsConfigured] = useState(true); // Toggle this to show configuration steps
+  const [showConfigSteps, setShowConfigSteps] = useState(false);
 
   // Form action for adding custom domain
   const [addDomainState, addDomainAction, addDomainPending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await addCustomDomain(formData)
+      const result = await addCustomDomain(formData);
       if (result.success) {
-        setCustomDomain("")
+        setCustomDomain("");
       }
-      return result
+      return result;
     },
-    { success: false, domain: "" }
-  )
+    { success: false, domain: "" },
+  );
 
   // Form action for deleting domain
   const [deleteDomainState, deleteDomainAction, deleteDomainPending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await deleteDomain(formData)
-      return result
+      const result = await deleteDomain(formData);
+      return result;
     },
-    { success: false }
-  )
+    { success: false },
+  );
 
   const mockDomains = [
     { domain: "www.example.com", status: "active", configured: true },
     { domain: "blog.example.com", status: "pending", configured: false },
-  ]
+  ];
 
   return (
     <div className="space-y-6">
@@ -70,7 +70,7 @@ export default function DomainSettingsPage() {
         <CardContent>
           <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
             <Globe className="h-4 w-4 text-muted-foreground" />
-            <span className="font-mono">{projectId}.webbuilder.app</span>
+            <span className="font-mono">{websiteId}.webbuilder.app</span>
             <Button variant="ghost" size="sm">
               <ExternalLink className="h-4 w-4" />
             </Button>
@@ -85,7 +85,7 @@ export default function DomainSettingsPage() {
         </CardHeader>
         <CardContent className="space-y-4">
           <form action={addDomainAction} className="space-y-2">
-            <input type="hidden" name="projectId" value={projectId} />
+            <input type="hidden" name="websiteId" value={websiteId} />
             <Label htmlFor="custom-domain">Domain Name</Label>
             <div className="flex gap-2">
               <Input
@@ -133,20 +133,19 @@ export default function DomainSettingsPage() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Domain</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to remove &lsquo;{domainItem.domain}&rsquo; from this project? This action cannot be
-                          undone.
+                          Are you sure you want to remove &lsquo;{domainItem.domain}&rsquo; from this project? This
+                          action cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <form action={deleteDomainAction}>
-                          <input type="hidden" name="projectId" value={projectId} />
+                          <input type="hidden" name="websiteId" value={websiteId} />
                           <input type="hidden" name="domain" value={domainItem.domain} />
                           <AlertDialogAction
                             type="submit"
                             disabled={deleteDomainPending}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                          >
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                             {deleteDomainPending ? "Deleting..." : "Delete Domain"}
                           </AlertDialogAction>
                         </form>
@@ -226,5 +225,5 @@ export default function DomainSettingsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

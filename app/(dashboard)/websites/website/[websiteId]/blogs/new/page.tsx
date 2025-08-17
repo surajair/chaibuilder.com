@@ -1,22 +1,22 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useParams, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Save, Eye, X, Bold, Italic, List, ListOrdered, Quote, Undo, Redo } from "lucide-react"
-import Link from "next/link"
-import { useEditor, EditorContent } from "@tiptap/react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { EditorContent, useEditor } from "@tiptap/react";
+import { ArrowLeft, Bold, Eye, Italic, List, ListOrdered, Quote, Redo, Save, Undo, X } from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 // import StarterKit from "@tiptap/starter-kit"
 
 export default function NewBlogPage() {
-  const params = useParams()
-  const router = useRouter()
-  const projectId = params.projectId as string
+  const params = useParams();
+  const router = useRouter();
+  const websiteId = params.websiteId as string;
 
   const [formData, setFormData] = useState({
     title: "",
@@ -24,54 +24,54 @@ export default function NewBlogPage() {
     author: "",
     category: "",
     status: "draft",
-  })
+  });
 
-  const [tags, setTags] = useState<string[]>([])
-  const [newTag, setNewTag] = useState("")
-  const [newCategory, setNewCategory] = useState("")
-  const [categories, setCategories] = useState(["Tutorial", "Guide", "Tips", "News"])
-  const [isSaving, setIsSaving] = useState(false)
+  const [tags, setTags] = useState<string[]>([]);
+  const [newTag, setNewTag] = useState("");
+  const [newCategory, setNewCategory] = useState("");
+  const [categories, setCategories] = useState(["Tutorial", "Guide", "Tips", "News"]);
+  const [isSaving, setIsSaving] = useState(false);
 
   const editor = useEditor({
     // extensions: [StarterKit],
     content: formData.content,
     onUpdate: ({ editor }) => {
-      setFormData((prev) => ({ ...prev, content: editor.getHTML() }))
+      setFormData((prev) => ({ ...prev, content: editor.getHTML() }));
     },
-  })
+  });
 
   const addTag = (tag: string) => {
     if (tag && !tags.includes(tag)) {
-      setTags([...tags, tag])
-      setNewTag("")
+      setTags([...tags, tag]);
+      setNewTag("");
     }
-  }
+  };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter((tag) => tag !== tagToRemove))
-  }
+    setTags(tags.filter((tag) => tag !== tagToRemove));
+  };
 
   const addCategory = () => {
     if (newCategory && !categories.includes(newCategory)) {
-      setCategories([...categories, newCategory])
-      setFormData((prev) => ({ ...prev, category: newCategory }))
-      setNewCategory("")
+      setCategories([...categories, newCategory]);
+      setFormData((prev) => ({ ...prev, category: newCategory }));
+      setNewCategory("");
     }
-  }
+  };
 
   const handleSave = async (status: string) => {
-    setIsSaving(true)
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    console.log("[v0] Saving blog article:", { ...formData, tags, status })
-    setIsSaving(false)
-    router.push(`/project/${projectId}/blogs`)
-  }
+    setIsSaving(true);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log("[v0] Saving blog article:", { ...formData, tags, status });
+    setIsSaving(false);
+    router.push(`/project/${websiteId}/blogs`);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href={`/project/${projectId}/blogs`}>
+          <Link href={`/project/${websiteId}/blogs`}>
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Blogs
@@ -123,8 +123,7 @@ export default function NewBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleBold().run()}
-                      className={editor?.isActive("bold") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("bold") ? "bg-muted" : ""}>
                       <Bold className="h-4 w-4" />
                     </Button>
                     <Button
@@ -132,8 +131,7 @@ export default function NewBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleItalic().run()}
-                      className={editor?.isActive("italic") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("italic") ? "bg-muted" : ""}>
                       <Italic className="h-4 w-4" />
                     </Button>
                     <Button
@@ -141,8 +139,7 @@ export default function NewBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleBulletList().run()}
-                      className={editor?.isActive("bulletList") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("bulletList") ? "bg-muted" : ""}>
                       <List className="h-4 w-4" />
                     </Button>
                     <Button
@@ -150,8 +147,7 @@ export default function NewBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleOrderedList().run()}
-                      className={editor?.isActive("orderedList") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("orderedList") ? "bg-muted" : ""}>
                       <ListOrdered className="h-4 w-4" />
                     </Button>
                     <Button
@@ -159,8 +155,7 @@ export default function NewBlogPage() {
                       variant="ghost"
                       size="sm"
                       // onClick={() => editor?.chain().focus().toggleBlockquote().run()}
-                      className={editor?.isActive("blockquote") ? "bg-muted" : ""}
-                    >
+                      className={editor?.isActive("blockquote") ? "bg-muted" : ""}>
                       <Quote className="h-4 w-4" />
                     </Button>
                     <div className="w-px h-6 bg-border mx-1" />
@@ -215,8 +210,7 @@ export default function NewBlogPage() {
                 <Label htmlFor="status">Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value }))}
-                >
+                  onValueChange={(value) => setFormData((prev) => ({ ...prev, status: value }))}>
                   <SelectTrigger className="mt-1">
                     <SelectValue />
                   </SelectTrigger>
@@ -238,8 +232,7 @@ export default function NewBlogPage() {
                 <Label htmlFor="category">Select Category</Label>
                 <Select
                   value={formData.category}
-                  onValueChange={(value) => setFormData((prev) => ({ ...prev, category: value }))}
-                >
+                  onValueChange={(value) => setFormData((prev) => ({ ...prev, category: value }))}>
                   <SelectTrigger className="mt-1">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -293,8 +286,8 @@ export default function NewBlogPage() {
                   placeholder="Add tag..."
                   onKeyPress={(e) => {
                     if (e.key === "Enter") {
-                      e.preventDefault()
-                      addTag(newTag)
+                      e.preventDefault();
+                      addTag(newTag);
                     }
                   }}
                 />
@@ -307,5 +300,5 @@ export default function NewBlogPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
