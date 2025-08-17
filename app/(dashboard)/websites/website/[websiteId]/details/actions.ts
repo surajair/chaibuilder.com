@@ -1,6 +1,6 @@
 "use server";
 
-export async function updateProjectSettings(formData: FormData) {
+export async function updateWebsiteSettings(formData: FormData) {
   const websiteId = formData.get("websiteId") as string;
   const projectName = formData.get("projectName") as string;
   const additionalLanguages = formData.getAll("additionalLanguages") as string[];
@@ -13,10 +13,10 @@ export async function updateProjectSettings(formData: FormData) {
   return { success: true };
 }
 
-export async function deleteProject(formData: FormData) {
+export async function deleteWebsite(formData: FormData) {
   const websiteId = formData.get("websiteId") as string;
 
-  console.log("[v0] Deleting project:", websiteId);
+  console.log("[v0] Deleting website:", websiteId);
 
   // Simulate API call
   await new Promise((resolve) => setTimeout(resolve, 1000));

@@ -19,9 +19,11 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
     const siteData = await getSite(user.id, websiteId);
 
     return (
-      <div className="bg-background h-full">
-        <WebsiteHeader websiteId={websiteId} projectName={siteData.name} />
-        <WebsiteNavigation websiteId={websiteId} />
+      <div className="bg-background h-full flex flex-col">
+        <div className="h-max">
+          <WebsiteHeader websiteId={websiteId} projectName={siteData.name} />
+          <WebsiteNavigation websiteId={websiteId} />
+        </div>
 
         {/* Main Content */}
         <div className="h-full">{children}</div>

@@ -46,7 +46,7 @@ export function WebsiteHeader({ websiteId, projectName }: WebsiteHeaderProps) {
               Websites
             </Link>
             <ChevronRight className="h-4 w-4" />
-            <Link href={`/websites/${websiteId}`} className="hover:text-foreground transition-colors">
+            <Link href={`/websites/website/${websiteId}`} className="hover:text-foreground transition-colors">
               {projectName}
             </Link>
             <ChevronRight className="h-4 w-4" />
