@@ -1,8 +1,8 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Plus, Globe } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Globe, Plus } from "lucide-react";
+import Link from "next/link";
 
 const mockProjects = [
   {
@@ -28,54 +28,56 @@ const mockProjects = [
     lastUpdated: "3 days ago",
     languages: ["en", "fr", "de"],
   },
-]
+];
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto p-6">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-4xl font-bold mb-2">Your Projects</h1>
-            <p className="text-muted-foreground">Manage your websites and create amazing content</p>
-          </div>
-          <Link href="/new-site">
-            <Button size="lg" className="gap-2">
-              <Plus className="h-5 w-5" />
-              Add New Site
-            </Button>
-          </Link>
+    <div className="h-full flex flex-col">
+      <div className="flex items-center justify-between mb-8 flex-shrink-0">
+        <div>
+          <h1 className="text-4xl font-bold mb-2">Your Projects</h1>
+          <p className="text-muted-foreground">Manage your websites and create amazing content</p>
         </div>
+        <Link href="/new-site">
+          <Button size="lg" className="gap-2">
+            <Plus className="h-5 w-5" />
+            Add New Site
+          </Button>
+        </Link>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockProjects.map((project) => (
-            <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
-              <Link href={`/project/${project.id}`}>
-                <CardHeader>
-                  <CardTitle className="text-xl">{project.name}</CardTitle>
-                  <CardDescription className="flex items-center gap-1">
-                    <Globe className="h-4 w-4" />
-                    {project.customDomain || project.domain}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex gap-1">
-                      {project.languages.map((lang) => (
-                        <Badge key={lang} variant="outline" className="text-xs">
-                          {lang.toUpperCase()}
-                        </Badge>
-                      ))}
+      {mockProjects.length > 0 ? (
+        <div className="flex-1 overflow-y-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
+            {mockProjects.map((project) => (
+              <Card key={project.id} className="hover:shadow-lg transition-shadow cursor-pointer">
+                <Link href={`/project/${project.id}`}>
+                  <CardHeader>
+                    <CardTitle className="text-xl">{project.name}</CardTitle>
+                    <CardDescription className="flex items-center gap-1">
+                      <Globe className="h-4 w-4" />
+                      {project.customDomain || project.domain}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex gap-1">
+                        {project.languages.map((lang) => (
+                          <Badge key={lang} variant="outline" className="text-xs">
+                            {lang.toUpperCase()}
+                          </Badge>
+                        ))}
+                      </div>
+                      <span className="text-muted-foreground">Updated {project.lastUpdated}</span>
                     </div>
-                    <span className="text-muted-foreground">Updated {project.lastUpdated}</span>
-                  </div>
-                </CardContent>
-              </Link>
-            </Card>
-          ))}
+                  </CardContent>
+                </Link>
+              </Card>
+            ))}
+          </div>
         </div>
-
-        {mockProjects.length === 0 && (
+      ) : (
+        <div className="flex-1 flex items-center justify-center">
           <div className="text-center py-12">
             <Globe className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-xl font-semibold mb-2">No projects yet</h3>
@@ -87,8 +89,8 @@ export default function HomePage() {
               </Button>
             </Link>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }
