@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { kebabCase } from "lodash";
 import { ArrowLeft, ChevronRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,15 +18,6 @@ const getCurrentPageName = (pathname: string) => {
   if (pathname.includes("/blogs")) return "Blogs";
   if (pathname.includes("/details")) return "Details";
   return "Dashboard";
-};
-
-const getSubdomain = (name: string) => {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
-    .replace(/^-|-$/g, "");
 };
 
 export function WebsiteHeader({ websiteId, projectName }: WebsiteHeaderProps) {
@@ -52,10 +44,10 @@ export function WebsiteHeader({ websiteId, projectName }: WebsiteHeaderProps) {
           <div className="text-right flex items-center gap-x-1">
             <div className="w-2 h-2 bg-green-500 rounded-full" />
             <a
-              href={`https://${getSubdomain(projectName)}.chaibuilder.app`}
+              href={`https://${kebabCase(projectName)}.chaibuilder.app`}
               target="_blank"
               className="text-xs text-blue-500 hover:text-blue-800 flex items-center gap-x-1">
-              {getSubdomain(projectName)}.chaibuilder.app
+              {kebabCase(projectName)}.chaibuilder.app
               <ExternalLink className="h-2.5 w-2.5" />
             </a>
           </div>
