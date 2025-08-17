@@ -20,11 +20,7 @@ export const metadata: Metadata = {
   description: "Manage your Chaibuilder websites",
 };
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const siteSettings = await getChaiSiteSettings();
   if ("error" in siteSettings) {
     console.error(siteSettings.error);
@@ -41,31 +37,15 @@ export default async function DashboardLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         {fontUrls.map((fontUrl: string) => (
-          <link
-            key={fontUrl}
-            rel="preload"
-            href={fontUrl}
-            as="style"
-            crossOrigin=""
-          />
+          <link key={fontUrl} rel="preload" href={fontUrl} as="style" crossOrigin="" />
         ))}
 
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
-        <style
-          id="theme-colors"
-          dangerouslySetInnerHTML={{ __html: themeCssVariables }}
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <style id="theme-colors" dangerouslySetInnerHTML={{ __html: themeCssVariables }} />
         {fontUrls.map((fontUrl: string) => (
           <link key={fontUrl} rel="stylesheet" href={fontUrl} />
         ))}
-        <style
-          id="custom-font-face"
-          dangerouslySetInnerHTML={{ __html: customFontFace }}
-        />
+        <style id="custom-font-face" dangerouslySetInnerHTML={{ __html: customFontFace }} />
       </head>
       <body className="font-body antialiased">
         <div className="flex h-screen flex-col">
@@ -73,22 +53,16 @@ export default async function DashboardLayout({
             <div className="container flex h-16 items-center justify-between">
               <div className="flex items-center gap-2">
                 <Logo shouldRedirect={false} />
-                <span className="ml-2 text-xl font-bold tracking-wide uppercase">
-                  Chai Builder
-                </span>
+                <span className="ml-2 text-xl font-bold tracking-wide uppercase">Chai Builder</span>
               </div>
               <UserProfile user={user} />
             </div>
           </header>
-          <div className="flex-1 overflow-y-auto">
-            <div className="container py-8">{children}</div>
-          </div>
+          <div className="container flex-1 h-full">{children}</div>
         </div>
         <Toaster richColors />
         <Clarity />
-        {process.env.NEXT_PUBLIC_GTM_ID && (
-          <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
-        )}
+        {process.env.NEXT_PUBLIC_GTM_ID && <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />}
         <SalesIQ />
       </body>
     </html>
