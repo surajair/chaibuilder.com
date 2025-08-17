@@ -2,16 +2,14 @@
 
 import {
   Dialog,
-  // DialogAction,
-  // DialogCancel,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@chaibuilder/sdk/ui";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import Loader from "./loader";
 

@@ -2,7 +2,7 @@ import {
   ChaiFontViaSrc,
   ChaiFontViaUrl,
   registerChaiFont,
-} from "@chaibuilder/pages/runtime";
+} from "chai-next/blocks";
 
 export const registerFonts = () => {
   // Google font

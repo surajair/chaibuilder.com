@@ -1,5 +1,5 @@
 import UpdatePassword from "@/components/auth/update-password";
-import { Logo } from "@/components/builder/logo";
+import { Logo } from "@/components/logo";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 

@@ -1,4 +1,4 @@
-import { registerChaiPageType } from "@chaibuilder/pages/server";
+import { registerChaiPageType } from "chai-next/server";
 
 registerChaiPageType("blog", {
   name: "Blog",

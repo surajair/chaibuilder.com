@@ -12,10 +12,10 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  Input,
-  Label,
-  Separator,
-} from "@chaibuilder/sdk/ui";
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
 import { find } from "lodash";
 import { CopyIcon, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";

@@ -24,11 +24,11 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@chaibuilder/sdk/ui";
+} from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Logo } from "../builder/logo";
+import { Logo } from "../logo";
 import { Button } from "../ui/button";
 import Loader from "./loader";
 
