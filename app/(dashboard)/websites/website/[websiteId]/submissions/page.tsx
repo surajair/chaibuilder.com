@@ -1,10 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -12,10 +10,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { FileText, ChevronLeft, ChevronRight, Download, Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { exportSubmissionsCSV } from "../settings/actions"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { ChevronLeft, ChevronRight, Download, FileText, Search } from "lucide-react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
+
+const exportSubmissionsCSV = (projectId: string) => {};
 
 const mockSubmissions = [
   {
@@ -66,15 +67,15 @@ const mockSubmissions = [
     status: "read",
     data: { name: "David Wilson", message: "Great service!", phone: "+1122334455" },
   },
-]
+];
 
 export default function SubmissionsPage() {
-  const params = useParams()
-  const projectId = params.projectId as string
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isExporting, setIsExporting] = useState(false)
-  const [searchTerm, setSearchTerm] = useState("")
-  const itemsPerPage = 5
+  const params = useParams();
+  const projectId = params.projectId as string;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isExporting, setIsExporting] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const itemsPerPage = 5;
 
   // Filter submissions based on search term
   const filteredSubmissions = mockSubmissions.filter(
@@ -82,31 +83,31 @@ export default function SubmissionsPage() {
       submission.form.toLowerCase().includes(searchTerm.toLowerCase()) ||
       submission.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       submission.status.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  );
 
-  const totalPages = Math.ceil(filteredSubmissions.length / itemsPerPage)
-  const startIndex = (currentPage - 1) * itemsPerPage
-  const currentSubmissions = filteredSubmissions.slice(startIndex, startIndex + itemsPerPage)
+  const totalPages = Math.ceil(filteredSubmissions.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const currentSubmissions = filteredSubmissions.slice(startIndex, startIndex + itemsPerPage);
 
   const handleExportCSV = async () => {
-    setIsExporting(true)
+    setIsExporting(true);
     try {
-      const csvData = await exportSubmissionsCSV(projectId)
-      const blob = new Blob([csvData], { type: "text/csv" })
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement("a")
-      a.href = url
-      a.download = `submissions-${projectId}-${new Date().toISOString().split("T")[0]}.csv`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(url)
+      const csvData = await exportSubmissionsCSV(projectId);
+      const blob = new Blob([csvData as any], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `submissions-${projectId}-${new Date().toISOString().split("T")[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Failed to export CSV:", error)
+      console.error("Failed to export CSV:", error);
     } finally {
-      setIsExporting(false)
+      setIsExporting(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -129,8 +130,8 @@ export default function SubmissionsPage() {
             placeholder="Search submissions..."
             value={searchTerm}
             onChange={(e) => {
-              setSearchTerm(e.target.value)
-              setCurrentPage(1) // Reset to first page when searching
+              setSearchTerm(e.target.value);
+              setCurrentPage(1); // Reset to first page when searching
             }}
             className="pl-10"
           />
@@ -156,8 +157,7 @@ export default function SubmissionsPage() {
             {currentSubmissions.map((submission) => (
               <div
                 key={submission.id}
-                className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
-              >
+                className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                 <div className="flex items-center gap-4">
                   <FileText className="h-5 w-5 text-muted-foreground" />
                   <div>
@@ -228,8 +228,7 @@ export default function SubmissionsPage() {
                   variant="outline"
                   size="sm"
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                >
+                  disabled={currentPage === 1}>
                   <ChevronLeft className="h-4 w-4" />
                   Previous
                 </Button>
@@ -240,8 +239,7 @@ export default function SubmissionsPage() {
                   variant="outline"
                   size="sm"
                   onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                >
+                  disabled={currentPage === totalPages}>
                   Next
                   <ChevronRight className="h-4 w-4" />
                 </Button>
@@ -251,5 +249,5 @@ export default function SubmissionsPage() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

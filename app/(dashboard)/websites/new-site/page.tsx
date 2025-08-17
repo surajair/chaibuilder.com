@@ -1,51 +1,53 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Plus, X, Globe } from "lucide-react"
-import Link from "next/link"
+import { createSite } from "@/actions/create-site-action";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ArrowLeft, Globe, Plus, Star, X } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const availableLanguages = [
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "es", name: "Spanish", flag: "🇪🇸" },
-  { code: "fr", name: "French", flag: "🇫🇷" },
-  { code: "de", name: "German", flag: "🇩🇪" },
-  { code: "it", name: "Italian", flag: "🇮🇹" },
-  { code: "pt", name: "Portuguese", flag: "🇵🇹" },
-  { code: "nl", name: "Dutch", flag: "🇳🇱" },
-  { code: "ja", name: "Japanese", flag: "🇯🇵" },
-  { code: "ko", name: "Korean", flag: "🇰🇷" },
-  { code: "zh", name: "Chinese", flag: "🇨🇳" },
-]
+  { code: "en", name: "English" },
+  { code: "es", name: "Spanish" },
+  { code: "fr", name: "French" },
+  { code: "de", name: "German" },
+  { code: "it", name: "Italian" },
+  { code: "pt", name: "Portuguese" },
+  { code: "nl", name: "Dutch" },
+  { code: "ja", name: "Japanese" },
+  { code: "ko", name: "Korean" },
+  { code: "zh", name: "Chinese" },
+];
 
-export default function NewSitePage() {
-  const router = useRouter()
-  const [siteName, setSiteName] = useState("")
-  const [subdomain, setSubdomain] = useState("")
-  const [defaultLanguage, setDefaultLanguage] = useState("en")
-  const [additionalLanguages, setAdditionalLanguages] = useState<string[]>([])
-  const [isCreating, setIsCreating] = useState(false)
+export default function NewWebsitePage() {
+  const router = useRouter();
+  const [websiteName, setWebsiteName] = useState("");
+  const [subdomain, setSubdomain] = useState("");
+  const [defaultLanguage, setDefaultLanguage] = useState("en");
+  const [additionalLanguages, setAdditionalLanguages] = useState<string[]>([]);
+  const [isCreating, setIsCreating] = useState(false);
 
-  // Generate subdomain from site name
+  // Generate subdomain from website name
   const generateSubdomain = (name: string) => {
     return name
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, "")
       .replace(/\s+/g, "-")
       .replace(/-+/g, "-")
-      .replace(/^-|-$/g, "")
-  }
+      .replace(/^-|-$/g, "");
+  };
 
-  const handleSiteNameChange = (value: string) => {
-    setSiteName(value)
-    setSubdomain(generateSubdomain(value))
-  }
+  const handleWebsiteNameChange = (value: string) => {
+    setWebsiteName(value);
+    setSubdomain(generateSubdomain(value));
+  };
 
   const handleAddLanguage = (languageCode: string) => {
     if (
@@ -53,77 +55,75 @@ export default function NewSitePage() {
       !additionalLanguages.includes(languageCode) &&
       languageCode !== defaultLanguage
     ) {
-      setAdditionalLanguages([...additionalLanguages, languageCode])
+      setAdditionalLanguages([...additionalLanguages, languageCode]);
     }
-  }
+  };
 
   const handleRemoveLanguage = (languageCode: string) => {
-    setAdditionalLanguages(additionalLanguages.filter((lang) => lang !== languageCode))
-  }
+    setAdditionalLanguages(additionalLanguages.filter((lang) => lang !== languageCode));
+  };
 
-  const handleCreateSite = async () => {
-    if (!siteName.trim() || !subdomain.trim()) return
+  const handleCreateWebsite = async () => {
+    if (!websiteName.trim()) return;
 
-    setIsCreating(true)
+    setIsCreating(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      const formData = {
+        name: websiteName,
+        fallbackLang: defaultLanguage,
+        languages: additionalLanguages,
+      };
 
-    // In real app, this would create the site via API
-    console.log("Creating site:", {
-      siteName,
-      subdomain,
-      defaultLanguage,
-      additionalLanguages,
-    })
+      const result = await createSite(formData);
 
-    // Redirect to the new project
-    router.push(`/project/${subdomain}`)
-  }
+      if (result.success && result.data) {
+        toast.success("Website created successfully!");
+        router.push(`/websites/website/${result.data.id}`);
+      } else {
+        toast.error(result.error || "Failed to create website");
+        setIsCreating(false);
+      }
+    } catch (error) {
+      toast.error("An error occurred while creating the website");
+      setIsCreating(false);
+    }
+  };
 
   const getLanguageName = (code: string) => {
-    return availableLanguages.find((lang) => lang.code === code)?.name || code
-  }
-
-  const getLanguageFlag = (code: string) => {
-    return availableLanguages.find((lang) => lang.code === code)?.flag || "🌐"
-  }
+    return availableLanguages.find((lang) => lang.code === code)?.name || code;
+  };
 
   const availableToAdd = availableLanguages.filter(
     (lang) => lang.code !== defaultLanguage && !additionalLanguages.includes(lang.code),
-  )
+  );
 
   return (
-    <div className="min-h-screen bg-background p-8">
+    <div className="min-h-screen bg-background">
       <div className="max-w-2xl mx-auto">
-        <div className="flex items-center gap-4 mb-8">
-          <Link href="/">
+        <div className="gap-4 mb-8">
+          <Link href="/websites">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Projects
+              Back to websites
             </Button>
           </Link>
-          <div>
-            <h1 className="text-3xl font-playfair font-bold">Add New Site</h1>
-            <p className="text-muted-foreground mt-1">Create a new website project</p>
+          <div className="pt-2">
+            <h1 className="text-3xl font-playfair font-bold">Add New Website</h1>
+            <p className="text-muted-foreground mt-1 text-sm">Create a new website project</p>
           </div>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Site Configuration</CardTitle>
-            <CardDescription>Set up your new website with basic configuration options</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            {/* Site Name */}
+        <Card className="border-0 p-0">
+          <CardContent className="space-y-6 p-0">
+            {/* Website Name */}
             <div className="space-y-2">
-              <Label htmlFor="siteName">Site Name</Label>
+              <Label htmlFor="websiteName">Website Name</Label>
               <Input
-                id="siteName"
-                value={siteName}
-                onChange={(e) => handleSiteNameChange(e.target.value)}
+                id="websiteName"
+                value={websiteName}
+                onChange={(e) => handleWebsiteNameChange(e.target.value)}
                 placeholder="My Awesome Website"
-                className="text-lg"
               />
             </div>
 
@@ -132,7 +132,7 @@ export default function NewSitePage() {
               <Label>Subdomain</Label>
               <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
                 <Globe className="h-4 w-4 text-muted-foreground" />
-                <span className="font-mono text-sm">{subdomain || "your-site-name"}.chaibuilder.app</span>
+                <span className="font-mono text-sm">{subdomain || "your-website-name"}.chaibuilder.app</span>
               </div>
               <p className="text-xs text-muted-foreground">This subdomain cannot be changed after creation</p>
             </div>
@@ -141,14 +141,14 @@ export default function NewSitePage() {
             <div className="space-y-2">
               <Label>Default Language</Label>
               <Select value={defaultLanguage} onValueChange={setDefaultLanguage}>
-                <SelectTrigger>
+                <SelectTrigger className="h-11 focus-visible:ring-0">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {availableLanguages.map((lang) => (
                     <SelectItem key={lang.code} value={lang.code}>
                       <div className="flex items-center gap-2">
-                        <span>{lang.flag}</span>
+                        <span className="font-mono">{lang.code}</span>
                         <span>{lang.name}</span>
                       </div>
                     </SelectItem>
@@ -169,7 +169,7 @@ export default function NewSitePage() {
                 <div className="flex flex-wrap gap-2">
                   {additionalLanguages.map((langCode) => (
                     <Badge key={langCode} variant="secondary" className="flex items-center gap-2">
-                      <span>{getLanguageFlag(langCode)}</span>
+                      <span className="font-mono">{langCode}</span>
                       <span>{getLanguageName(langCode)}</span>
                       <X
                         className="h-3 w-3 cursor-pointer hover:text-destructive"
@@ -182,15 +182,17 @@ export default function NewSitePage() {
 
               {/* Add Language Dropdown */}
               {additionalLanguages.length < 2 && (
-                <Select onValueChange={handleAddLanguage}>
-                  <SelectTrigger>
+                <Select
+                  value={additionalLanguages.length > 0 ? additionalLanguages[additionalLanguages.length - 1] : ""}
+                  onValueChange={handleAddLanguage}>
+                  <SelectTrigger className="h-11">
                     <SelectValue placeholder="Add another language" />
                   </SelectTrigger>
                   <SelectContent>
                     {availableToAdd.map((lang) => (
                       <SelectItem key={lang.code} value={lang.code}>
                         <div className="flex items-center gap-2">
-                          <span>{lang.flag}</span>
+                          <span className="font-mono">{lang.code}</span>
                           <span>{lang.name}</span>
                         </div>
                       </SelectItem>
@@ -201,19 +203,20 @@ export default function NewSitePage() {
             </div>
 
             {/* Language Summary */}
-            <div className="p-4 bg-muted/50 rounded-lg">
+            <div className="p-4 bg-muted rounded-lg">
               <h4 className="font-medium mb-2">Language Configuration</h4>
               <div className="space-y-1 text-sm">
                 <div className="flex items-center gap-2">
-                  <span>{getLanguageFlag(defaultLanguage)}</span>
+                  <span className="font-mono">{defaultLanguage}</span>
                   <span>{getLanguageName(defaultLanguage)}</span>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge variant="outline" className="text-xs border-border text-[12px] py-px">
+                    <Star className="h-3 w-3 mr-1 text-yellow-500 fill-yellow-500" />
                     Default
                   </Badge>
                 </div>
                 {additionalLanguages.map((langCode) => (
                   <div key={langCode} className="flex items-center gap-2">
-                    <span>{getLanguageFlag(langCode)}</span>
+                    <span className="font-mono">{langCode}</span>
                     <span>{getLanguageName(langCode)}</span>
                   </div>
                 ))}
@@ -222,20 +225,16 @@ export default function NewSitePage() {
 
             {/* Create Button */}
             <div className="flex gap-3 pt-4">
-              <Button
-                onClick={handleCreateSite}
-                disabled={!siteName.trim() || !subdomain.trim() || isCreating}
-                className="flex-1"
-              >
+              <Button onClick={handleCreateWebsite} disabled={!websiteName.trim() || isCreating} className="flex-1">
                 {isCreating ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Creating Site...
+                    Creating Website...
                   </>
                 ) : (
                   <>
                     <Plus className="h-4 w-4 mr-2" />
-                    Create Site
+                    Create Website
                   </>
                 )}
               </Button>
@@ -249,5 +248,5 @@ export default function NewSitePage() {
         </Card>
       </div>
     </div>
-  )
+  );
 }
