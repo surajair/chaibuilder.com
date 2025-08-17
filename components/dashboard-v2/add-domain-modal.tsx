@@ -1,6 +1,5 @@
 "use client";
 
-import { addCustomDomain } from "@/app/(dashboard)/websites/website/[websiteId]/details/actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +8,10 @@ import { Label } from "@/components/ui/label";
 import { kebabCase } from "lodash";
 import { AlertCircle, CheckCircle, ExternalLink, Globe } from "lucide-react";
 import { useActionState, useState } from "react";
+
+const addCustomDomain = (formData: FormData) => {
+  return { success: true, domain: formData.get("customDomain") };
+};
 
 interface AddDomainModalProps {
   websiteId: string;

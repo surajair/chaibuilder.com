@@ -1,14 +1,15 @@
 "use client";
 
+import { updateSite } from "@/actions/update-site-action";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Settings } from "lucide-react";
-import { useState, useActionState } from "react";
-import { updateWebsiteSettings } from "@/app/(dashboard)/websites/website/[websiteId]/details/actions";
-
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
+import { toast } from "sonner";
 interface WebsiteInformationProps {
   websiteId: string;
   siteData: {
@@ -17,27 +18,58 @@ interface WebsiteInformationProps {
     createdAt: any;
     fallbackLang: any;
     languages: any;
-    app_api_keys: { apiKey: any; }[];
+    app_api_keys: { apiKey: any }[];
   };
   initialWebsiteName?: string;
   initialAdditionalLanguages?: string[];
 }
 
-function WebsiteInformation({ 
+function WebsiteInformation({
   websiteId,
   siteData,
   initialWebsiteName,
-  initialAdditionalLanguages
+  initialAdditionalLanguages,
 }: WebsiteInformationProps) {
+  const router = useRouter();
   const [websiteName, setWebsiteName] = useState(initialWebsiteName || siteData.name || "My Awesome Website");
-  const [additionalLanguages, setAdditionalLanguages] = useState<string[]>(initialAdditionalLanguages || siteData.languages || []);
+  const [additionalLanguages, setAdditionalLanguages] = useState<string[]>(
+    initialAdditionalLanguages || siteData.languages || [],
+  );
+
+  // Track original values for comparison
+  const [originalWebsiteName, setOriginalWebsiteName] = useState(siteData.name);
+  const [originalAdditionalLanguages, setOriginalAdditionalLanguages] = useState<string[]>(siteData.languages || []);
+
+  useEffect(() => {
+    setWebsiteName(siteData.name);
+    setAdditionalLanguages(siteData.languages);
+    setOriginalWebsiteName(siteData.name);
+    setOriginalAdditionalLanguages(siteData.languages || []);
+  }, [siteData]);
+
+  // Check if data has changed
+  const hasChanges =
+    websiteName !== originalWebsiteName ||
+    JSON.stringify(additionalLanguages.sort()) !== JSON.stringify(originalAdditionalLanguages.sort());
 
   const [updateState, updateAction, updatePending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await updateWebsiteSettings(formData);
+      const websiteName = formData.get("websiteName") as string;
+      const result = await updateSite(websiteId, {
+        name: websiteName,
+        languages: additionalLanguages,
+      });
+
+      if (result.success) {
+        toast.success("Website information updated successfully!");
+        router.refresh();
+      } else {
+        toast.error(result.error || "Failed to update website information");
+      }
+
       return result;
     },
-    { success: false },
+    { success: false, error: null },
   );
 
   const availableLanguages = [
@@ -94,15 +126,13 @@ function WebsiteInformation({
             </div>
 
             <div className="space-y-2">
-              <Label>Additional Languages (up to 2)</Label>
+              <Label>Additional Languages (Optional)</Label>
               <p className="text-xs text-muted-foreground">Select up to 2 additional languages for your website</p>
               <div className="grid grid-cols-3 gap-3">
                 {availableLanguages.map((language) => (
                   <div key={language.value} className="flex items-center space-x-2">
                     <Checkbox
                       id={language.value}
-                      name="additionalLanguages"
-                      value={language.value}
                       checked={additionalLanguages.includes(language.value)}
                       onCheckedChange={(checked) => handleLanguageToggle(language.value, checked as boolean)}
                       disabled={!additionalLanguages.includes(language.value) && additionalLanguages.length >= 2}
@@ -116,9 +146,11 @@ function WebsiteInformation({
               <p className="text-xs text-muted-foreground">Selected: {additionalLanguages.length}/2</p>
             </div>
 
-            <Button type="submit" disabled={updatePending} className="w-full sm:w-auto">
-              {updatePending ? "Saving..." : "Save Changes"}
-            </Button>
+            <div className="flex justify-end">
+              <Button type="submit" disabled={updatePending || !hasChanges} className="w-auto">
+                {updatePending ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
           </form>
         </CardContent>
       </Card>

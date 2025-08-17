@@ -4,16 +4,17 @@ import { createSite } from "@/actions/create-site-action";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Globe, Plus, Star, X } from "lucide-react";
+import { ArrowLeft, Globe, Plus, Star } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-const availableLanguages = [
+const allLanguages = [
   { code: "en", name: "English" },
   { code: "es", name: "Spanish" },
   { code: "fr", name: "French" },
@@ -30,7 +31,7 @@ export default function NewWebsitePage() {
   const router = useRouter();
   const [websiteName, setWebsiteName] = useState("");
   const [subdomain, setSubdomain] = useState("");
-  const [defaultLanguage, setDefaultLanguage] = useState("en");
+  const [defaultLanguage, _setDefaultLanguage] = useState("en");
   const [additionalLanguages, setAdditionalLanguages] = useState<string[]>([]);
   const [isCreating, setIsCreating] = useState(false);
 
@@ -44,23 +45,22 @@ export default function NewWebsitePage() {
       .replace(/^-|-$/g, "");
   };
 
+  const setDefaultLanguage = (language: string) => {
+    _setDefaultLanguage(language);
+    setAdditionalLanguages(additionalLanguages.filter((lang) => lang !== language));
+  };
+
   const handleWebsiteNameChange = (value: string) => {
     setWebsiteName(value);
     setSubdomain(generateSubdomain(value));
   };
 
-  const handleAddLanguage = (languageCode: string) => {
-    if (
-      additionalLanguages.length < 2 &&
-      !additionalLanguages.includes(languageCode) &&
-      languageCode !== defaultLanguage
-    ) {
-      setAdditionalLanguages([...additionalLanguages, languageCode]);
+  const handleLanguageToggle = (languageValue: string, checked: boolean) => {
+    if (checked && additionalLanguages.length < 2) {
+      setAdditionalLanguages([...additionalLanguages, languageValue]);
+    } else if (!checked) {
+      setAdditionalLanguages(additionalLanguages.filter((lang) => lang !== languageValue));
     }
-  };
-
-  const handleRemoveLanguage = (languageCode: string) => {
-    setAdditionalLanguages(additionalLanguages.filter((lang) => lang !== languageCode));
   };
 
   const handleCreateWebsite = async () => {
@@ -79,7 +79,7 @@ export default function NewWebsitePage() {
 
       if (result.success && result.data) {
         toast.success("Website created successfully!");
-        router.push(`/websites/website/${result.data.id}`);
+        router.push(`/websites/website/${result.data.id}/details`);
       } else {
         toast.error(result.error || "Failed to create website");
         setIsCreating(false);
@@ -91,15 +91,11 @@ export default function NewWebsitePage() {
   };
 
   const getLanguageName = (code: string) => {
-    return availableLanguages.find((lang) => lang.code === code)?.name || code;
+    return allLanguages.find((lang) => lang.code === code)?.name || code;
   };
 
-  const availableToAdd = availableLanguages.filter(
-    (lang) => lang.code !== defaultLanguage && !additionalLanguages.includes(lang.code),
-  );
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background">
       <div className="max-w-2xl mx-auto">
         <div className="gap-4 mb-8">
           <Link href="/websites">
@@ -110,7 +106,7 @@ export default function NewWebsitePage() {
           </Link>
           <div className="pt-2">
             <h1 className="text-3xl font-playfair font-bold">Add New Website</h1>
-            <p className="text-muted-foreground mt-1 text-sm">Create a new website project</p>
+            <p className="text-muted-foreground mt-1 text-sm">Create a new website</p>
           </div>
         </div>
 
@@ -145,10 +141,10 @@ export default function NewWebsitePage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {availableLanguages.map((lang) => (
+                  {allLanguages.map((lang) => (
                     <SelectItem key={lang.code} value={lang.code}>
                       <div className="flex items-center gap-2">
-                        <span className="font-mono">{lang.code}</span>
+                        <span className="font-mono border border-border rounded px-2 bg-gray-100">{lang.code}</span>
                         <span>{lang.name}</span>
                       </div>
                     </SelectItem>
@@ -158,48 +154,32 @@ export default function NewWebsitePage() {
             </div>
 
             {/* Additional Languages */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label>Additional Languages (Optional)</Label>
-                <span className="text-xs text-muted-foreground">{additionalLanguages.length}/2 selected</span>
-              </div>
-
-              {/* Selected Languages */}
-              {additionalLanguages.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {additionalLanguages.map((langCode) => (
-                    <Badge key={langCode} variant="secondary" className="flex items-center gap-2">
-                      <span className="font-mono">{langCode}</span>
-                      <span>{getLanguageName(langCode)}</span>
-                      <X
-                        className="h-3 w-3 cursor-pointer hover:text-destructive"
-                        onClick={() => handleRemoveLanguage(langCode)}
-                      />
-                    </Badge>
-                  ))}
+            <div className="space-y-2">
+              <div className="pb-2">
+                <div className="flex items-center justify-between pb-1">
+                  <Label>Additional Languages (Optional)</Label>
+                  <p className="text-xs text-muted-foreground">Selected: {additionalLanguages.length}/2</p>
                 </div>
-              )}
-
-              {/* Add Language Dropdown */}
-              {additionalLanguages.length < 2 && (
-                <Select
-                  value={additionalLanguages.length > 0 ? additionalLanguages[additionalLanguages.length - 1] : ""}
-                  onValueChange={handleAddLanguage}>
-                  <SelectTrigger className="h-11">
-                    <SelectValue placeholder="Add another language" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {availableToAdd.map((lang) => (
-                      <SelectItem key={lang.code} value={lang.code}>
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono">{lang.code}</span>
-                          <span>{lang.name}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
+                <p className="text-xs text-muted-foreground">Select up to 2 additional languages for your website</p>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                {allLanguages.map(
+                  (language) =>
+                    defaultLanguage !== language.code && (
+                      <div key={language.code} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={language.code}
+                          checked={additionalLanguages.includes(language.code)}
+                          onCheckedChange={(checked) => handleLanguageToggle(language.code, checked as boolean)}
+                          disabled={!additionalLanguages.includes(language.code) && additionalLanguages.length >= 2}
+                        />
+                        <Label htmlFor={language.code} className="text-sm">
+                          {language.name}
+                        </Label>
+                      </div>
+                    ),
+                )}
+              </div>
             </div>
 
             {/* Language Summary */}
@@ -207,7 +187,7 @@ export default function NewWebsitePage() {
               <h4 className="font-medium mb-2">Language Configuration</h4>
               <div className="space-y-1 text-sm">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono">{defaultLanguage}</span>
+                  <span className="font-mono border border-border rounded px-2 bg-gray-50">{defaultLanguage}</span>
                   <span>{getLanguageName(defaultLanguage)}</span>
                   <Badge variant="outline" className="text-xs border-border text-[12px] py-px">
                     <Star className="h-3 w-3 mr-1 text-yellow-500 fill-yellow-500" />
@@ -216,7 +196,7 @@ export default function NewWebsitePage() {
                 </div>
                 {additionalLanguages.map((langCode) => (
                   <div key={langCode} className="flex items-center gap-2">
-                    <span className="font-mono">{langCode}</span>
+                    <span className="font-mono border border-border rounded px-2 bg-gray-50">{langCode}</span>
                     <span>{getLanguageName(langCode)}</span>
                   </div>
                 ))}
@@ -225,6 +205,11 @@ export default function NewWebsitePage() {
 
             {/* Create Button */}
             <div className="flex gap-3 pt-4">
+              <Link href="/websites">
+                <Button variant="outline" disabled={isCreating}>
+                  Cancel
+                </Button>
+              </Link>
               <Button onClick={handleCreateWebsite} disabled={!websiteName.trim() || isCreating} className="flex-1">
                 {isCreating ? (
                   <>
@@ -238,11 +223,6 @@ export default function NewWebsitePage() {
                   </>
                 )}
               </Button>
-              <Link href="/">
-                <Button variant="outline" disabled={isCreating}>
-                  Cancel
-                </Button>
-              </Link>
             </div>
           </CardContent>
         </Card>

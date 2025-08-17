@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteSite } from "@/actions/delete-site-action";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,8 +16,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useState, useActionState } from "react";
-import { deleteWebsite } from "@/app/(dashboard)/websites/website/[websiteId]/details/actions";
+import { useRouter } from "next/navigation";
+import { useActionState, useState } from "react";
+import { toast } from "sonner";
 
 interface DeleteWebsiteButtonProps {
   websiteId: string;
@@ -26,17 +28,25 @@ interface DeleteWebsiteButtonProps {
     createdAt: any;
     fallbackLang: any;
     languages: any;
-    app_api_keys: { apiKey: any; }[];
+    app_api_keys: { apiKey: any }[];
   };
 }
 
 function DeleteWebsiteButton({ websiteId, siteData }: DeleteWebsiteButtonProps) {
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const router = useRouter();
 
   const [deleteState, deleteAction, deletePending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await deleteWebsite(formData);
-      return result;
+      try {
+        await deleteSite(siteData.id);
+        toast.success("Website deleted successfully");
+        router.push("/websites");
+        return { success: true };
+      } catch (error: any) {
+        toast.error(error.message || "Failed to delete website");
+        return { success: false, error: error.message };
+      }
     },
     { success: false },
   );
@@ -45,8 +55,10 @@ function DeleteWebsiteButton({ websiteId, siteData }: DeleteWebsiteButtonProps) 
     <section className="pt-8">
       <Card className="border-destructive/20">
         <CardHeader>
-          <CardTitle className="text-destructive">Danger Zone</CardTitle>
-          <CardDescription>Permanently delete this website and all of its data</CardDescription>
+          <CardTitle className="text-destructive">Delete Website</CardTitle>
+          <CardDescription>
+            Permanently delete this website and all of its data. This action cannot be undone.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <AlertDialog>
@@ -72,11 +84,11 @@ function DeleteWebsiteButton({ websiteId, siteData }: DeleteWebsiteButtonProps) 
                     placeholder="DELETE"
                   />
                 </div>
-                <AlertDialogFooter>
+                <AlertDialogFooter className="pt-4">
                   <AlertDialogCancel onClick={() => setDeleteConfirmation("")}>Cancel</AlertDialogCancel>
                   <AlertDialogAction
                     type="submit"
-                    disabled={deleteConfirmation !== "DELETE" || deletePending}
+                    disabled={deleteConfirmation.toLowerCase() !== "delete" || deletePending}
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                     {deletePending ? "Deleting..." : "Delete Website"}
                   </AlertDialogAction>

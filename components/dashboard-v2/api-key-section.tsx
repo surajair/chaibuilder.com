@@ -1,6 +1,5 @@
 "use client";
 
-import { updateApiKey } from "@/app/(dashboard)/websites/website/[websiteId]/details/actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,6 +20,7 @@ import { Check, Copy, Eye, EyeOff, Key, RotateCcw } from "lucide-react";
 import Form from "next/form";
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
+import { createApiKey } from "@/actions/create-site-action";
 
 interface ApiKeySectionProps {
   websiteId: string;
@@ -46,13 +46,16 @@ function ApiKeySection({ websiteId, siteData, initialApiKey }: ApiKeySectionProp
 
   const [apiKeyState, apiKeyAction, apiKeyPending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await updateApiKey(formData);
-      if (result.success && result.newApiKey) {
-        setApiKey(result.newApiKey);
+      const result = await createApiKey(siteData.id);
+      if (result.success && result.apiKey) {
+        setApiKey(result.apiKey);
+        toast.success("New API key generated successfully");
+      } else {
+        toast.error(result.error || "Failed to generate new API key");
       }
       return result;
     },
-    { success: false },
+    { success: false, error: "" },
   );
 
   const handleCopyKey = async () => {
@@ -122,8 +125,6 @@ function ApiKeySection({ websiteId, siteData, initialApiKey }: ApiKeySectionProp
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
                   <Form action={apiKeyAction}>
-                    <input type="hidden" name="websiteId" value={websiteId} />
-                    <input type="hidden" name="action" value="revoke" />
                     <AlertDialogAction
                       type="submit"
                       disabled={apiKeyPending}
