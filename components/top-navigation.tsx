@@ -1,3 +1,4 @@
+import { Logo } from "@/components/logo";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,7 +12,6 @@ import {
 import { User as UserType } from "@supabase/supabase-js";
 import { ChevronDown, CreditCard, LogOut, Settings, User, Users } from "lucide-react";
 import Link from "next/link";
-import { Logo } from "./builder/logo";
 
 async function TopNavigation({ user }: { user: UserType }) {
   return (

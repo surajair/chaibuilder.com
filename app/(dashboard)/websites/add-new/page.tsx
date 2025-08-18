@@ -110,7 +110,7 @@ export default function NewWebsitePage() {
           </div>
         </div>
 
-        <Card className="border-0 p-0">
+        <Card className="border-0 p-0 shadow-none">
           <CardContent className="space-y-6 p-0">
             {/* Website Name */}
             <div className="space-y-2">
