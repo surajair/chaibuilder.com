@@ -6,13 +6,13 @@ import WebsiteInformation from "@/components/dashboard-v2/website-information";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 interface WebsiteDetailsPageProps {
-  params: {
+  params: Promise<{
     websiteId: string;
-  };
+  }>;
 }
 
 export default async function WebsiteDetailsPage({ params }: WebsiteDetailsPageProps) {
-  const { websiteId } = params;
+  const { websiteId } = await params;
 
   try {
     const user = await getUser();

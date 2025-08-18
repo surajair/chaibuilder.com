@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 
-export default function ProjectPage({ params }: { params: { websiteId: string } }) {
-  redirect(`/websites/website/${params.websiteId}/details`);
+export default async function ProjectPage({ params }: { params: Promise<{ websiteId: string }> }) {
+  const { websiteId } = await params;
+  redirect(`/websites/website/${websiteId}/details`);
 }

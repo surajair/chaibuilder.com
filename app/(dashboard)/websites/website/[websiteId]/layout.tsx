@@ -8,13 +8,13 @@ import type React from "react";
 
 interface ProjectLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     websiteId: string;
-  };
+  }>;
 }
 
 export default async function ProjectLayout({ children, params }: ProjectLayoutProps) {
-  const { websiteId } = params;
+  const { websiteId } = await params;
 
   try {
     const user = await getUser();
