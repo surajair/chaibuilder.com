@@ -33,7 +33,7 @@ export default async function RootLayout({
   return (
     <body lang="en" className={`font-sans antialiased ${playfair.variable} ${sourceSans.variable}`}>
       <TopNavigation user={user} />
-      <main className="h-full py-8">{children}</main>
+      <main className="h-full py-4">{children}</main>
     </body>
   );
 }

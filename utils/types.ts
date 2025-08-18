@@ -7,4 +7,5 @@ export type Site = {
   apiKey: string;
   domain?: string;
   customDomain?: string;
+  subdomain?: string;
 };

@@ -14,8 +14,11 @@ export async function getSites(userId: string) {
       languages,
       app_api_keys (
         apiKey
+      ),
+      app_domains (
+        subdomain
       )
-    `
+    `,
     )
     .eq("user", userId)
     .is("deletedAt", null)
@@ -28,5 +31,7 @@ export async function getSites(userId: string) {
     ...site,
     apiKey: site.app_api_keys?.[0]?.apiKey || null,
     app_api_keys: undefined, // Remove the nested app_api_keys
+    subdomain: site.app_domains?.[0]?.subdomain || null,
+    app_domains: undefined, // Remove the nested app_domains
   }));
 }

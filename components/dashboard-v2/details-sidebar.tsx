@@ -1,12 +1,12 @@
 "use client";
 
-import { Key, Settings } from "lucide-react";
+import { Globe, Key, Settings } from "lucide-react";
 import type React from "react";
 
 const sidebarItems = [
   { id: "general", label: "General", icon: Settings },
   { id: "api-key", label: "API Key", icon: Key },
-  // { id: "domain", label: "Domain", icon: Globe },
+  { id: "domain", label: "Domain", icon: Globe },
   // { id: "usage", label: "Usage", icon: BarChart3 },
 ];
 

@@ -53,7 +53,7 @@ function DeleteWebsiteButton({ websiteId, siteData }: DeleteWebsiteButtonProps) 
 
   return (
     <section className="pt-8">
-      <Card className="border-destructive/20">
+      <Card className="border-destructive/20 shadow-none">
         <CardHeader>
           <CardTitle className="text-destructive">Delete Website</CardTitle>
           <CardDescription>

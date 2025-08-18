@@ -72,7 +72,7 @@ function ApiKeySection({ websiteId, siteData, initialApiKey }: ApiKeySectionProp
         <h2 className=" font-semibold">API Key</h2>
       </div>
 
-      <Card>
+      <Card className="shadow-none">
         <CardHeader>
           <CardTitle>Website API Key</CardTitle>
           <CardDescription>Use this key to authenticate API requests to your website</CardDescription>

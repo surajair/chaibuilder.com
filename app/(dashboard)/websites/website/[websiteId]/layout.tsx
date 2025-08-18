@@ -23,7 +23,7 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
     return (
       <div className="bg-background h-full flex flex-col">
         <div className="h-max">
-          <WebsiteHeader websiteId={websiteId} projectName={siteData.name} />
+          <WebsiteHeader projectName={siteData.name} domains={siteData.app_domains} />
           <WebsiteNavigation websiteId={websiteId} />
         </div>
 

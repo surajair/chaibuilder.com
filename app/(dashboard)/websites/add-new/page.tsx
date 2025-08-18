@@ -73,6 +73,7 @@ export default function NewWebsitePage() {
         name: websiteName,
         fallbackLang: defaultLanguage,
         languages: additionalLanguages,
+        subdomain: subdomain + "." + process.env.NEXT_PUBLIC_SUBDOMAIN,
       };
 
       const result = await createSite(formData);
@@ -128,7 +129,9 @@ export default function NewWebsitePage() {
               <Label>Subdomain</Label>
               <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
                 <Globe className="h-4 w-4 text-muted-foreground" />
-                <span className="font-mono text-sm">{subdomain || "your-website-name"}.chaibuilder.app</span>
+                <span className="font-mono text-sm">
+                  {subdomain || "your-website-name"}.{process.env.NEXT_PUBLIC_SUBDOMAIN}
+                </span>
               </div>
               <p className="text-xs text-muted-foreground">This subdomain cannot be changed after creation</p>
             </div>
@@ -151,6 +154,7 @@ export default function NewWebsitePage() {
                   ))}
                 </SelectContent>
               </Select>
+              <p className="text-xs text-muted-foreground">Default language cannot be changed after creation</p>
             </div>
 
             {/* Additional Languages */}

@@ -1,5 +1,6 @@
 import { getSite } from "@/actions/get-site-action";
 import { getUser } from "@/actions/get-user-action";
+import AddDomainModal from "@/components/dashboard-v2/add-domain-modal";
 import ApiKeySection from "@/components/dashboard-v2/api-key-section";
 import DeleteWebsiteButton from "@/components/dashboard-v2/delete-website-button";
 import WebsiteInformation from "@/components/dashboard-v2/website-information";
@@ -22,7 +23,7 @@ export default async function WebsiteDetailsPage({ params }: WebsiteDetailsPageP
       <ScrollArea className="h-[85vh] px-8 scroll-smooth overflow-y-auto" style={{ scrollBehavior: "smooth" }}>
         <WebsiteInformation websiteId={websiteId} siteData={siteData} />
         <ApiKeySection websiteId={websiteId} siteData={siteData} />
-        {/* <AddDomainModal websiteId={websiteId} siteData={siteData} /> */}
+        <AddDomainModal websiteId={websiteId} siteData={siteData} />
         {/* <UsageAnalytics /> */}
         <DeleteWebsiteButton websiteId={websiteId} siteData={siteData} />
         <div className="h-48" />

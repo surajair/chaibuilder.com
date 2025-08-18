@@ -14,6 +14,12 @@ export async function getSite(userId: string, websiteId: string) {
       languages,
       app_api_keys (
         apiKey
+      ),
+      app_domains (
+        domain,
+        subdomain,
+        hosting,
+        domainConfigured
       )
     `,
     )

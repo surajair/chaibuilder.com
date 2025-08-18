@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Bell, Mail, Shield, Trash2, AlertTriangle } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
+import { AlertTriangle, Bell, Mail, Shield, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 export default function AccountSettingsPage() {
   const [notifications, setNotifications] = useState({
@@ -16,13 +16,13 @@ export default function AccountSettingsPage() {
     push: false,
     marketing: false,
     security: true,
-  })
+  });
 
   const [privacy, setPrivacy] = useState({
     profileVisibility: "team",
     activityStatus: true,
     dataCollection: false,
-  })
+  });
 
   return (
     <div className="space-y-6">
@@ -101,8 +101,7 @@ export default function AccountSettingsPage() {
             <Label>Profile Visibility</Label>
             <Select
               value={privacy.profileVisibility}
-              onValueChange={(value) => setPrivacy({ ...privacy, profileVisibility: value })}
-            >
+              onValueChange={(value) => setPrivacy({ ...privacy, profileVisibility: value })}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -159,7 +158,7 @@ export default function AccountSettingsPage() {
       </Card>
 
       {/* Danger Zone */}
-      <Card className="border-red-200">
+      <Card className="border-red-200 shadow-none">
         <CardHeader>
           <CardTitle className="flex items-center text-red-600">
             <Trash2 className="mr-2 h-5 w-5" />
@@ -194,5 +193,5 @@ export default function AccountSettingsPage() {
         <Button>Save Changes</Button>
       </div>
     </div>
-  )
+  );
 }

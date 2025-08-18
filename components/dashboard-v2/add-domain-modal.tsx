@@ -5,9 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { kebabCase } from "lodash";
 import { AlertCircle, CheckCircle, ExternalLink, Globe } from "lucide-react";
-import { useActionState, useState } from "react";
+import { useActionState, useMemo, useState } from "react";
 
 const addCustomDomain = (formData: FormData) => {
   return { success: true, domain: formData.get("customDomain") };
@@ -22,11 +21,22 @@ interface AddDomainModalProps {
     fallbackLang: any;
     languages: any;
     app_api_keys: { apiKey: any }[];
+    app_domains: { domain: string; subdomain: string; hosting: string; domainConfigured: boolean }[];
   };
 }
 
 function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
   const [customDomain, setCustomDomain] = useState("");
+
+  const domains = useMemo(() => siteData?.app_domains || [], [siteData]);
+
+  const defaultDomain = useMemo(() => {
+    let defaultDomain = domains.find((domain) => domain.domain && domain?.domainConfigured)?.domain;
+    if (!defaultDomain) {
+      defaultDomain = domains.find((domain) => domain.subdomain)?.subdomain;
+    }
+    return defaultDomain;
+  }, [domains]);
 
   const [addDomainState, addDomainAction, addDomainPending] = useActionState(
     async (prevState: any, formData: FormData) => {
@@ -39,10 +49,7 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
     { success: false, domain: "" },
   );
 
-  const mockDomains = [
-    { domain: "www.example.com", status: "active", configured: true },
-    { domain: "blog.example.com", status: "pending", configured: false },
-  ];
+  if (domains?.length === 0 || !defaultDomain) return null;
 
   return (
     <section id="domain" className="space-y-4 pt-8">
@@ -52,7 +59,7 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
       </div>
 
       <div className="space-y-4">
-        <Card>
+        <Card className="shadow-none">
           <CardHeader>
             <CardTitle>Default Domain</CardTitle>
             <CardDescription>Your website&lsquo;s default domain provided by our platform</CardDescription>
@@ -62,17 +69,16 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
               <Globe className="h-4 w-4 text-muted-foreground" />
               <a
                 className="flex items-center gap-x-2 hover:text-blue-500 transition-colors"
-                href={`https://${kebabCase(siteData.name)}.chaibuilder.app`}
+                href={`https://${defaultDomain}`}
                 target="_blank"
                 rel="noopener noreferrer">
-                <span className="font-mono">{kebabCase(siteData.name)}.chaibuilder.app</span>{" "}
-                <ExternalLink className="h-4 w-4" />
+                <span>{defaultDomain}</span> <ExternalLink className="h-4 w-4" />
               </a>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="shadow-none">
           <CardHeader>
             <CardTitle>Custom Domain</CardTitle>
             <CardDescription>Connect your own domain to this website</CardDescription>
@@ -97,19 +103,19 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
             </form>
 
             <div className="space-y-3">
-              {mockDomains.map((domainItem, index) => (
+              {domains?.map((domainItem, index) => (
                 <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
                   <div className="flex items-center gap-2">
-                    {domainItem.status === "active" ? (
+                    {domainItem.domainConfigured ? (
                       <CheckCircle className="h-4 w-4 text-green-500" />
                     ) : (
                       <AlertCircle className="h-4 w-4 text-yellow-500" />
                     )}
-                    <span className="font-mono">{domainItem.domain}</span>
+                    <span>{domainItem.subdomain || domainItem.domain}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant={domainItem.status === "active" ? "outline" : "secondary"}>
-                      {domainItem.status}
+                    <Badge variant={domainItem.domainConfigured ? "outline" : "secondary"}>
+                      {domainItem.domainConfigured ? "Configured" : "Not Configured"}
                     </Badge>
                   </div>
                 </div>

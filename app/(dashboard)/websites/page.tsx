@@ -22,7 +22,7 @@ export default async function HomePage() {
   const sites: Site[] = data as Site[];
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col pt-4">
       <div className="flex items-center justify-between mb-8 flex-shrink-0">
         <div>
           <h1 className="text-4xl font-bold mb-2">Your Websites</h1>
@@ -40,18 +40,20 @@ export default async function HomePage() {
         <div className="flex-1 overflow-y-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
             {sites.map((site) => (
-              <Card key={site.id} className="hover:border-primary/50 duration-300 transition-all cursor-pointer group">
+              <Card
+                key={site.id}
+                className="hover:border-primary/50 duration-300 transition-all cursor-pointer group shadow-none">
                 <Link href={`/websites/website/${site.id}`}>
                   <CardHeader>
                     <CardTitle className="text-xl">{site.name}</CardTitle>
                     <span className="text-muted-foreground text-xs leading-tight">{formatDate(site.createdAt)}</span>
                     <CardDescription className="flex items-center gap-1">
-                      {site.customDomain || site.domain ? (
+                      {site.subdomain || site.domain ? (
                         <Globe className="h-4 w-4" />
                       ) : (
                         <Globe className="h-4 w-4 opacity-0" />
                       )}
-                      {site.customDomain || site.domain || ""}
+                      {site.subdomain || site.domain || ""}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="pb-3">

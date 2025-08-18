@@ -3,6 +3,7 @@
 import { supabaseServer } from "@/chai/supabase.server";
 import { encodedApiKey } from "@/utils/api-key";
 import { Site } from "@/utils/types";
+import { Vercel } from "@vercel/sdk";
 import { revalidatePath } from "next/cache";
 import { getUser } from "./get-user-action";
 import { HOME_PAGE_BLOCKS } from "./home-page";
@@ -37,10 +38,63 @@ const DEFAULT_THEME = {
   },
 };
 
+const createProjectOnVercel = async (vercel: Vercel, subdomain: string) => {
+  const orgAndRepo = process.env.GITHUB_REPO as string;
+
+  const createProjectResponse = await vercel.projects.createProject({
+    teamId: process.env.VERCEL_TEAM_ID!,
+    requestBody: {
+      name: (subdomain || "").replace(`.${process.env.NEXT_PUBLIC_SUBDOMAIN}`, ""),
+      framework: "nextjs",
+      gitRepository: { repo: orgAndRepo, type: "github" },
+    },
+  });
+
+  return createProjectResponse;
+};
+
+const addProjectEnvs = async (vercel: Vercel, projectId: string, apiKey: string) => {
+  await vercel.projects.createProjectEnv({
+    idOrName: projectId,
+    upsert: "true",
+    requestBody: [
+      {
+        key: "CHAIBUILDER_API_KEY",
+        value: apiKey,
+        type: "encrypted",
+        target: ["production", "preview"],
+      },
+      {
+        key: "CHAIBUILDER_WEBHOOK_SECRET",
+        value: "YOUR_WEBHOOK_SECRET",
+        type: "encrypted",
+        target: ["production"],
+      },
+    ],
+  });
+};
+
+const triggerVercelDeployment = async (vercel: Vercel, projectId: string) => {
+  const orgAndRepo = process.env.GITHUB_REPO as string;
+  await vercel.deployments.createDeployment({
+    requestBody: {
+      name: projectId,
+      target: "production",
+      gitSource: {
+        type: "github",
+        repo: orgAndRepo.split("/")[1],
+        ref: "main",
+        org: orgAndRepo.split("/")[0],
+      },
+    },
+  });
+};
+
 export async function createSite(formData: Partial<Site>) {
   try {
+    let vercel: Vercel | null = null;
+    let createProjectResponse: any = null;
     const user = await getUser();
-
     // Create entry in apps table
     const newApp = {
       user: user.id,
@@ -50,6 +104,19 @@ export async function createSite(formData: Partial<Site>) {
       theme: DEFAULT_THEME,
     };
 
+    const subdomain = formData?.subdomain;
+
+    if (subdomain) {
+      const { data } = await supabaseServer.from("app_domains").select("id").eq("subdomain", subdomain);
+      if (data && data?.length > 0) {
+        throw new Error(`The subdomain "${subdomain}" is already in use. Please choose a different subdomain.`);
+      }
+      // * if subdomain provided, create vercel project
+      vercel = new Vercel({ bearerToken: process.env.VERCEL_TOKEN! });
+      createProjectResponse = await createProjectOnVercel(vercel, subdomain as string);
+      if (!createProjectResponse.id) throw new Error("Failed to create project");
+    }
+
     const { data: appData, error: appError } = await supabaseServer
       .from("apps")
       .insert(newApp)
@@ -58,28 +125,33 @@ export async function createSite(formData: Partial<Site>) {
     if (appError) throw appError;
 
     // Create entry in apps_online table
-    const { error: onlineError } = await supabaseServer
-      .from("apps_online")
-      .insert(appData);
+    const { error: onlineError } = await supabaseServer.from("apps_online").insert(appData);
     if (onlineError) throw onlineError;
 
     await createHomePage(appData.id, formData.name as string);
 
     // Creating and adding api key
     const apiKey = encodedApiKey(appData.id, ENCRYPTION_KEY);
-    const { error: apiKeyError } = await supabaseServer
-      .from("app_api_keys")
-      .insert({ apiKey, app: appData.id });
+
+    if (subdomain && vercel && createProjectResponse) {
+      // * if subdomain provided, add project envs and trigger deployment
+      await addProjectEnvs(vercel, createProjectResponse.id, apiKey);
+      await triggerVercelDeployment(vercel, createProjectResponse.id);
+
+      await supabaseServer
+        .from("app_domains")
+        .insert({ app: appData.id, hosting: "vercel", subdomain: subdomain, domainConfigured: true });
+    }
+
+    const { error: apiKeyError } = await supabaseServer.from("app_api_keys").insert({ apiKey, app: appData.id });
     if (apiKeyError) throw onlineError;
 
     // Create entry in libraries table
-    const { error: libraryError } = await supabaseServer
-      .from("libraries")
-      .insert({
-        name: newApp.name,
-        app: appData.id,
-        type: "site",
-      });
+    const { error: libraryError } = await supabaseServer.from("libraries").insert({
+      name: newApp.name,
+      app: appData.id,
+      type: "site",
+    });
     if (libraryError) throw libraryError;
 
     await supabaseServer.from("app_users").insert({
@@ -92,6 +164,9 @@ export async function createSite(formData: Partial<Site>) {
     revalidatePath("/sites");
     return { success: true, data: appData };
   } catch (error: any) {
+    if (error?.message.includes("already exists")) {
+      return { success: false, error: "Subdomain already in use. Please try another." };
+    }
     return { success: false, error: error?.message || "An error occurred" };
   }
 }
@@ -99,11 +174,7 @@ export async function createSite(formData: Partial<Site>) {
 export async function createApiKey(appId: string) {
   try {
     const apiKey = encodedApiKey(appId, ENCRYPTION_KEY);
-    const { data, error } = await supabaseServer
-      .from("app_api_keys")
-      .insert({ apiKey, app: appId })
-      .select()
-      .single();
+    const { data, error } = await supabaseServer.from("app_api_keys").insert({ apiKey, app: appId }).select().single();
     if (error) throw error;
     revalidatePath("/sites");
     return { success: true, apiKey: data.apiKey };

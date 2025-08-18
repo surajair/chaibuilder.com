@@ -11,7 +11,7 @@ function UsageAnalytics() {
 
       <div className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="shadow-none">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium">Assets Storage</CardTitle>
             </CardHeader>
@@ -24,7 +24,7 @@ function UsageAnalytics() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="shadow-none">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium">AI Requests</CardTitle>
             </CardHeader>
@@ -37,7 +37,7 @@ function UsageAnalytics() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="shadow-none">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium">Page Views</CardTitle>
             </CardHeader>
@@ -49,7 +49,7 @@ function UsageAnalytics() {
           </Card>
         </div>
 
-        <Card>
+        <Card className="shadow-none">
           <CardHeader>
             <CardTitle>Usage Details</CardTitle>
             <CardDescription>Detailed breakdown of your resource consumption</CardDescription>

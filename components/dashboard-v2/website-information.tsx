@@ -98,7 +98,7 @@ function WebsiteInformation({
         <h2 className="font-semibold">General Settings</h2>
       </div>
 
-      <Card>
+      <Card className="shadow-none">
         <CardHeader>
           <CardTitle>Website Information</CardTitle>
           <CardDescription>Update your website name and language settings</CardDescription>
