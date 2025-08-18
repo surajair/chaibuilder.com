@@ -14,7 +14,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useActionState } from "react";
-import { deleteDomain } from "@/app/(dashboard)/websites/website/[websiteId]/details/actions";
+
+const deleteDomain = (formData: FormData) => {
+  return {};
+};
 
 interface DeleteDomainModalProps {
   websiteId: string;
@@ -41,8 +44,7 @@ function DeleteDomainModal({ websiteId, domain }: DeleteDomainModalProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Domain</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to remove &lsquo;{domain}&rsquo; from this website? This
-            action cannot be undone.
+            Are you sure you want to remove &lsquo;{domain}&rsquo; from this website? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

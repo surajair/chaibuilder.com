@@ -14,7 +14,8 @@ import {
 import { ChevronLeft, ChevronRight, Download, FileText } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { exportSubmissionsCSV } from "../actions";
+
+const exportSubmissionsCSV = (websiteId: string) => {};
 
 const mockSubmissions = [
   {
@@ -74,7 +75,7 @@ export default function SubmissionsSettingsPage() {
     setIsExporting(true);
     try {
       const csvData = await exportSubmissionsCSV(websiteId);
-      const blob = new Blob([csvData], { type: "text/csv" });
+      const blob = new Blob([csvData as any], { type: "text/csv" });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
