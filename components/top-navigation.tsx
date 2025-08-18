@@ -10,8 +10,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User as UserType } from "@supabase/supabase-js";
-import { ChevronDown, CreditCard, LogOut, Settings, User, Users } from "lucide-react";
+import { ChevronDown, CreditCard, Settings, User, Users } from "lucide-react";
 import Link from "next/link";
+import { LogoutButton } from "./dashboard-v2/logout-button";
 
 async function TopNavigation({ user }: { user: UserType }) {
   return (
@@ -30,7 +31,7 @@ async function TopNavigation({ user }: { user: UserType }) {
           {/* User dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center space-x-2 h-10">
+              <Button variant="ghost" className="flex items-center space-x-2 h-10 hover:bg-slate-100">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user?.user_metadata?.avatar_url} alt={user.user_metadata?.full_name || ""} />
                   <AvatarFallback className="border border-border">
@@ -77,10 +78,7 @@ async function TopNavigation({ user }: { user: UserType }) {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600 cursor-pointer hover:bg-red-100">
-                <LogOut className="mr-2 h-4 w-4" />
-                Sign out
-              </DropdownMenuItem>
+              <LogoutButton />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

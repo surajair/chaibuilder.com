@@ -1,25 +1,19 @@
 "use client";
 
+import { addDomain } from "@/actions/add-domain-action";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Site } from "@/utils/types";
 import { AlertCircle, CheckCircle, ExternalLink, Globe } from "lucide-react";
 import { useActionState, useMemo, useState } from "react";
-
-const addCustomDomain = (formData: FormData) => {
-  return { success: true, domain: formData.get("customDomain") };
-};
+import { toast } from "sonner";
 
 interface AddDomainModalProps {
   websiteId: string;
-  siteData: {
-    id: any;
-    name: any;
-    createdAt: any;
-    fallbackLang: any;
-    languages: any;
+  siteData: Site & {
     app_api_keys: { apiKey: any }[];
     app_domains: { domain: string; subdomain: string; hosting: string; domainConfigured: boolean }[];
   };
@@ -38,15 +32,24 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
     return defaultDomain;
   }, [domains]);
 
-  const [addDomainState, addDomainAction, addDomainPending] = useActionState(
+  const [, addDomainAction, addDomainPending] = useActionState(
     async (prevState: any, formData: FormData) => {
-      const result = await addCustomDomain(formData);
+      const domain = formData.get("customDomain") as string;
+      if (!domain) {
+        toast.error("Domain is required");
+        return { success: false, error: "Domain is required" };
+      }
+
+      const result = await addDomain(siteData, domain);
       if (result.success) {
         setCustomDomain("");
+        toast.success("Domain added successfully!");
+      } else {
+        toast.error(result.error || "Failed to add domain");
       }
       return result;
     },
-    { success: false, domain: "" },
+    { success: false, error: "" },
   );
 
   if (domains?.length === 0 || !defaultDomain) return null;
