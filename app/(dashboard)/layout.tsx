@@ -8,25 +8,12 @@ import { GoogleTagManager } from "@next/third-parties/google";
 import { FontsAndStyles } from "chai-next/blocks/rsc";
 import ChaiBuilder from "chai-next/server";
 import { Metadata } from "next";
-import { Playfair_Display, Source_Sans_3 } from "next/font/google";
 import { Toaster } from "sonner";
 import { SalesIQ } from "../SalesIQ";
 
 ChaiBuilder.init(process.env.CHAIBUILDER_API_KEY!);
 
 registerFonts();
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-playfair",
-});
-
-const sourceSans = Source_Sans_3({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-source-sans",
-});
 
 export const metadata: Metadata = {
   title: "Chaibuilder - Websites",
@@ -36,7 +23,7 @@ export const metadata: Metadata = {
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser();
   return (
-    <html lang="en" dir="ltr" className={`smooth-scroll ${playfair.variable} ${sourceSans.variable}`}>
+    <html dir="ltr" className="smooth-scroll">
       <head>
         <FontsAndStyles />
       </head>
