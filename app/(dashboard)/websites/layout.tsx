@@ -2,20 +2,7 @@ import { getUser } from "@/actions/get-user-action";
 import "@/app/(public)/public.css";
 import TopNavigation from "@/components/top-navigation";
 import type { Metadata } from "next";
-import { Playfair_Display, Source_Sans_3 } from "next/font/google";
 import type React from "react";
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-playfair",
-});
-
-const sourceSans = Source_Sans_3({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-source-sans",
-});
 
 export const metadata: Metadata = {
   title: "Website Builder - Project Management",
@@ -31,7 +18,7 @@ export default async function RootLayout({
   const user = await getUser();
 
   return (
-    <body lang="en" className={`font-sans antialiased ${playfair.variable} ${sourceSans.variable}`}>
+    <body className={`font-sans antialiased`}>
       <TopNavigation user={user} />
       <main className="h-full py-4">{children}</main>
     </body>
