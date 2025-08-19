@@ -17,7 +17,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { Check, Copy, Eye, EyeOff, Key, RotateCcw } from "lucide-react";
+import { Check, Copy, Eye, EyeOff, Key, Loader, RotateCcw } from "lucide-react";
 import Form from "next/form";
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
@@ -134,7 +134,14 @@ function ApiKeySection({ websiteId, siteData, initialApiKey }: ApiKeySectionProp
                       type="submit"
                       disabled={apiKeyPending}
                       className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                      {apiKeyPending ? "Revoking..." : "Revoke & Generate New"}
+                      {apiKeyPending ? (
+                        <>
+                          <Loader className="h-3 w-3 animate-spin" />
+                          Revoking
+                        </>
+                      ) : (
+                        "Revoke & Generate New"
+                      )}
                     </AlertDialogAction>
                   </Form>
                 </AlertDialogFooter>

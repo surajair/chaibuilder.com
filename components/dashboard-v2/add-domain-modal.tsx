@@ -64,7 +64,6 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
       const result = await verifyDomain(domain);
       if (result.success) {
         // Store the domain configuration data
-        console.log("Domain config data:", result.data);
         setDomainConfig(result.data);
 
         if (showToast) {
@@ -103,8 +102,6 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
   }, [siteData.domain]);
 
   if (!defaultDomain) return null;
-
-  console.log("##", domainConfig);
 
   return (
     <section id="domain" className="space-y-4 pt-8">
@@ -153,7 +150,14 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
                     className="font-mono"
                   />
                   <Button type="submit" disabled={addDomainPending}>
-                    {addDomainPending ? "Adding..." : "Add Domain"}
+                    {addDomainPending ? (
+                      <>
+                        <Loader className="h-3 w-3 animate-spin" />
+                        Adding
+                      </>
+                    ) : (
+                      "Add Domain"
+                    )}
                   </Button>
                 </div>
               </form>
@@ -199,8 +203,8 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
                             disabled={verifyingDomains.has(siteData.domain!)}>
                             {verifyingDomains.has(siteData.domain!) ? (
                               <>
-                                <Loader className="mr-1 h-3 w-3 animate-spin" />
-                                Checking...
+                                <Loader className="h-3 w-3 animate-spin" />
+                                Checking
                               </>
                             ) : (
                               <>

@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import { Loader, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useState } from "react";
 import { toast } from "sonner";
@@ -65,7 +65,14 @@ function DeleteWebsiteButton({ websiteId, siteData }: DeleteWebsiteButtonProps) 
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" disabled={deletePending}>
-                {deletePending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : ""}Delete Website
+                {deletePending ? (
+                  <>
+                    <Loader className="h-3 w-3 animate-spin" />
+                    Deleting
+                  </>
+                ) : (
+                  "Delete Website"
+                )}
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -95,8 +102,8 @@ function DeleteWebsiteButton({ websiteId, siteData }: DeleteWebsiteButtonProps) 
                     className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
                     {deletePending ? (
                       <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Deleting...
+                        <Loader className="h-3 w-3 animate-spin" />
+                        Deleting
                       </>
                     ) : (
                       "Delete Website"

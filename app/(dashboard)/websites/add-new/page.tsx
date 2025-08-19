@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Globe, Plus, Star } from "lucide-react";
+import { ArrowLeft, Globe, Loader, Plus, Star } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -217,8 +217,8 @@ export default function NewWebsitePage() {
               <Button onClick={handleCreateWebsite} disabled={!websiteName.trim() || isCreating} className="flex-1">
                 {isCreating ? (
                   <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Creating Website...
+                    <Loader className="h-3 w-3 animate-spin" />
+                    Creating Website
                   </>
                 ) : (
                   <>

@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Settings } from "lucide-react";
+import { Loader, Settings } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -148,7 +148,14 @@ function WebsiteInformation({
 
             <div className="flex justify-end">
               <Button type="submit" disabled={updatePending || !hasChanges} className="w-auto">
-                {updatePending ? "Saving..." : "Save Changes"}
+                {updatePending ? (
+                  <>
+                    <Loader className="h-3 w-3 animate-spin" />
+                    Saving
+                  </>
+                ) : (
+                  "Save Changes"
+                )}
               </Button>
             </div>
           </form>
