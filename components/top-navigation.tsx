@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User as UserType } from "@supabase/supabase-js";
-import { ChevronDown, CreditCard, User, Users } from "lucide-react";
+import { ChevronDown, CreditCard, User } from "lucide-react";
 import Link from "next/link";
 import { LogoutButton } from "./dashboard-v2/logout-button";
 
@@ -63,12 +63,6 @@ async function TopNavigation({ user }: { user: UserType }) {
                 <Link href="/account/billing-and-plans" className="flex items-center">
                   <CreditCard className="mr-2 h-4 w-4" />
                   Billing & Plans
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-100">
-                <Link href="/account/user-management" className="flex items-center">
-                  <Users className="mr-2 h-4 w-4" />
-                  User Management
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
