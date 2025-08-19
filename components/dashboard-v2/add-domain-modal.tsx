@@ -10,6 +10,7 @@ import { Site } from "@/utils/types";
 import { AlertCircle, CheckCircle, ExternalLink, Globe, Loader, RefreshCw } from "lucide-react";
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
+import DeleteDomainModal from "./delete-domain-modal";
 
 interface AddDomainModalProps {
   websiteId: string;
@@ -148,6 +149,7 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
                     onChange={(e) => setCustomDomain(e.target.value)}
                     placeholder="example.com"
                     className="font-mono"
+                    disabled={addDomainPending}
                   />
                   <Button type="submit" disabled={addDomainPending}>
                     {addDomainPending ? (
@@ -214,6 +216,11 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
                             )}
                           </Button>
                         )}
+                        <DeleteDomainModal
+                          websiteId={websiteId}
+                          domain={siteData.domain!}
+                          hostingProjectId={siteData.hostingProjectId!}
+                        />
                       </div>
                     </div>
                     {!siteData.domainConfigured && (
