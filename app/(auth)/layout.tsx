@@ -11,6 +11,9 @@ import { redirect } from "next/navigation";
 import { Toaster } from "sonner";
 import { SalesIQ } from "../SalesIQ";
 import { FontsAndStyles } from "chai-next/blocks/rsc";
+import ChaiBuilder from "chai-next/server";
+
+ChaiBuilder.init(process.env.CHAIBUILDER_API_KEY!);
 
 registerFonts();
 
