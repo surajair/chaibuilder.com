@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Site } from "@/utils/types";
 import { AlertCircle, CheckCircle, ExternalLink, Globe, Loader, RefreshCw } from "lucide-react";
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 interface AddDomainModalProps {
@@ -20,6 +20,7 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
   const [customDomain, setCustomDomain] = useState("");
   const [verifyingDomains, setVerifyingDomains] = useState<Set<string>>(new Set());
   const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
+  const [domainConfig, setDomainConfig] = useState<any>(null);
 
   const defaultDomain = useMemo(() => {
     // Show domain if available and configured, otherwise show subdomain
@@ -40,6 +41,9 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
       const result = await addDomain(siteData, domain);
       if (result.success) {
         setCustomDomain("");
+        // Store the domain configuration data
+        setDomainConfig(result.data);
+
         if (result.configured) {
           toast.success("Domain added and configured successfully!");
         } else {
@@ -53,24 +57,34 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
     { success: false, error: "" },
   );
 
-  const handleVerifyDomain = async (domain: string) => {
+  const handleVerifyDomain = async (domain: string, showToast: boolean = true) => {
     setVerifyingDomains((prev) => new Set(prev).add(domain));
 
     try {
       const result = await verifyDomain(domain);
       if (result.success) {
-        if (result.configured) {
-          toast.success("Domain is now configured!");
-          // Trigger a page refresh to update the domain status
-          window.location.reload();
-        } else {
-          toast.info("Domain is still not configured.");
+        // Store the domain configuration data
+        console.log("Domain config data:", result.data);
+        setDomainConfig(result.data);
+
+        if (showToast) {
+          if (result.configured) {
+            toast.success("Domain is now configured!");
+            // Trigger a page refresh to update the domain status
+            window.location.reload();
+          } else {
+            toast.info("Domain is still not configured.");
+          }
         }
       } else {
-        toast.error(result.error || "Failed to verify domain");
+        if (showToast) {
+          toast.error(result.error || "Failed to verify domain");
+        }
       }
     } catch (error) {
-      toast.error("Failed to verify domain");
+      if (showToast) {
+        toast.error("Failed to verify domain");
+      }
     } finally {
       setVerifyingDomains((prev) => {
         const newSet = new Set(prev);
@@ -80,7 +94,17 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
     }
   };
 
+  // Auto-verify domain when component mounts
+  useEffect(() => {
+    if (siteData.domain) {
+      // Verify domain silently on mount (no toast notifications)
+      handleVerifyDomain(siteData.domain, false);
+    }
+  }, [siteData.domain]);
+
   if (!defaultDomain) return null;
+
+  console.log("##", domainConfig);
 
   return (
     <section id="domain" className="space-y-4 pt-8">
@@ -115,23 +139,25 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
             <CardDescription>Connect your own domain to this website</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <form action={addDomainAction} className="space-y-2">
-              <input type="hidden" name="websiteId" value={websiteId} />
-              <Label htmlFor="custom-domain">Domain Name</Label>
-              <div className="flex gap-2">
-                <Input
-                  id="custom-domain"
-                  name="customDomain"
-                  value={customDomain}
-                  onChange={(e) => setCustomDomain(e.target.value)}
-                  placeholder="example.com"
-                  className="font-mono"
-                />
-                <Button type="submit" disabled={addDomainPending}>
-                  {addDomainPending ? "Adding..." : "Add Domain"}
-                </Button>
-              </div>
-            </form>
+            {!siteData.domain && (
+              <form action={addDomainAction} className="space-y-2">
+                <input type="hidden" name="websiteId" value={websiteId} />
+                <Label htmlFor="custom-domain">Domain Name</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="custom-domain"
+                    name="customDomain"
+                    value={customDomain}
+                    onChange={(e) => setCustomDomain(e.target.value)}
+                    placeholder="example.com"
+                    className="font-mono"
+                  />
+                  <Button type="submit" disabled={addDomainPending}>
+                    {addDomainPending ? "Adding..." : "Add Domain"}
+                  </Button>
+                </div>
+              </form>
+            )}
 
             <div className="space-y-3">
               {/* Default Subdomain */}
@@ -141,14 +167,14 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
                   <span>{siteData.subdomain}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline">Default Domain</Badge>
+                  <Badge variant="outline">Subdomain</Badge>
                 </div>
               </div>
 
               {/* Custom Domain */}
               {siteData.domain && (
                 <div className="space-y-3">
-                  <div className="p-3 space-y-2 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  <div className="p-3 space-y-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                     <div className="w-full flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         {siteData.domainConfigured ? (
@@ -168,7 +194,7 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
                             variant="outline"
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleVerifyDomain(siteData.domain!);
+                              handleVerifyDomain(siteData.domain!, true);
                             }}
                             disabled={verifyingDomains.has(siteData.domain!)}>
                             {verifyingDomains.has(siteData.domain!) ? (
@@ -187,22 +213,102 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
                       </div>
                     </div>
                     {!siteData.domainConfigured && (
-                      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <div className="flex items-start gap-2">
-                          <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
-                          <div className="space-y-2">
-                            <p className="text-sm text-yellow-800 font-medium">Domain Configuration Required</p>
-                            <p className="text-sm text-yellow-700">
-                              To configure your domain, add the required DNS records at your domain provider.
+                      <div className="space-y-4">
+                        <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                          <div className="space-y-3">
+                            <p className="text-sm text-yellow-900 font-medium">
+                              The DNS records at your provider must match the following records to verify and connect
+                              your domain to Vercel.
                             </p>
                             <a
                               href="https://vercel.com/docs/domains/working-with-domains/add-a-domain"
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 underline">
-                              View configuration guide
-                              <ExternalLink className="h-3 w-3" />
+                              className="text-blue-600 hover:text-blue-800 hover:underline">
+                              Learn more
                             </a>
+
+                            {/* DNS Records Table */}
+                            <div className="mt-4">
+                              <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                <table className="w-full text-sm">
+                                  <thead className="bg-gray-50">
+                                    <tr>
+                                      <th className="px-4 py-3 text-left font-medium text-gray-900 border-b">Type</th>
+                                      <th className="px-4 py-3 text-left font-medium text-gray-900 border-b">Name</th>
+                                      <th className="px-4 py-3 text-left font-medium text-gray-900 border-b">Value</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody className="bg-white divide-y divide-gray-200">
+                                    {/* A Records - Show from API or fallback */}
+                                    {domainConfig?.recommendedIPv4?.length > 0
+                                      ? domainConfig.recommendedIPv4
+                                          .filter(
+                                            (record: any) =>
+                                              Object.keys(record).length > 0 &&
+                                              (record.value || record.ip || record.address),
+                                          )
+                                          .map((record: any, index: number) => (
+                                            <tr key={`a-${index}`}>
+                                              <td className="px-4 py-3 font-mono text-gray-900">A</td>
+                                              <td className="px-4 py-3 font-mono text-gray-900">
+                                                {record.name || record.host || "@"}
+                                              </td>
+                                              <td className="px-4 py-3 font-mono text-gray-900">
+                                                {record.value || record.ip || record.address}
+                                              </td>
+                                            </tr>
+                                          ))
+                                      : null}
+
+                                    {/* Fallback A record if no valid records from API */}
+                                    {(!domainConfig?.recommendedIPv4?.length ||
+                                      !domainConfig.recommendedIPv4.some(
+                                        (record: any) =>
+                                          Object.keys(record).length > 0 &&
+                                          (record.value || record.ip || record.address),
+                                      )) && (
+                                      <tr>
+                                        <td className="px-4 py-3 font-mono text-gray-900">A</td>
+                                        <td className="px-4 py-3 font-mono text-gray-900">@</td>
+                                        <td className="px-4 py-3 font-mono text-gray-900">216.198.79.1</td>
+                                      </tr>
+                                    )}
+
+                                    {/* CNAME Records - Only show if available from API and not empty */}
+                                    {domainConfig?.recommendedCNAME?.length > 0 &&
+                                      domainConfig.recommendedCNAME
+                                        .filter(
+                                          (record: any) =>
+                                            Object.keys(record).length > 0 &&
+                                            (record.value || record.target || record.alias),
+                                        )
+                                        .map((record: any, index: number) => (
+                                          <tr key={`cname-${index}`}>
+                                            <td className="px-4 py-3 font-mono text-gray-900">CNAME</td>
+                                            <td className="px-4 py-3 font-mono text-gray-900">
+                                              {record.name || record.host || "@"}
+                                            </td>
+                                            <td className="px-4 py-3 font-mono text-gray-900">
+                                              {record.value || record.target || record.alias}
+                                            </td>
+                                          </tr>
+                                        ))}
+
+                                    {/* TXT Record for verification */}
+                                    <tr>
+                                      <td className="px-4 py-3 font-mono text-gray-900">TXT</td>
+                                      <td className="px-4 py-3 font-mono text-gray-900">_vercel</td>
+                                      <td className="px-4 py-3 font-mono text-gray-900">
+                                        {domainConfig?.verification
+                                          ? `vc-domain-verify=${siteData.domain},${domainConfig.verification}`
+                                          : `vc-domain-verify=${siteData.domain},af451ef51bfde534abd2`}
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
