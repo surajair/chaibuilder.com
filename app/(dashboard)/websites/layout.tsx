@@ -18,7 +18,7 @@ export default async function RootLayout({
   const user = await getUser();
 
   return (
-    <body className={`font-sans antialiased`}>
+    <body>
       <TopNavigation user={user} />
       <main className="h-full py-4">{children}</main>
     </body>

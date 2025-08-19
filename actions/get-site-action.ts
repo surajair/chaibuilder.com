@@ -19,7 +19,8 @@ export async function getSite(userId: string, websiteId: string) {
         domain,
         subdomain,
         hosting,
-        domainConfigured
+        domainConfigured,
+        hostingProjectId
       )
     `,
     )
@@ -31,6 +32,21 @@ export async function getSite(userId: string, websiteId: string) {
 
   if (error) throw error;
 
-  // Transform the data to flatten the apiKey
-  return data;
+  // Transform the data to flatten app_domains and apiKey into Site object
+  const domainData = data.app_domains?.[0] || {};
+  const apiKeyData = data.app_api_keys?.[0] || {};
+
+  return {
+    id: data.id,
+    name: data.name,
+    createdAt: data.createdAt,
+    fallbackLang: data.fallbackLang,
+    languages: data.languages,
+    apiKey: apiKeyData.apiKey || '',
+    domain: domainData.domain || undefined,
+    subdomain: domainData.subdomain || undefined,
+    hostingProjectId: domainData.hostingProjectId || undefined,
+    hosting: domainData.hosting || undefined,
+    domainConfigured: domainData.domainConfigured || false,
+  };
 }

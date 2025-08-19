@@ -18,7 +18,7 @@ function formatDate(dateString: string) {
 
 export default async function HomePage() {
   const user = await getUser();
-  const data = await getSites(user.id);
+  const data = await getSites(user.id, true);
   const sites: Site[] = data as Site[];
 
   return (

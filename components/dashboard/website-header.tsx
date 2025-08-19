@@ -5,10 +5,11 @@ import { ArrowLeft, ChevronRight, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
+import { Site } from "@/utils/types";
 
 interface WebsiteHeaderProps {
   projectName: string;
-  domains: Array<{ domain: string; subdomain: string; domainConfigured: boolean }>;
+  siteData: Site;
 }
 
 const getCurrentPageName = (pathname: string) => {
@@ -20,16 +21,16 @@ const getCurrentPageName = (pathname: string) => {
   return "Dashboard";
 };
 
-export function WebsiteHeader({ projectName, domains }: WebsiteHeaderProps) {
+export function WebsiteHeader({ projectName, siteData }: WebsiteHeaderProps) {
   const pathname = usePathname();
 
   const defaultDomain = useMemo(() => {
-    let defaultDomain = domains.find((domain) => domain.domain && domain?.domainConfigured)?.domain;
-    if (!defaultDomain) {
-      defaultDomain = domains.find((domain) => domain.subdomain)?.subdomain;
+    // Show domain if available and configured, otherwise show subdomain
+    if (siteData.domain && siteData.domainConfigured) {
+      return siteData.domain;
     }
-    return defaultDomain;
-  }, [domains]);
+    return siteData.subdomain;
+  }, [siteData]);
 
   return (
     <div className="border-b bg-card">

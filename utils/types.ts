@@ -6,6 +6,8 @@ export type Site = {
   languages: string[];
   apiKey: string;
   domain?: string;
-  customDomain?: string;
   subdomain?: string;
+  hostingProjectId?: string;
+  hosting?: string;
+  domainConfigured?: boolean;
 };

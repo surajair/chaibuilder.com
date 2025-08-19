@@ -1,38 +1,35 @@
 "use client";
 
-import { addDomain } from "@/actions/add-domain-action";
+import { addDomain, verifyDomain } from "@/actions/add-domain-action";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Site } from "@/utils/types";
-import { AlertCircle, CheckCircle, ExternalLink, Globe } from "lucide-react";
+import { AlertCircle, CheckCircle, ExternalLink, Globe, Loader, RefreshCw } from "lucide-react";
 import { useActionState, useMemo, useState } from "react";
 import { toast } from "sonner";
 
 interface AddDomainModalProps {
   websiteId: string;
-  siteData: Site & {
-    app_api_keys: { apiKey: any }[];
-    app_domains: { domain: string; subdomain: string; hosting: string; domainConfigured: boolean }[];
-  };
+  siteData: Site;
 }
 
 function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
   const [customDomain, setCustomDomain] = useState("");
-
-  const domains = useMemo(() => siteData?.app_domains || [], [siteData]);
+  const [verifyingDomains, setVerifyingDomains] = useState<Set<string>>(new Set());
+  const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
 
   const defaultDomain = useMemo(() => {
-    let defaultDomain = domains.find((domain) => domain.domain && domain?.domainConfigured)?.domain;
-    if (!defaultDomain) {
-      defaultDomain = domains.find((domain) => domain.subdomain)?.subdomain;
+    // Show domain if available and configured, otherwise show subdomain
+    if (siteData.domain && siteData.domainConfigured) {
+      return siteData.domain;
     }
-    return defaultDomain;
-  }, [domains]);
+    return siteData.subdomain;
+  }, [siteData]);
 
-  const [, addDomainAction, addDomainPending] = useActionState(
+  const [addDomainState, addDomainAction, addDomainPending] = useActionState(
     async (prevState: any, formData: FormData) => {
       const domain = formData.get("customDomain") as string;
       if (!domain) {
@@ -43,7 +40,11 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
       const result = await addDomain(siteData, domain);
       if (result.success) {
         setCustomDomain("");
-        toast.success("Domain added successfully!");
+        if (result.configured) {
+          toast.success("Domain added and configured successfully!");
+        } else {
+          toast.success("Domain added! Please configure DNS settings to complete setup.");
+        }
       } else {
         toast.error(result.error || "Failed to add domain");
       }
@@ -52,7 +53,34 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
     { success: false, error: "" },
   );
 
-  if (domains?.length === 0 || !defaultDomain) return null;
+  const handleVerifyDomain = async (domain: string) => {
+    setVerifyingDomains((prev) => new Set(prev).add(domain));
+
+    try {
+      const result = await verifyDomain(domain);
+      if (result.success) {
+        if (result.configured) {
+          toast.success("Domain is now configured!");
+          // Trigger a page refresh to update the domain status
+          window.location.reload();
+        } else {
+          toast.info("Domain is still not configured.");
+        }
+      } else {
+        toast.error(result.error || "Failed to verify domain");
+      }
+    } catch (error) {
+      toast.error("Failed to verify domain");
+    } finally {
+      setVerifyingDomains((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(domain);
+        return newSet;
+      });
+    }
+  };
+
+  if (!defaultDomain) return null;
 
   return (
     <section id="domain" className="space-y-4 pt-8">
@@ -106,23 +134,82 @@ function AddDomainModal({ websiteId, siteData }: AddDomainModalProps) {
             </form>
 
             <div className="space-y-3">
-              {domains?.map((domainItem, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                  <div className="flex items-center gap-2">
-                    {domainItem.domainConfigured ? (
-                      <CheckCircle className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <AlertCircle className="h-4 w-4 text-yellow-500" />
+              {/* Default Subdomain */}
+              <div className="flex items-center justify-between p-3 border rounded-lg">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span>{siteData.subdomain}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline">Default Domain</Badge>
+                </div>
+              </div>
+
+              {/* Custom Domain */}
+              {siteData.domain && (
+                <div className="space-y-3">
+                  <div className="p-3 space-y-2 border rounded-lg cursor-pointer hover:bg-gray-50">
+                    <div className="w-full flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        {siteData.domainConfigured ? (
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                        ) : (
+                          <AlertCircle className="h-4 w-4 text-yellow-500" />
+                        )}
+                        <span>{siteData.domain}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant={siteData.domainConfigured ? "outline" : "secondary"}>
+                          {siteData.domainConfigured ? "Configured" : "Not Configured"}
+                        </Badge>
+                        {!siteData.domainConfigured && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleVerifyDomain(siteData.domain!);
+                            }}
+                            disabled={verifyingDomains.has(siteData.domain!)}>
+                            {verifyingDomains.has(siteData.domain!) ? (
+                              <>
+                                <Loader className="mr-1 h-3 w-3 animate-spin" />
+                                Checking...
+                              </>
+                            ) : (
+                              <>
+                                <RefreshCw className="mr-1 h-3 w-3" />
+                                Refresh
+                              </>
+                            )}
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    {!siteData.domainConfigured && (
+                      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <div className="flex items-start gap-2">
+                          <AlertCircle className="h-4 w-4 text-yellow-600 mt-0.5 flex-shrink-0" />
+                          <div className="space-y-2">
+                            <p className="text-sm text-yellow-800 font-medium">Domain Configuration Required</p>
+                            <p className="text-sm text-yellow-700">
+                              To configure your domain, add the required DNS records at your domain provider.
+                            </p>
+                            <a
+                              href="https://vercel.com/docs/domains/working-with-domains/add-a-domain"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 underline">
+                              View configuration guide
+                              <ExternalLink className="h-3 w-3" />
+                            </a>
+                          </div>
+                        </div>
+                      </div>
                     )}
-                    <span>{domainItem.subdomain || domainItem.domain}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant={domainItem.domainConfigured ? "outline" : "secondary"}>
-                      {domainItem.domainConfigured ? "Configured" : "Not Configured"}
-                    </Badge>
                   </div>
                 </div>
-              ))}
+              )}
             </div>
           </CardContent>
         </Card>

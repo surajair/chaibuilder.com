@@ -95,18 +95,11 @@ export async function createSite(formData: Partial<Site>) {
     let vercel: Vercel | null = null;
     let createProjectResponse: any = null;
     const user = await getUser();
-    // Create entry in apps table
-    const newApp = {
-      user: user.id,
-      name: formData.name,
-      languages: formData.languages,
-      fallbackLang: formData.fallbackLang,
-      theme: DEFAULT_THEME,
-    };
 
-    const subdomain = formData?.subdomain;
+    const subdomainPrefix = formData?.subdomain;
+    const subdomain = subdomainPrefix + "." + process.env.NEXT_PUBLIC_SUBDOMAIN;
 
-    if (subdomain) {
+    if (subdomainPrefix) {
       const { data } = await supabaseServer.from("app_domains").select("id").eq("subdomain", subdomain);
       if (data && data?.length > 0) {
         throw new Error(`The subdomain "${subdomain}" is already in use. Please choose a different subdomain.`);
@@ -116,6 +109,16 @@ export async function createSite(formData: Partial<Site>) {
       createProjectResponse = await createProjectOnVercel(vercel, subdomain as string);
       if (!createProjectResponse.id) throw new Error("Failed to create project");
     }
+
+    // Create entry in apps table
+    const newApp = {
+      user: user.id,
+      name: formData.name,
+      languages: formData.languages,
+      fallbackLang: formData.fallbackLang,
+      theme: DEFAULT_THEME,
+      siteId: subdomainPrefix || "",
+    };
 
     const { data: appData, error: appError } = await supabaseServer
       .from("apps")
@@ -140,7 +143,13 @@ export async function createSite(formData: Partial<Site>) {
 
       await supabaseServer
         .from("app_domains")
-        .insert({ app: appData.id, hosting: "vercel", subdomain: subdomain, domainConfigured: true });
+        .insert({
+          app: appData.id,
+          hosting: "vercel",
+          subdomain: subdomain,
+          domainConfigured: true,
+          hostingProjectId: createProjectResponse.id,
+        });
     }
 
     const { error: apiKeyError } = await supabaseServer.from("app_api_keys").insert({ apiKey, app: appData.id });
