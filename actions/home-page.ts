@@ -80,7 +80,7 @@ export const HOME_PAGE_BLOCKS = [
   },
   {
     styles: "#styles:,text-black",
-    content: "/chai",
+    content: "/builder",
     _id: "pBkiab",
     _parent: "jvlaku",
     _type: "Text",
@@ -105,7 +105,7 @@ export const HOME_PAGE_BLOCKS = [
     styles:
       "#styles:,group inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
     content: "Link goes here",
-    link: { href: "/chai" },
+    link: { href: "/builder" },
     _id: "DrCjab",
     _parent: "ozAlxu",
     _type: "Link",
