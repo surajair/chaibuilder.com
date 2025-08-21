@@ -43,6 +43,7 @@ export async function getSite(userId: string, websiteId: string) {
     fallbackLang: data.fallbackLang,
     languages: data.languages,
     apiKey: apiKeyData.apiKey || '',
+    app_api_keys: data.app_api_keys || [],
     domain: domainData.domain || undefined,
     subdomain: domainData.subdomain || undefined,
     hostingProjectId: domainData.hostingProjectId || undefined,
