@@ -37,26 +37,30 @@ export async function getFormSubmissions({
   search = "",
 }: GetFormSubmissionsParams): Promise<GetFormSubmissionsResponse> {
   try {
-    const { data: submissionsData, error } = await supabaseServer
+    const from = (page - 1) * limit;
+    const to = page * limit - 1;
+
+    const {
+      data: submissionsData,
+      count,
+      error,
+    } = await supabaseServer
       .from("app_form_submissions")
-      .select("*")
+      .select("*", { count: "exact" })
       .eq("app", websiteId)
       .ilike("formData->>formName", `%${search}%`)
       .order("createdAt", { ascending: false })
-      .range((page - 1) * limit, page * limit - 1);
+      .range(from, to);
 
     if (error) {
       throw error;
     }
-    
-    const total = submissionsData.length;
+
+    const total = count || 0;
     const totalPages = Math.ceil(total / limit);
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const submissions = submissionsData.slice(startIndex, endIndex);
 
     return {
-      submissions,
+      submissions: submissionsData || [],
       total,
       totalPages,
       currentPage: page,
