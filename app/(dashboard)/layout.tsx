@@ -29,7 +29,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       </head>
       <body className="font-body antialiased">
         <div className="flex h-screen flex-col">
-          <header className="border-b bg-white">
+          <header className="border-b bg-white h-16">
             <div className="container flex h-16 items-center justify-between">
               <div className="flex items-center gap-2">
                 <Logo shouldRedirect={false} />
@@ -38,7 +38,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
               <UserProfile user={user} />
             </div>
           </header>
-          <div className="container flex-1 h-full">{children}</div>
+          <div className="flex-1 container h-[calc(100vh-4rem)]">{children}</div>
         </div>
         <Toaster richColors />
         <Clarity />

@@ -18,9 +18,9 @@ export default async function RootLayout({
   const user = await getUser();
 
   return (
-    <body>
+    <body className="flex h-screen flex-col">
       <TopNavigation user={user} />
-      <main className="h-full py-4">{children}</main>
+      <main className="flex-1 container h-[calc(100vh-4rem)] pb-2 overflow-hidden">{children}</main>
     </body>
   );
 }

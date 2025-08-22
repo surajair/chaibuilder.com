@@ -1,7 +1,7 @@
 import { getSite } from "@/actions/get-site-action";
 import { getUser } from "@/actions/get-user-action";
+import DetailsSidebar from "@/components/dashboard-v2/details-sidebar";
 import { WebsiteHeader } from "@/components/dashboard/website-header";
-import { WebsiteNavigation } from "@/components/dashboard/website-navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import type React from "react";
@@ -22,13 +22,14 @@ export default async function ProjectLayout({ children, params }: ProjectLayoutP
 
     return (
       <div className="bg-background h-full flex flex-col">
-        <div className="h-max">
+        <div className="h-12">
           <WebsiteHeader projectName={siteData.name} siteData={siteData} />
-          <WebsiteNavigation websiteId={websiteId} />
         </div>
 
-        {/* Main Content */}
-        <div className="h-full">{children}</div>
+        <div className="flex-1 h-full flex">
+          <DetailsSidebar />
+          <div className="flex-1 py-6 pl-6">{children}</div>
+        </div>
       </div>
     );
   } catch (error) {
