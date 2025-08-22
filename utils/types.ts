@@ -5,4 +5,9 @@ export type Site = {
   fallbackLang: string;
   languages: string[];
   apiKey: string;
+  domain?: string;
+  subdomain?: string;
+  hostingProjectId?: string;
+  hosting?: string;
+  domainConfigured?: boolean;
 };

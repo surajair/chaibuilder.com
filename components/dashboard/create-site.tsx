@@ -71,9 +71,7 @@ function CreateSiteModal({
             fallbackLang: "",
             languages: [],
           });
-          return {
-            message: "Website created successfully",
-          };
+          return "Website created successfully";
         },
         error: () => "Failed to create website",
         position: "top-center",

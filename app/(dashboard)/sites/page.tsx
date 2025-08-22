@@ -17,13 +17,11 @@ export default async function ChaibuilderWebsites() {
       {!user?.user_metadata?.hasPassword && (
         <div className="w-full">
           <Alert variant="default">
-            <AlertTitle className="text-lg font-semibold">
-              Please set your password
-            </AlertTitle>
+            <AlertTitle className="text-lg font-semibold">Please set your password</AlertTitle>
             <AlertDescription className="flex flex-col gap-2">
               <p>
-                Please set a your password to get started with Chai Builder.
-                This will allow you to access visual builder on your site
+                Please set a your password to get started with Chai Builder. This will allow you to access visual
+                builder on your site
               </p>
               <Link href="/update-password">
                 <Button size="sm" variant="default">
@@ -37,16 +35,14 @@ export default async function ChaibuilderWebsites() {
       <div className="flex flex-col h-full">
         <div className="mb-8 flex items-center justify-between sticky top-0 bg-white z-10 py-4">
           <h1 className="text-xl sm:text-3xl font-bold">Your Websites</h1>
-          <CreateSite isSiteLimitReached={sites.length >= 2} />
+          <CreateSite isSiteLimitReached={sites.length >= 12} />
         </div>
 
         {sites.length === 0 ? (
           <div className="flex flex-1 flex-col items-center justify-center">
             <div className="mb-8 text-center">
               <h2 className="mb-2 text-2xl font-semibold">No sites yet</h2>
-              <p className="mb-6 text-muted-foreground">
-                Create your first site to get started with Chai Builder
-              </p>
+              <p className="mb-6 text-muted-foreground">Create your first site to get started with Chai Builder</p>
               <div className="flex flex-col gap-4">
                 <CreateSite isSiteLimitReached={false} />
               </div>

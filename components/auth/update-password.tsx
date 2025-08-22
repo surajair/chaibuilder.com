@@ -1,22 +1,21 @@
 "use client";
 
-import { Alert } from "@/components/ui/alert";
-import {  Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Input  } from "@/components/ui/input";
-import { useEffect, useState } from "react";
 import { updatePassword } from "@/actions/user-auth-action";
-import { toast } from "sonner";
-import { EyeIcon, EyeClosed, Check } from "lucide-react";
+import { Alert } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Check, EyeClosed, EyeIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface UpdatePasswordProps {
   type?: "set" | "reset" | "change";
+  redirectTo?: string;
 }
 
-export default function UpdatePassword({
-  type = "change",
-}: UpdatePasswordProps) {
+export default function UpdatePassword({ type = "change", redirectTo = "/sites" }: UpdatePasswordProps) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -56,10 +55,10 @@ export default function UpdatePassword({
       toast.success("Password updated successfully!", {
         position: "top-center",
       });
-      router.push("/sites");
+      router.push(redirectTo);
     } catch (error) {
       setError(
-        error instanceof Error && error.message ? "Please enter new valid password " : "Failed to update password"
+        error instanceof Error && error.message ? "Please enter new valid password " : "Failed to update password",
       );
     } finally {
       setIsLoading(false);
@@ -77,9 +76,7 @@ export default function UpdatePassword({
         <h2 className="text-normal font-semibold text-green-500 flex items-center gap-2 justify-center">
           <Check className="w-4 h-4" /> Password Updated
         </h2>
-        <p className="text-muted-foreground">
-          Your password has been successfully updated.
-        </p>
+        <p className="text-muted-foreground">Your password has been successfully updated.</p>
       </div>
     );
   }
@@ -87,7 +84,7 @@ export default function UpdatePassword({
   return (
     <>
       {error && (
-        <Alert variant="destructive" className="text-red-500 text-center  mb-4">
+        <Alert variant="destructive" className="text-red-500 text-center mb-4 py-2">
           {error}
         </Alert>
       )}
@@ -112,8 +109,7 @@ export default function UpdatePassword({
               onClick={(e) => {
                 e.preventDefault();
                 setShowPassword(!showPassword);
-              }}
-            >
+              }}>
               {!showPassword ? <EyeIcon /> : <EyeClosed />}
             </Button>
           </div>
@@ -138,17 +134,12 @@ export default function UpdatePassword({
                 e.preventDefault();
                 setShowConfirmPassword(!showConfirmPassword);
               }}
-              className="absolute right-0 top-1/2 -translate-y-1/2 w-8 hover:bg-transparent hover:text-gray-500"
-            >
+              className="absolute right-0 top-1/2 -translate-y-1/2 w-8 hover:bg-transparent hover:text-gray-500">
               {!showConfirmPassword ? <EyeIcon /> : <EyeClosed />}
             </Button>
           </div>
         </div>
-        <Button
-          type="submit"
-          className="w-full bg-fuchsia-800 hover:bg-fuchsia-700"
-          disabled={isLoading}
-        >
+        <Button type="submit" className="w-full bg-fuchsia-800 hover:bg-fuchsia-700" disabled={isLoading}>
           {isLoading ? "Updating..." : buttonText}
         </Button>
       </form>
