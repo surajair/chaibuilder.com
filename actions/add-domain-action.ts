@@ -7,33 +7,17 @@ import { revalidatePath } from "next/cache";
 
 export async function addDomain(site: Site, domain: string) {
   try {
-    // Check if domain already exists
-    const { data: existingDomain } = await supabaseServer
-      .from("app_domains")
-      .select("id")
-      .eq("domain", domain)
-      .single();
-
-    if (existingDomain) {
-      throw new Error(`Domain "${domain}" already exists`);
-    }
-
-    if (!site.hostingProjectId) {
-      throw new Error(`No hosting project found for website ${site.name}`);
-    }
-
     const vercel = new Vercel({ bearerToken: process.env.VERCEL_TOKEN! });
 
     await vercel.projects.addProjectDomain({
-      idOrName: site.hostingProjectId,
+      idOrName: process.env.VERCEL_PROJECT_ID!,
       teamId: process.env.VERCEL_TEAM_ID!,
-      requestBody: {
-        name: domain,
-      },
+      requestBody: { name: domain },
     });
 
     const checkConfiguration = await vercel.domains.getDomainConfig({
       teamId: process.env.VERCEL_TEAM_ID!,
+      projectIdOrName: process.env.VERCEL_PROJECT_ID!,
       domain: domain,
     });
 
@@ -74,6 +58,7 @@ export async function verifyDomain(domain: string) {
 
     const checkConfiguration = await vercel.domains.getDomainConfig({
       teamId: process.env.VERCEL_TEAM_ID!,
+      projectIdOrName: process.env.VERCEL_PROJECT_ID!,
       domain: domain,
     });
 

@@ -38,61 +38,8 @@ const DEFAULT_THEME = {
   },
 };
 
-const createProjectOnVercel = async (vercel: Vercel, subdomain: string) => {
-  const orgAndRepo = process.env.GITHUB_REPO as string;
-
-  const createProjectResponse = await vercel.projects.createProject({
-    teamId: process.env.VERCEL_TEAM_ID!,
-    requestBody: {
-      name: (subdomain || "").replace(`.${process.env.NEXT_PUBLIC_SUBDOMAIN}`, ""),
-      framework: "nextjs",
-      gitRepository: { repo: orgAndRepo, type: "github" },
-    },
-  });
-
-  return createProjectResponse;
-};
-
-const addProjectEnvs = async (vercel: Vercel, projectId: string, apiKey: string) => {
-  await vercel.projects.createProjectEnv({
-    idOrName: projectId,
-    upsert: "true",
-    requestBody: [
-      {
-        key: "CHAIBUILDER_API_KEY",
-        value: apiKey,
-        type: "encrypted",
-        target: ["production", "preview"],
-      },
-      {
-        key: "CHAIBUILDER_WEBHOOK_SECRET",
-        value: "YOUR_WEBHOOK_SECRET",
-        type: "encrypted",
-        target: ["production"],
-      },
-    ],
-  });
-};
-
-const triggerVercelDeployment = async (vercel: Vercel, projectId: string) => {
-  const orgAndRepo = process.env.GITHUB_REPO as string;
-  await vercel.deployments.createDeployment({
-    requestBody: {
-      name: projectId,
-      target: "production",
-      gitSource: {
-        type: "github",
-        repo: orgAndRepo.split("/")[1],
-        ref: "main",
-        org: orgAndRepo.split("/")[0],
-      },
-    },
-  });
-};
-
 export async function createSite(formData: Partial<Site>) {
   try {
-    let vercel: Vercel | null = null;
     let createProjectResponse: any = null;
     const user = await getUser();
 
@@ -104,10 +51,6 @@ export async function createSite(formData: Partial<Site>) {
       if (data && data?.length > 0) {
         throw new Error(`The subdomain "${subdomain}" is already in use. Please choose a different subdomain.`);
       }
-      // * if subdomain provided, create vercel project
-      vercel = new Vercel({ bearerToken: process.env.VERCEL_TOKEN! });
-      createProjectResponse = await createProjectOnVercel(vercel, subdomain as string);
-      if (!createProjectResponse.id) throw new Error("Failed to create project");
     }
 
     // Create entry in apps table
@@ -136,20 +79,21 @@ export async function createSite(formData: Partial<Site>) {
     // Creating and adding api key
     const apiKey = encodedApiKey(appData.id, ENCRYPTION_KEY);
 
-    if (subdomain && vercel && createProjectResponse) {
-      // * if subdomain provided, add project envs and trigger deployment
-      await addProjectEnvs(vercel, createProjectResponse.id, apiKey);
-      await triggerVercelDeployment(vercel, createProjectResponse.id);
+    if (subdomain) {
+      const vercel = new Vercel({ bearerToken: process.env.VERCEL_TOKEN! });
+      await vercel.projects.addProjectDomain({
+        idOrName: process.env.VERCEL_PROJECT_ID!,
+        teamId: process.env.VERCEL_TEAM_ID!,
+        requestBody: { name: subdomain },
+      });
 
-      await supabaseServer
-        .from("app_domains")
-        .insert({
-          app: appData.id,
-          hosting: "vercel",
-          subdomain: subdomain,
-          domainConfigured: true,
-          hostingProjectId: createProjectResponse.id,
-        });
+      await supabaseServer.from("app_domains").insert({
+        app: appData.id,
+        hosting: "vercel",
+        subdomain: subdomain,
+        domainConfigured: true,
+        hostingProjectId: createProjectResponse.id,
+      });
     }
 
     const { error: apiKeyError } = await supabaseServer.from("app_api_keys").insert({ apiKey, app: appData.id });
