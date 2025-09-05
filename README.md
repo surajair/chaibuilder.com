@@ -32,7 +32,7 @@ This is a starter project for Chai builder + NextJS.
 2. `pnpm install`
 3. Create a new .env file and add env variables from .env.sample
 4. `pnpm dev`
-5. Goto `/chai` route to login and edit in builder
+5. Goto `/builder` route to login and edit in builder
 
 ## Stack
 
@@ -51,7 +51,7 @@ pnpm install
 pnpm run dev
 ```
 
-Navigate to `/chai` route to view the builder and publish. Sign in and start publishing your website.
+Navigate to `/builder` route to view the builder and publish. Sign in and start publishing your website.
 
 ## Testing
 
