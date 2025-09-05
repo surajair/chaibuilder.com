@@ -11,13 +11,16 @@ export const dynamic = "force-static";
 export const generateMetadata = async (props: { params: Promise<{ slug: string[] }> }) => {
   const nextParams = await props.params;
   const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
+  const { isEnabled } = await draftMode();
+  ChaiBuilder.setDraftMode(isEnabled);
   return await ChaiBuilder.getPageSeoData(slug);
 };
 
 export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
   const nextParams = await params;
   const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
-  const { isEnabled } = draftMode();
+  const { isEnabled } = await draftMode();
+  ChaiBuilder.setDraftMode(isEnabled);
   let page = null;
   try {
     page = await ChaiBuilder.getPage(slug);
