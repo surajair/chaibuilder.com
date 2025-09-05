@@ -1,33 +1,30 @@
 import { ChaiPageProps, loadWebBlocks } from "chai-next/blocks";
-import { PreviewBanner, RenderChaiBlocks } from "chai-next/blocks/rsc";
+import { FontsAndStyles, PreviewBanner, RenderChaiBlocks } from "chai-next/blocks/rsc";
 import ChaiBuilder from "chai-next/server";
 import { draftMode } from "next/headers";
 import { notFound } from "next/navigation";
 
 loadWebBlocks();
 
-export const dynamic = "force-static"; // Remove this if you want to use ssr mode
-export const maxDuration = 30;
+export const dynamic = "force-static";
 
-export const generateMetadata = async (props: {
-  params: Promise<{ slug: string[] }>;
-}) => {
+export const generateMetadata = async (props: { params: Promise<{ slug: string[] }> }) => {
   const nextParams = await props.params;
   const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
   return await ChaiBuilder.getPageSeoData(slug);
 };
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string[] }>;
-}) {
+export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
   const nextParams = await params;
   const slug = nextParams.slug ? `/${nextParams.slug.join("/")}` : "/";
-  const { isEnabled } = await draftMode();
-
-  const page = await ChaiBuilder.getPage(slug);
-  if ("error" in page) {
+  const { isEnabled } = draftMode();
+  let page = null;
+  try {
+    page = await ChaiBuilder.getPage(slug);
+    if ("error" in page) {
+      return notFound();
+    }
+  } catch (err) {
     return notFound();
   }
 
@@ -40,8 +37,13 @@ export default async function Page({
   };
   return (
     <>
-      <PreviewBanner slug={slug} show={isEnabled} />
-      <RenderChaiBlocks page={page} pageProps={pageProps} />
+      <head>
+        <FontsAndStyles page={page} />
+      </head>
+      <body className={`font-body antialiased`}>
+        <PreviewBanner slug={slug} show={isEnabled} />
+        <RenderChaiBlocks page={page} pageProps={pageProps} />
+      </body>
     </>
   );
 }
