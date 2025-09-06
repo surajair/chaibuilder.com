@@ -20,10 +20,7 @@ export default async function RootLayout({
   await ChaiBuilder.loadSiteSettings(isEnabled);
   return (
     <html className={`smooth-scroll`}>
-      <head>
-        <FontsAndStyles />
-      </head>
-      <body className={`font-body antialiased`}>{children}</body>
+      {children}
     </html>
   );
 }
